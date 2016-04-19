@@ -1,0 +1,1021 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>SISTEMA DESPORTIVO WI9</title>
+
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="font-awesome/css/font-awesome.css" rel="stylesheet">
+    <link href="css/animate.css" rel="stylesheet">
+    <link href="css/plugins/dropzone/basic.css" rel="stylesheet">
+    <link href="css/plugins/dropzone/dropzone.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+
+</head>
+
+
+
+
+<body>
+    <div id="wrapper">
+        <nav class="navbar-default navbar-static-side" role="navigation">
+            <div class="sidebar-collapse">
+                <ul class="nav metismenu" id="side-menu">
+                    <li class="nav-header">
+                        <div class="dropdown profile-element"> <span>
+                            <!--<img alt="image" class="img-circle" src="img/profile_small.jpg" />-->
+                             </span>
+                            <!--<a data-toggle="dropdown" class="dropdown-toggle" href="#">-->
+                            <a href="painel.html"><h2><strong>DESPORTO</strong></h2></a>
+                             <!--</span> <span class="text-muted text-xs block">Art Director <b class="caret"></b></span> </span> </a>
+                            <ul class="dropdown-menu animated fadeInRight m-t-xs">
+                                <li><a href="profile.html">Profile</a></li>
+                                <li><a href="contacts.html">Contacts</a></li>
+                                <li><a href="mailbox.html">Mailbox</a></li>
+                                <li class="divider"></li>
+                                <li><a href="login.html">Logout</a></li>
+                            </ul>-->
+                        </div>
+                    </li>
+                    <li>
+                        <a href="#"><i class="fa fa-futbol-o"></i> <span class="nav-label">CAMPEONATOS</span> <span class="fa arrow"></span></a>
+                        <ul class="nav nav-second-level">
+                            <li><a href="novo-campeonato.html">Novo</a></li>
+                            <li><a href="campeonatos.html">Em Andamento</a></li>
+                            <li><a href="campeonatos-encerrados.html">Encerrados</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="#"><i class="fa fa-search"></i> <span class="nav-label">CONSULTA</span> <span class="fa arrow"></span></a>
+                        <ul class="nav nav-second-level">
+                            <li><a href="consulta-atleta.html">Atleta</a></li>
+                            <li><a href="consulta-equipe.html">Equipe</a></li>
+                        </ul>
+                    </li>
+                    </li>
+                    <li>
+                        <a href="regulamento.html"><i class="fa fa-file-text"></i> <span class="nav-label">REGULAMENTOS</span></a>
+                    </li>
+                    <li>
+                        <a href="julgamento.html"><i class="fa fa-user"></i> <span class="nav-label">JULGAMENTOS</span></a>
+                    </li>
+                    
+                    
+                </ul>
+
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="gray-bg dashbard-1">
+        <div class="row border-bottom">
+        <nav class="navbar navbar-static-top" role="navigation" style="margin-bottom: 0">
+        <div class="navbar-header">
+            <a class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="#"><i class="fa fa-bars"></i> </a>
+            <!--<form role="search" class="navbar-form-custom" action="search_results.html">
+                <div class="form-group">
+                    <input type="text" placeholder="Search for something..." class="form-control" name="top-search" id="top-search">
+                </div>
+            </form>-->
+        </div>
+            <ul class="nav navbar-top-links navbar-right">
+                <li>
+                	<a href="index.html">
+                    <i class="fa fa-sign-out"></i> Log out
+                	</a>
+                </li>
+            </ul>
+
+        </nav>
+        </div>
+        
+        
+        <div class="row  border-bottom white-bg dashboard-header">
+        	
+            <div class="row">
+                <div class="col-lg-12">
+                	<p><a href="detalhe-campeonato.html">Campeonato</a> | Editar Equipes </p>
+                    <div class="ibox float-e-margins">
+                        <div class="ibox-title">
+                            <h5>Editar Equipe</h5>
+                        </div>
+                        <div class="ibox-content" class="col-sm-6">
+                            <div class="form-group">
+                            	<!--<label class="col-sm-12 control-label">Selecionar Equipe</label>-->
+                            	<div class="col-sm-12">
+                                    <select class="form-control m-b" name="account">
+                                        <option>Selecionar Equipe</option>
+                                        <option>Equipe 1</option>
+                                        <option>Equipe 2</option>
+                                        <option>Equipe 3</option>
+                                        <option>Equipe 4</option>
+                                        <option>Equipe 5</option>
+                                        <option>Equipe 6</option>
+                                        <option>Equipe 7</option>
+                                        <option>Equipe 8</option>
+                                    </select>
+                            	</div>
+                            </div>
+						</div>
+                            
+                        <div class="ibox-content">
+                            <table class="table">
+                                <thead>
+                                <tr>
+                                    <th>Diretor</th>
+                                    <th>Telefone</th>
+                                    <th>E-mail</th>
+                                    <th></th>
+                                    <th><a data-toggle="modal" href="#modal-form">Cadastrar</a></th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td><a href="perfil-atleta.html">Rafael Floriano</a></td>
+                                    <td><a href="perfil-atleta.html">51 8301 0327</a></td>
+                                    <td><a href="perfil-atleta.html">comercial@agenciawi9.com.br</a></td>
+                                    <td>
+                                     	
+                                            
+                                            
+                                    <div class="text-center">
+                                    <a data-toggle="modal" href="#modal-form">Editar</a>
+                                    </div>
+                                    <div id="modal-form" class="modal fade" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-body">
+                                                    <div class="row">
+                                                        <div class="col-sm-12 b-r"><h3 class="m-t-none m-b">Cadastrar</h3>
+                                                        <hr>
+                                                            <form method="get" class="form-horizontal">
+                                                                <div class="col-sm-12">
+                                                                    <div class="form-group"><label class="col-sm-2 control-label">CPF</label>
+                                                                        <div class="col-sm-10"><input type="text" class="form-control">
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="form-group"><label class="col-sm-2 control-label">Nome</label>
+                                                                        <div class="col-sm-10"><input type="text" class="form-control">
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="form-group"><label class="col-sm-2 control-label">RG</label>
+                                                                        <div class="col-sm-10"><input type="text" class="form-control">
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="form-group"><label class="col-sm-2 control-label">Telefone</label>
+                                                                        <div class="col-sm-10"><input type="text" class="form-control">
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="form-group"><label class="col-sm-2 control-label">Endereço</label>
+                                                                        <div class="col-sm-10"><input type="text" class="form-control">
+                                                                        </div>
+                                                                    </div>
+                                                                    
+                                                                    <!--<div class="wrapper wrapper-content animated fadeIn">
+                                                                        <div class="row">
+                                                                            <div class="col-lg-12">
+                                                                            <div class="ibox float-e-margins">
+                                                                                <div class="ibox-title">
+                                                                                    <h5>Documentos</h5>
+                                                                                </div>
+                                                                                <div class="ibox-content">
+                                                                                    <form id="my-awesome-dropzone" class="dropzone" action="#">
+                                                                                        <div class="dropzone-previews"></div>
+                                                                                    </form>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>  -->      
+                                                                </div>
+                                                                 <div class="pull-left">
+                                                                    <a href=""><button class="btn btn-success " type="button"><i class="fa fa-user"></i>&nbsp;&nbsp;<span class="bold">Foto Atleta</span></button></a>
+                                                                    <a href=""><button class="btn btn-success " type="button"><i class="fa fa-file-photo-o"></i>&nbsp;&nbsp;<span class="bold">Documentos</span></button></a>
+                                                                </div>
+                                                                
+                                                                
+                                                                <div class="pull-right">
+                                                                    <a href=""><button class="btn btn-success " type="button"><i class="fa fa-times"></i>&nbsp;&nbsp;<span class="bold">Cancelar</span></button></a>
+                                                                    <a href=""><button class="btn btn-success " type="button"><i class="fa fa-check"></i>&nbsp;&nbsp;<span class="bold">Salvar</span></button></a>
+                                                                </div>
+                                
+                                                            </form>
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                     </div>   
+                                    
+                                    
+                                    </td>
+                                    <td><a href="#">Excluir</a></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        
+                        <div class="ibox-content">
+                            <table class="table">
+                                <thead>
+                                <tr>
+                                    <th>Técnico</th>
+                                    <th>Telefone</th>
+                                    <th>E-mail</th>
+                                    <th></th>
+                                    <th><a data-toggle="modal" href="#modal-form">Cadastrar</a></th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td><a href="perfil-atleta.html">Rafael Floriano</a></td>
+                                    <td><a href="perfil-atleta.html">51 8301 0327</a></td>
+                                    <td><a href="perfil-atleta.html">comercial@agenciawi9.com.br</a></td>
+                                    <td>
+                                     	
+                                            
+                                            
+                                    <div class="text-center">
+                                    <a data-toggle="modal" href="#modal-form">Editar</a>
+                                    </div>
+                                    <div id="modal-form" class="modal fade" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-body">
+                                                    <div class="row">
+                                                        <div class="col-sm-12 b-r"><h3 class="m-t-none m-b">Cadastrar</h3>
+                                                        <hr>
+                                                            <form method="get" class="form-horizontal">
+                                                                <div class="col-sm-12">
+                                                                    <div class="form-group"><label class="col-sm-2 control-label">CPF</label>
+                                                                        <div class="col-sm-10"><input type="text" class="form-control">
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="form-group"><label class="col-sm-2 control-label">Nome</label>
+                                                                        <div class="col-sm-10"><input type="text" class="form-control">
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="form-group"><label class="col-sm-2 control-label">RG</label>
+                                                                        <div class="col-sm-10"><input type="text" class="form-control">
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="form-group"><label class="col-sm-2 control-label">Telefone</label>
+                                                                        <div class="col-sm-10"><input type="text" class="form-control">
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="form-group"><label class="col-sm-2 control-label">Endereço</label>
+                                                                        <div class="col-sm-10"><input type="text" class="form-control">
+                                                                        </div>
+                                                                    </div>
+                                                                    
+                                                                    <!--<div class="wrapper wrapper-content animated fadeIn">
+                                                                        <div class="row">
+                                                                            <div class="col-lg-12">
+                                                                            <div class="ibox float-e-margins">
+                                                                                <div class="ibox-title">
+                                                                                    <h5>Documentos</h5>
+                                                                                </div>
+                                                                                <div class="ibox-content">
+                                                                                    <form id="my-awesome-dropzone" class="dropzone" action="#">
+                                                                                        <div class="dropzone-previews"></div>
+                                                                                    </form>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>  -->      
+                                                                </div>
+                                                                
+                                                                
+                                                                <div class="pull-right">
+                                                                    <a href=""><button class="btn btn-success " type="button"><i class="fa fa-times"></i>&nbsp;&nbsp;<span class="bold">Cancelar</span></button></a>
+                                                                    <a href=""><button class="btn btn-success " type="button"><i class="fa fa-check"></i>&nbsp;&nbsp;<span class="bold">Salvar</span></button></a>
+                                                                </div>
+                                
+                                                            </form>
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                     </div>   
+                                    
+                                    
+                                    </td>
+                                    <td><a href="#">Excluir</a></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        
+                        <div class="ibox-content">
+                            <table class="table">
+                                <thead>
+                                <tr>
+                                    <th>Atletas</th>
+                                    <th>Telefone</th>
+                                    <th>E-mail</th>
+                                    <th></th>
+                                    <th><a data-toggle="modal" href="#modal-form">Cadastrar</a></th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td><a href="perfil-atleta.html">Rafael Floriano</a></td>
+                                    <td><a href="perfil-atleta.html">51 8301 0327</a></td>
+                                    <td><a href="perfil-atleta.html">comercial@agenciawi9.com.br</a></td>
+                                    <td>
+                                     	
+                                            
+                                            
+                                    <div class="text-center">
+                                    <a data-toggle="modal" href="#modal-form">Editar</a>
+                                    </div>
+                                    <div id="modal-form" class="modal fade" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-body">
+                                                    <div class="row">
+                                                        <div class="col-sm-12 b-r"><h3 class="m-t-none m-b">Cadastrar</h3>
+                                                        <hr>
+                                                            <form method="get" class="form-horizontal">
+                                                                <div class="col-sm-12">
+                                                                    <div class="form-group"><label class="col-sm-2 control-label">CPF</label>
+                                                                        <div class="col-sm-10"><input type="text" class="form-control">
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="form-group"><label class="col-sm-2 control-label">Nome</label>
+                                                                        <div class="col-sm-10"><input type="text" class="form-control">
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="form-group"><label class="col-sm-2 control-label">RG</label>
+                                                                        <div class="col-sm-10"><input type="text" class="form-control">
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="form-group"><label class="col-sm-2 control-label">Telefone</label>
+                                                                        <div class="col-sm-10"><input type="text" class="form-control">
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="form-group"><label class="col-sm-2 control-label">Endereço</label>
+                                                                        <div class="col-sm-10"><input type="text" class="form-control">
+                                                                        </div>
+                                                                    </div>
+                                                                    
+                                                                    <!--<div class="wrapper wrapper-content animated fadeIn">
+                                                                        <div class="row">
+                                                                            <div class="col-lg-12">
+                                                                            <div class="ibox float-e-margins">
+                                                                                <div class="ibox-title">
+                                                                                    <h5>Documentos</h5>
+                                                                                </div>
+                                                                                <div class="ibox-content">
+                                                                                    <form id="my-awesome-dropzone" class="dropzone" action="#">
+                                                                                        <div class="dropzone-previews"></div>
+                                                                                    </form>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>  -->      
+                                                                </div>
+                                                                
+                                                                
+                                                                <div class="pull-right">
+                                                                    <a href=""><button class="btn btn-success " type="button"><i class="fa fa-times"></i>&nbsp;&nbsp;<span class="bold">Cancelar</span></button></a>
+                                                                    <a href=""><button class="btn btn-success " type="button"><i class="fa fa-check"></i>&nbsp;&nbsp;<span class="bold">Salvar</span></button></a>
+                                                                </div>
+                                
+                                                            </form>
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                     </div>   
+                                    
+                                    
+                                    </td>
+                                    <td><a href="#">Excluir</a></td>
+                                </tr>
+                                <tr>
+                                    <td><a href="perfil-atleta.html">Rafael Floriano</a></td>
+                                    <td><a href="perfil-atleta.html">51 8301 0327</a></td>
+                                    <td><a href="perfil-atleta.html">comercial@agenciawi9.com.br</a></td>
+                                    <td>
+                                     	
+                                            
+                                            
+                                    <div class="text-center">
+                                    <a data-toggle="modal" href="#modal-form">Editar</a>
+                                    </div>
+                                    <div id="modal-form" class="modal fade" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-body">
+                                                    <div class="row">
+                                                        <div class="col-sm-12 b-r"><h3 class="m-t-none m-b">Cadastrar</h3>
+                                                        <hr>
+                                                            <form method="get" class="form-horizontal">
+                                                                <div class="col-sm-12">
+                                                                    <div class="form-group"><label class="col-sm-2 control-label">CPF</label>
+                                                                        <div class="col-sm-10"><input type="text" class="form-control">
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="form-group"><label class="col-sm-2 control-label">Nome</label>
+                                                                        <div class="col-sm-10"><input type="text" class="form-control">
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="form-group"><label class="col-sm-2 control-label">RG</label>
+                                                                        <div class="col-sm-10"><input type="text" class="form-control">
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="form-group"><label class="col-sm-2 control-label">Telefone</label>
+                                                                        <div class="col-sm-10"><input type="text" class="form-control">
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="form-group"><label class="col-sm-2 control-label">Endereço</label>
+                                                                        <div class="col-sm-10"><input type="text" class="form-control">
+                                                                        </div>
+                                                                    </div>
+                                                                    
+                                                                    <!--<div class="wrapper wrapper-content animated fadeIn">
+                                                                        <div class="row">
+                                                                            <div class="col-lg-12">
+                                                                            <div class="ibox float-e-margins">
+                                                                                <div class="ibox-title">
+                                                                                    <h5>Documentos</h5>
+                                                                                </div>
+                                                                                <div class="ibox-content">
+                                                                                    <form id="my-awesome-dropzone" class="dropzone" action="#">
+                                                                                        <div class="dropzone-previews"></div>
+                                                                                    </form>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>  -->      
+                                                                </div>
+                                                                
+                                                                
+                                                                <div class="pull-right">
+                                                                    <a href=""><button class="btn btn-success " type="button"><i class="fa fa-times"></i>&nbsp;&nbsp;<span class="bold">Cancelar</span></button></a>
+                                                                    <a href=""><button class="btn btn-success " type="button"><i class="fa fa-check"></i>&nbsp;&nbsp;<span class="bold">Salvar</span></button></a>
+                                                                </div>
+                                
+                                                            </form>
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                     </div>   
+                                    
+                                    
+                                    </td>
+                                    <td><a href="#">Excluir</a></td>
+                                </tr>
+                                <tr>
+                                    <td><a href="perfil-atleta.html">Rafael Floriano</a></td>
+                                    <td><a href="perfil-atleta.html">51 8301 0327</a></td>
+                                    <td><a href="perfil-atleta.html">comercial@agenciawi9.com.br</a></td>
+                                    <td>
+                                     	
+                                            
+                                            
+                                    <div class="text-center">
+                                    <a data-toggle="modal" href="#modal-form">Editar</a>
+                                    </div>
+                                    <div id="modal-form" class="modal fade" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-body">
+                                                    <div class="row">
+                                                        <div class="col-sm-12 b-r"><h3 class="m-t-none m-b">Cadastrar</h3>
+                                                        <hr>
+                                                            <form method="get" class="form-horizontal">
+                                                                <div class="col-sm-12">
+                                                                    <div class="form-group"><label class="col-sm-2 control-label">CPF</label>
+                                                                        <div class="col-sm-10"><input type="text" class="form-control">
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="form-group"><label class="col-sm-2 control-label">Nome</label>
+                                                                        <div class="col-sm-10"><input type="text" class="form-control">
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="form-group"><label class="col-sm-2 control-label">RG</label>
+                                                                        <div class="col-sm-10"><input type="text" class="form-control">
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="form-group"><label class="col-sm-2 control-label">Telefone</label>
+                                                                        <div class="col-sm-10"><input type="text" class="form-control">
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="form-group"><label class="col-sm-2 control-label">Endereço</label>
+                                                                        <div class="col-sm-10"><input type="text" class="form-control">
+                                                                        </div>
+                                                                    </div>
+                                                                    
+                                                                    <!--<div class="wrapper wrapper-content animated fadeIn">
+                                                                        <div class="row">
+                                                                            <div class="col-lg-12">
+                                                                            <div class="ibox float-e-margins">
+                                                                                <div class="ibox-title">
+                                                                                    <h5>Documentos</h5>
+                                                                                </div>
+                                                                                <div class="ibox-content">
+                                                                                    <form id="my-awesome-dropzone" class="dropzone" action="#">
+                                                                                        <div class="dropzone-previews"></div>
+                                                                                    </form>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>  -->      
+                                                                </div>
+                                                                
+                                                                
+                                                                <div class="pull-right">
+                                                                    <a href=""><button class="btn btn-success " type="button"><i class="fa fa-times"></i>&nbsp;&nbsp;<span class="bold">Cancelar</span></button></a>
+                                                                    <a href=""><button class="btn btn-success " type="button"><i class="fa fa-check"></i>&nbsp;&nbsp;<span class="bold">Salvar</span></button></a>
+                                                                </div>
+                                
+                                                            </form>
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                     </div>   
+                                    
+                                    
+                                    </td>
+                                    <td><a href="#">Excluir</a></td>
+                                </tr>
+                                <tr>
+                                    <td><a href="perfil-atleta.html">Rafael Floriano</a></td>
+                                    <td><a href="perfil-atleta.html">51 8301 0327</a></td>
+                                    <td><a href="perfil-atleta.html">comercial@agenciawi9.com.br</a></td>
+                                    <td>
+                                     	
+                                            
+                                            
+                                    <div class="text-center">
+                                    <a data-toggle="modal" href="#modal-form">Editar</a>
+                                    </div>
+                                    <div id="modal-form" class="modal fade" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-body">
+                                                    <div class="row">
+                                                        <div class="col-sm-12 b-r"><h3 class="m-t-none m-b">Cadastrar</h3>
+                                                        <hr>
+                                                            <form method="get" class="form-horizontal">
+                                                                <div class="col-sm-12">
+                                                                    <div class="form-group"><label class="col-sm-2 control-label">CPF</label>
+                                                                        <div class="col-sm-10"><input type="text" class="form-control">
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="form-group"><label class="col-sm-2 control-label">Nome</label>
+                                                                        <div class="col-sm-10"><input type="text" class="form-control">
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="form-group"><label class="col-sm-2 control-label">RG</label>
+                                                                        <div class="col-sm-10"><input type="text" class="form-control">
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="form-group"><label class="col-sm-2 control-label">Telefone</label>
+                                                                        <div class="col-sm-10"><input type="text" class="form-control">
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="form-group"><label class="col-sm-2 control-label">Endereço</label>
+                                                                        <div class="col-sm-10"><input type="text" class="form-control">
+                                                                        </div>
+                                                                    </div>
+                                                                    
+                                                                    <!--<div class="wrapper wrapper-content animated fadeIn">
+                                                                        <div class="row">
+                                                                            <div class="col-lg-12">
+                                                                            <div class="ibox float-e-margins">
+                                                                                <div class="ibox-title">
+                                                                                    <h5>Documentos</h5>
+                                                                                </div>
+                                                                                <div class="ibox-content">
+                                                                                    <form id="my-awesome-dropzone" class="dropzone" action="#">
+                                                                                        <div class="dropzone-previews"></div>
+                                                                                    </form>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>  -->      
+                                                                </div>
+                                                                
+                                                                
+                                                                <div class="pull-right">
+                                                                    <a href=""><button class="btn btn-success " type="button"><i class="fa fa-times"></i>&nbsp;&nbsp;<span class="bold">Cancelar</span></button></a>
+                                                                    <a href=""><button class="btn btn-success " type="button"><i class="fa fa-check"></i>&nbsp;&nbsp;<span class="bold">Salvar</span></button></a>
+                                                                </div>
+                                
+                                                            </form>
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                     </div>   
+                                    
+                                    
+                                    </td>
+                                    <td><a href="#">Excluir</a></td>
+                                </tr>
+                                <tr>
+                                    <td><a href="perfil-atleta.html">Rafael Floriano</a></td>
+                                    <td><a href="perfil-atleta.html">51 8301 0327</a></td>
+                                    <td><a href="perfil-atleta.html">comercial@agenciawi9.com.br</a></td>
+                                    <td>
+                                     	
+                                            
+                                            
+                                    <div class="text-center">
+                                    <a data-toggle="modal" href="#modal-form">Editar</a>
+                                    </div>
+                                    <div id="modal-form" class="modal fade" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-body">
+                                                    <div class="row">
+                                                        <div class="col-sm-12 b-r"><h3 class="m-t-none m-b">Cadastrar</h3>
+                                                        <hr>
+                                                            <form method="get" class="form-horizontal">
+                                                                <div class="col-sm-12">
+                                                                    <div class="form-group"><label class="col-sm-2 control-label">CPF</label>
+                                                                        <div class="col-sm-10"><input type="text" class="form-control">
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="form-group"><label class="col-sm-2 control-label">Nome</label>
+                                                                        <div class="col-sm-10"><input type="text" class="form-control">
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="form-group"><label class="col-sm-2 control-label">RG</label>
+                                                                        <div class="col-sm-10"><input type="text" class="form-control">
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="form-group"><label class="col-sm-2 control-label">Telefone</label>
+                                                                        <div class="col-sm-10"><input type="text" class="form-control">
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="form-group"><label class="col-sm-2 control-label">Endereço</label>
+                                                                        <div class="col-sm-10"><input type="text" class="form-control">
+                                                                        </div>
+                                                                    </div>
+                                                                    
+                                                                    <!--<div class="wrapper wrapper-content animated fadeIn">
+                                                                        <div class="row">
+                                                                            <div class="col-lg-12">
+                                                                            <div class="ibox float-e-margins">
+                                                                                <div class="ibox-title">
+                                                                                    <h5>Documentos</h5>
+                                                                                </div>
+                                                                                <div class="ibox-content">
+                                                                                    <form id="my-awesome-dropzone" class="dropzone" action="#">
+                                                                                        <div class="dropzone-previews"></div>
+                                                                                    </form>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>  -->      
+                                                                </div>
+                                                                
+                                                                
+                                                                <div class="pull-right">
+                                                                    <a href=""><button class="btn btn-success " type="button"><i class="fa fa-times"></i>&nbsp;&nbsp;<span class="bold">Cancelar</span></button></a>
+                                                                    <a href=""><button class="btn btn-success " type="button"><i class="fa fa-check"></i>&nbsp;&nbsp;<span class="bold">Salvar</span></button></a>
+                                                                </div>
+                                
+                                                            </form>
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                     </div>   
+                                    
+                                    
+                                    </td>
+                                    <td><a href="#">Excluir</a></td>
+                                </tr>
+                                <tr>
+                                    <td><a href="perfil-atleta.html">Rafael Floriano</a></td>
+                                    <td><a href="perfil-atleta.html">51 8301 0327</a></td>
+                                    <td><a href="perfil-atleta.html">comercial@agenciawi9.com.br</a></td>
+                                    <td>
+                                     	
+                                            
+                                            
+                                    <div class="text-center">
+                                    <a data-toggle="modal" href="#modal-form">Editar</a>
+                                    </div>
+                                    <div id="modal-form" class="modal fade" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-body">
+                                                    <div class="row">
+                                                        <div class="col-sm-12 b-r"><h3 class="m-t-none m-b">Cadastrar</h3>
+                                                        <hr>
+                                                            <form method="get" class="form-horizontal">
+                                                                <div class="col-sm-12">
+                                                                    <div class="form-group"><label class="col-sm-2 control-label">CPF</label>
+                                                                        <div class="col-sm-10"><input type="text" class="form-control">
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="form-group"><label class="col-sm-2 control-label">Nome</label>
+                                                                        <div class="col-sm-10"><input type="text" class="form-control">
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="form-group"><label class="col-sm-2 control-label">RG</label>
+                                                                        <div class="col-sm-10"><input type="text" class="form-control">
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="form-group"><label class="col-sm-2 control-label">Telefone</label>
+                                                                        <div class="col-sm-10"><input type="text" class="form-control">
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="form-group"><label class="col-sm-2 control-label">Endereço</label>
+                                                                        <div class="col-sm-10"><input type="text" class="form-control">
+                                                                        </div>
+                                                                    </div>
+                                                                    
+                                                                    <!--<div class="wrapper wrapper-content animated fadeIn">
+                                                                        <div class="row">
+                                                                            <div class="col-lg-12">
+                                                                            <div class="ibox float-e-margins">
+                                                                                <div class="ibox-title">
+                                                                                    <h5>Documentos</h5>
+                                                                                </div>
+                                                                                <div class="ibox-content">
+                                                                                    <form id="my-awesome-dropzone" class="dropzone" action="#">
+                                                                                        <div class="dropzone-previews"></div>
+                                                                                    </form>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>  -->      
+                                                                </div>
+                                                                
+                                                                
+                                                                <div class="pull-right">
+                                                                    <a href=""><button class="btn btn-success " type="button"><i class="fa fa-times"></i>&nbsp;&nbsp;<span class="bold">Cancelar</span></button></a>
+                                                                    <a href=""><button class="btn btn-success " type="button"><i class="fa fa-check"></i>&nbsp;&nbsp;<span class="bold">Salvar</span></button></a>
+                                                                </div>
+                                
+                                                            </form>
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                     </div>   
+                                    
+                                    
+                                    </td>
+                                    <td><a href="#">Excluir</a></td>
+                                </tr>
+                                <tr>
+                                    <td><a href="perfil-atleta.html">Rafael Floriano</a></td>
+                                    <td><a href="perfil-atleta.html">51 8301 0327</a></td>
+                                    <td><a href="perfil-atleta.html">comercial@agenciawi9.com.br</a></td>
+                                    <td>
+                                     	
+                                            
+                                            
+                                    <div class="text-center">
+                                    <a data-toggle="modal" href="#modal-form">Editar</a>
+                                    </div>
+                                    <div id="modal-form" class="modal fade" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-body">
+                                                    <div class="row">
+                                                        <div class="col-sm-12 b-r"><h3 class="m-t-none m-b">Cadastrar</h3>
+                                                        <hr>
+                                                            <form method="get" class="form-horizontal">
+                                                                <div class="col-sm-12">
+                                                                    <div class="form-group"><label class="col-sm-2 control-label">CPF</label>
+                                                                        <div class="col-sm-10"><input type="text" class="form-control">
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="form-group"><label class="col-sm-2 control-label">Nome</label>
+                                                                        <div class="col-sm-10"><input type="text" class="form-control">
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="form-group"><label class="col-sm-2 control-label">RG</label>
+                                                                        <div class="col-sm-10"><input type="text" class="form-control">
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="form-group"><label class="col-sm-2 control-label">Telefone</label>
+                                                                        <div class="col-sm-10"><input type="text" class="form-control">
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="form-group"><label class="col-sm-2 control-label">Endereço</label>
+                                                                        <div class="col-sm-10"><input type="text" class="form-control">
+                                                                        </div>
+                                                                    </div>
+                                                                    
+                                                                    <!--<div class="wrapper wrapper-content animated fadeIn">
+                                                                        <div class="row">
+                                                                            <div class="col-lg-12">
+                                                                            <div class="ibox float-e-margins">
+                                                                                <div class="ibox-title">
+                                                                                    <h5>Documentos</h5>
+                                                                                </div>
+                                                                                <div class="ibox-content">
+                                                                                    <form id="my-awesome-dropzone" class="dropzone" action="#">
+                                                                                        <div class="dropzone-previews"></div>
+                                                                                    </form>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>  -->      
+                                                                </div>
+                                                                
+                                                                
+                                                                <div class="pull-right">
+                                                                    <a href=""><button class="btn btn-success " type="button"><i class="fa fa-times"></i>&nbsp;&nbsp;<span class="bold">Cancelar</span></button></a>
+                                                                    <a href=""><button class="btn btn-success " type="button"><i class="fa fa-check"></i>&nbsp;&nbsp;<span class="bold">Salvar</span></button></a>
+                                                                </div>
+                                
+                                                            </form>
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                     </div>   
+                                    
+                                    
+                                    </td>
+                                    <td><a href="#">Excluir</a></td>
+                                </tr>
+                                <tr>
+                                    <td><a href="perfil-atleta.html">Rafael Floriano</a></td>
+                                    <td><a href="perfil-atleta.html">51 8301 0327</a></td>
+                                    <td><a href="perfil-atleta.html">comercial@agenciawi9.com.br</a></td>
+                                    <td>
+                                     	
+                                            
+                                            
+                                    <div class="text-center">
+                                    <a data-toggle="modal" href="#modal-form">Editar</a>
+                                    </div>
+                                    <div id="modal-form" class="modal fade" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-body">
+                                                    <div class="row">
+                                                        <div class="col-sm-12 b-r"><h3 class="m-t-none m-b">Cadastrar</h3>
+                                                        <hr>
+                                                            <form method="get" class="form-horizontal">
+                                                                <div class="col-sm-12">
+                                                                    <div class="form-group"><label class="col-sm-2 control-label">CPF</label>
+                                                                        <div class="col-sm-10"><input type="text" class="form-control">
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="form-group"><label class="col-sm-2 control-label">Nome</label>
+                                                                        <div class="col-sm-10"><input type="text" class="form-control">
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="form-group"><label class="col-sm-2 control-label">RG</label>
+                                                                        <div class="col-sm-10"><input type="text" class="form-control">
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="form-group"><label class="col-sm-2 control-label">Telefone</label>
+                                                                        <div class="col-sm-10"><input type="text" class="form-control">
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="form-group"><label class="col-sm-2 control-label">Endereço</label>
+                                                                        <div class="col-sm-10"><input type="text" class="form-control">
+                                                                        </div>
+                                                                    </div>
+                                                                    
+                                                                    <!--<div class="wrapper wrapper-content animated fadeIn">
+                                                                        <div class="row">
+                                                                            <div class="col-lg-12">
+                                                                            <div class="ibox float-e-margins">
+                                                                                <div class="ibox-title">
+                                                                                    <h5>Documentos</h5>
+                                                                                </div>
+                                                                                <div class="ibox-content">
+                                                                                    <form id="my-awesome-dropzone" class="dropzone" action="#">
+                                                                                        <div class="dropzone-previews"></div>
+                                                                                    </form>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>  -->      
+                                                                </div>
+                                                                
+                                                                
+                                                                <div class="pull-right">
+                                                                    <a href=""><button class="btn btn-success " type="button"><i class="fa fa-times"></i>&nbsp;&nbsp;<span class="bold">Cancelar</span></button></a>
+                                                                    <a href=""><button class="btn btn-success " type="button"><i class="fa fa-check"></i>&nbsp;&nbsp;<span class="bold">Salvar</span></button></a>
+                                                                </div>
+                                                                <div class="pull-left">
+                                                                    <a href=""><button class="btn btn-success " type="button"><i class="fa fa-times"></i>&nbsp;&nbsp;<span class="bold">Foto Atleta</span></button></a>
+                                                                    <a href=""><button class="btn btn-success " type="button"><i class="fa fa-check"></i>&nbsp;&nbsp;<span class="bold">Documentos</span></button></a>
+                                                                </div>
+                                
+                                                            </form>
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                     </div>   
+                                    
+                                    
+                                    </td>
+                                    <td><a href="#">Excluir</a></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <a href="detalhe-campeonato.html"><button class="btn btn-success " type="button"><i class="fa fa-arrow-left"></i>&nbsp;&nbsp;<span class="bold">Voltar</span></button></a>
+    
+                        
+                    </div>
+                </div>
+        	</div>
+        </div>
+        
+        
+        
+        <div class="row">
+                <div class="footer">
+                    <div>
+                        desenvolvimento <a href="http://agenciawi9.com.br/" alt="Wi9 Agência Digital" title="Wi9 Agência Digital" target="_blank">Wi9 Agência Digital</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+        
+        
+
+
+
+    <!-- Mainly scripts -->
+    <script src="js/jquery-2.1.1.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/plugins/metisMenu/jquery.metisMenu.js"></script>
+    <script src="js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+
+    <!-- Custom and plugin javascript -->
+    <script src="js/inspinia.js"></script>
+    <script src="js/plugins/pace/pace.min.js"></script>
+
+    <!-- DROPZONE -->
+    <script src="js/plugins/dropzone/dropzone.js"></script>
+
+
+    <script>
+        $(document).ready(function(){
+
+            Dropzone.options.myAwesomeDropzone = {
+
+                autoProcessQueue: false,
+                uploadMultiple: true,
+                parallelUploads: 100,
+                maxFiles: 100,
+
+                // Dropzone settings
+                init: function() {
+                    var myDropzone = this;
+
+                    this.element.querySelector("button[type=submit]").addEventListener("click", function(e) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        myDropzone.processQueue();
+                    });
+                    this.on("sendingmultiple", function() {
+                    });
+                    this.on("successmultiple", function(files, response) {
+                    });
+                    this.on("errormultiple", function(files, response) {
+                    });
+                }
+
+            }
+
+       });
+    </script>
+
+</body>
+
+</html>

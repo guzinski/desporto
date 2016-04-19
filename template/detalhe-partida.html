@@ -1,0 +1,1170 @@
+
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>SISTEMA DESPORTIVO WI9</title>
+
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="font-awesome/css/font-awesome.css" rel="stylesheet">
+    <link href="css/plugins/iCheck/custom.css" rel="stylesheet">
+    <link href="css/animate.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+    <link href="css/plugins/summernote/summernote.css" rel="stylesheet">
+    <link href="css/plugins/summernote/summernote-bs3.css" rel="stylesheet">
+
+
+    <link href="css/plugins/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css" rel="stylesheet">
+
+</head>
+
+
+
+<body>
+    <div id="wrapper">
+        <nav class="navbar-default navbar-static-side" role="navigation">
+            <div class="sidebar-collapse">
+                <ul class="nav metismenu" id="side-menu">
+                    <li class="nav-header">
+                        <div class="dropdown profile-element"> <span>
+                            <!--<img alt="image" class="img-circle" src="img/profile_small.jpg" />-->
+                             </span>
+                            <!--<a data-toggle="dropdown" class="dropdown-toggle" href="#">-->
+                            <a href="painel.html"><h2><strong>DESPORTO</strong></h2></a>
+                             <!--</span> <span class="text-muted text-xs block">Art Director <b class="caret"></b></span> </span> </a>
+                            <ul class="dropdown-menu animated fadeInRight m-t-xs">
+                                <li><a href="profile.html">Profile</a></li>
+                                <li><a href="contacts.html">Contacts</a></li>
+                                <li><a href="mailbox.html">Mailbox</a></li>
+                                <li class="divider"></li>
+                                <li><a href="login.html">Logout</a></li>
+                            </ul>-->
+                        </div>
+                    </li>
+                    <li>
+                        <a href="#"><i class="fa fa-futbol-o"></i> <span class="nav-label">CAMPEONATOS</span> <span class="fa arrow"></span></a>
+                        <ul class="nav nav-second-level">
+                            <li><a href="novo-campeonato.html">Novo</a></li>
+                            <li><a href="campeonatos.html">Em Andamento</a></li>
+                            <li><a href="campeonatos-encerrados.html">Encerrados</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="#"><i class="fa fa-search"></i> <span class="nav-label">CONSULTA</span> <span class="fa arrow"></span></a>
+                        <ul class="nav nav-second-level">
+                            <li><a href="consulta-atleta.html">Atleta</a></li>
+                            <li><a href="consulta-equipe.html">Equipe</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="regulamento.html"><i class="fa fa-file-text"></i> <span class="nav-label">REGULAMENTOS</span></a>
+                    </li>
+                    <li>
+                        <a href="julgamento.html"><i class="fa fa-user"></i> <span class="nav-label">JULGAMENTOS</span></a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="gray-bg dashbard-1">
+        <div class="row border-bottom">
+        <nav class="navbar navbar-static-top" role="navigation" style="margin-bottom: 0">
+        <div class="navbar-header">
+            <a class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="#"><i class="fa fa-bars"></i> </a>
+            <!--<form role="search" class="navbar-form-custom" action="search_results.html">
+                <div class="form-group">
+                    <input type="text" placeholder="Search for something..." class="form-control" name="top-search" id="top-search">
+                </div>
+            </form>-->
+        </div>
+            <ul class="nav navbar-top-links navbar-right">
+                <li>
+                	<a href="index.html">
+                    <i class="fa fa-sign-out"></i> Log out
+                	</a>
+                </li>
+            </ul>
+
+        </nav>
+        </div>
+        
+        
+        <div class="row  border-bottom white-bg dashboard-header">
+        	
+            <div class="row">
+                <div class="col-lg-12">
+                	<p><a href="detalhe-campeonato.html">Futsal - Bronze</a> | Detalhe Partida </p>
+                    <div class="ibox float-e-margins">
+                        <div class="ibox-title">
+                            <h2>Wi9</h2>
+                        </div>
+                        <div class="ibox-content" class="col-sm-6">
+                            <form method="get" class="form-horizontal">
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                    <label class="col-sm-2 control-label">Capitão</label>
+                                        <div class="col-sm-10">
+                                            <select class="form-control m-b" name="account">
+                                            <option>Selecionar</option>
+                                            <option>Jogador 1</option>
+                                            <option>Jogador 2</option>
+                                            <option>Jogador 3</option>
+                                            <option>Jogador 4</option>
+                                            <option>Jogador 5</option>
+                                            <option>Jogador 6</option>
+                                            <option>Jogador 7</option>
+                                            <option>Jogador 8</option>
+                                            <option>Jogador 9</option>
+                                            <option>Jogador 10</option>
+                                            <option>Jogador 11</option>
+                                            <option>Jogador 12</option>
+                                        </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                    <label class="col-sm-2 control-label">Técnico</label>
+                                        <div class="col-sm-10">
+                                            <select class="form-control m-b" name="account">
+                                            <option>Selecionar</option>
+                                            <option>Jogador 1</option>
+                                            <option>Jogador 2</option>
+                                            <option>Jogador 3</option>
+                                            <option>Jogador 4</option>
+                                            <option>Jogador 5</option>
+                                            <option>Jogador 6</option>
+                                            <option>Jogador 7</option>
+                                            <option>Jogador 8</option>
+                                            <option>Jogador 9</option>
+                                            <option>Jogador 10</option>
+                                            <option>Jogador 11</option>
+                                            <option>Jogador 12</option>
+                                            <option>Diretor</option>
+                                            <option>Técnico</option>
+                                        </select>
+                                        </div>
+                                    </div>
+                                </div>
+                           </form>
+                    	</div>
+                        
+                        
+                        
+                        <div class="col-sm-12">
+                        	<div class="row">
+                                <div class="col-sm-6">
+                                    <div class="ibox-content">
+                                        <table class="table">
+                                            <thead>
+                                                <tr>
+                                                    <th>Camisa</th>
+                                                    <th>Atleta</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>
+                                                        <div class="col-sm-6">
+                                                            <select class="form-control m-b" name="account">
+                                                                <option></option>
+                                                                <option> 1</option>
+                                                                <option> 2</option>
+                                                                <option> 3</option>
+                                                                <option> 4</option>
+                                                                <option> 5</option>
+                                                                <option> 6</option>
+                                                                <option> 7</option>
+                                                                <option> 8</option>
+                                                                <option> 9</option>
+                                                                <option> 10</option>
+                                                                <option> 11</option>
+                                                                <option> 12</option>
+                                                                <option> 13</option>
+                                                                <option> 14</option>
+                                                            </select>
+                                                        </div>
+                                                    </td>
+                                                    <td>Jogador 1</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <div class="col-sm-6">
+                                                            <select class="form-control m-b" name="account">
+                                                                <option></option>
+                                                                <option> 1</option>
+                                                                <option> 2</option>
+                                                                <option> 3</option>
+                                                                <option> 4</option>
+                                                                <option> 5</option>
+                                                                <option> 6</option>
+                                                                <option> 7</option>
+                                                                <option> 8</option>
+                                                                <option> 9</option>
+                                                                <option> 10</option>
+                                                                <option> 11</option>
+                                                                <option> 12</option>
+                                                                <option> 13</option>
+                                                                <option> 14</option>
+                                                            </select>
+                                                        </div>
+                                                    </td>
+                                                    <td>Jogador 2</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <div class="col-sm-6">
+                                                            <select class="form-control m-b" name="account">
+                                                                <option></option>
+                                                                <option> 1</option>
+                                                                <option> 2</option>
+                                                                <option> 3</option>
+                                                                <option> 4</option>
+                                                                <option> 5</option>
+                                                                <option> 6</option>
+                                                                <option> 7</option>
+                                                                <option> 8</option>
+                                                                <option> 9</option>
+                                                                <option> 10</option>
+                                                                <option> 11</option>
+                                                                <option> 12</option>
+                                                                <option> 13</option>
+                                                                <option> 14</option>
+                                                            </select>
+                                                        </div>
+                                                    </td>
+                                                    <td>Jogador 3</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <div class="col-sm-6">
+                                                            <select class="form-control m-b" name="account">
+                                                                <option></option>
+                                                                <option> 1</option>
+                                                                <option> 2</option>
+                                                                <option> 3</option>
+                                                                <option> 4</option>
+                                                                <option> 5</option>
+                                                                <option> 6</option>
+                                                                <option> 7</option>
+                                                                <option> 8</option>
+                                                                <option> 9</option>
+                                                                <option> 10</option>
+                                                                <option> 11</option>
+                                                                <option> 12</option>
+                                                                <option> 13</option>
+                                                                <option> 14</option>
+                                                            </select>
+                                                        </div>
+                                                    </td>
+                                                    <td>Jogador 4</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <div class="col-sm-6">
+                                                            <select class="form-control m-b" name="account">
+                                                                <option></option>
+                                                                <option> 1</option>
+                                                                <option> 2</option>
+                                                                <option> 3</option>
+                                                                <option> 4</option>
+                                                                <option> 5</option>
+                                                                <option> 6</option>
+                                                                <option> 7</option>
+                                                                <option> 8</option>
+                                                                <option> 9</option>
+                                                                <option> 10</option>
+                                                                <option> 11</option>
+                                                                <option> 12</option>
+                                                                <option> 13</option>
+                                                                <option> 14</option>
+                                                            </select>
+                                                        </div>
+                                                    </td>
+                                                    <td>Jogador 5</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <div class="col-sm-6">
+                                                            <select class="form-control m-b" name="account">
+                                                                <option></option>
+                                                                <option> 1</option>
+                                                                <option> 2</option>
+                                                                <option> 3</option>
+                                                                <option> 4</option>
+                                                                <option> 5</option>
+                                                                <option> 6</option>
+                                                                <option> 7</option>
+                                                                <option> 8</option>
+                                                                <option> 9</option>
+                                                                <option> 10</option>
+                                                                <option> 11</option>
+                                                                <option> 12</option>
+                                                                <option> 13</option>
+                                                                <option> 14</option>
+                                                            </select>
+                                                        </div>
+                                                    </td>
+                                                    <td>Jogador 6</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                	</div>
+                                </div>
+                                
+                                <div class="col-sm-6">
+                                    <div class="ibox-content">
+                                        <table class="table">
+                                            <thead>
+                                                <tr>
+                                                    <th>Camisa</th>
+                                                    <th>Atleta</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>
+                                                        <div class="col-sm-6">
+                                                            <select class="form-control m-b" name="account">
+                                                                <option></option>
+                                                                <option> 1</option>
+                                                                <option> 2</option>
+                                                                <option> 3</option>
+                                                                <option> 4</option>
+                                                                <option> 5</option>
+                                                                <option> 6</option>
+                                                                <option> 7</option>
+                                                                <option> 8</option>
+                                                                <option> 9</option>
+                                                                <option> 10</option>
+                                                                <option> 11</option>
+                                                                <option> 12</option>
+                                                                <option> 13</option>
+                                                                <option> 14</option>
+                                                            </select>
+                                                        </div>
+                                                    </td>
+                                                    <td>Jogador 7</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <div class="col-sm-6">
+                                                            <select class="form-control m-b" name="account">
+                                                                <option></option>
+                                                                <option> 1</option>
+                                                                <option> 2</option>
+                                                                <option> 3</option>
+                                                                <option> 4</option>
+                                                                <option> 5</option>
+                                                                <option> 6</option>
+                                                                <option> 7</option>
+                                                                <option> 8</option>
+                                                                <option> 9</option>
+                                                                <option> 10</option>
+                                                                <option> 11</option>
+                                                                <option> 12</option>
+                                                                <option> 13</option>
+                                                                <option> 14</option>
+                                                            </select>
+                                                        </div>
+                                                    </td>
+                                                    <td>Jogador 8</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <div class="col-sm-6">
+                                                            <select class="form-control m-b" name="account">
+                                                                <option></option>
+                                                                <option> 1</option>
+                                                                <option> 2</option>
+                                                                <option> 3</option>
+                                                                <option> 4</option>
+                                                                <option> 5</option>
+                                                                <option> 6</option>
+                                                                <option> 7</option>
+                                                                <option> 8</option>
+                                                                <option> 9</option>
+                                                                <option> 10</option>
+                                                                <option> 11</option>
+                                                                <option> 12</option>
+                                                                <option> 13</option>
+                                                                <option> 14</option>
+                                                            </select>
+                                                        </div>
+                                                    </td>
+                                                    <td>Jogador 9</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <div class="col-sm-6">
+                                                            <select class="form-control m-b" name="account">
+                                                                <option></option>
+                                                                <option> 1</option>
+                                                                <option> 2</option>
+                                                                <option> 3</option>
+                                                                <option> 4</option>
+                                                                <option> 5</option>
+                                                                <option> 6</option>
+                                                                <option> 7</option>
+                                                                <option> 8</option>
+                                                                <option> 9</option>
+                                                                <option> 10</option>
+                                                                <option> 11</option>
+                                                                <option> 12</option>
+                                                                <option> 13</option>
+                                                                <option> 14</option>
+                                                            </select>
+                                                        </div>
+                                                    </td>
+                                                    <td>Jogador 10</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <div class="col-sm-6">
+                                                            <select class="form-control m-b" name="account">
+                                                                <option></option>
+                                                                <option> 1</option>
+                                                                <option> 2</option>
+                                                                <option> 3</option>
+                                                                <option> 4</option>
+                                                                <option> 5</option>
+                                                                <option> 6</option>
+                                                                <option> 7</option>
+                                                                <option> 8</option>
+                                                                <option> 9</option>
+                                                                <option> 10</option>
+                                                                <option> 11</option>
+                                                                <option> 12</option>
+                                                                <option> 13</option>
+                                                                <option> 14</option>
+                                                            </select>
+                                                        </div>
+                                                    </td>
+                                                    <td>Jogador 11</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <div class="col-sm-6">
+                                                            <select class="form-control m-b" name="account">
+                                                                <option></option>
+                                                                <option> 1</option>
+                                                                <option> 2</option>
+                                                                <option> 3</option>
+                                                                <option> 4</option>
+                                                                <option> 5</option>
+                                                                <option> 6</option>
+                                                                <option> 7</option>
+                                                                <option> 8</option>
+                                                                <option> 9</option>
+                                                                <option> 10</option>
+                                                                <option> 11</option>
+                                                                <option> 12</option>
+                                                                <option> 13</option>
+                                                                <option> 14</option>
+                                                            </select>
+                                                        </div>
+                                                    </td>
+                                                    <td>Jogador 12</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                	</div>
+                                </div>
+                            </div>
+                        </div>
+
+                    
+                    </div>
+                    
+                    
+                    <div class="ibox float-e-margins">
+                        <div class="ibox-title">
+                            <h2>Elenco</h2>
+                        </div>
+                        <div class="ibox-content" class="col-sm-6">
+                            <form method="get" class="form-horizontal">
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                    <label class="col-sm-2 control-label">Capitão</label>
+                                        <div class="col-sm-10">
+                                            <select class="form-control m-b" name="account">
+                                            <option>Selecionar</option>
+                                            <option>Jogador 1</option>
+                                            <option>Jogador 2</option>
+                                            <option>Jogador 3</option>
+                                            <option>Jogador 4</option>
+                                            <option>Jogador 5</option>
+                                            <option>Jogador 6</option>
+                                            <option>Jogador 7</option>
+                                            <option>Jogador 8</option>
+                                            <option>Jogador 9</option>
+                                            <option>Jogador 10</option>
+                                            <option>Jogador 11</option>
+                                            <option>Jogador 12</option>
+                                        	</select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                    <label class="col-sm-2 control-label">Técnico</label>
+                                        <div class="col-sm-10">
+                                            <select class="form-control m-b" name="account">
+                                            <option>Selecionar</option>
+                                            <option>Jogador 1</option>
+                                            <option>Jogador 2</option>
+                                            <option>Jogador 3</option>
+                                            <option>Jogador 4</option>
+                                            <option>Jogador 5</option>
+                                            <option>Jogador 6</option>
+                                            <option>Jogador 7</option>
+                                            <option>Jogador 8</option>
+                                            <option>Jogador 9</option>
+                                            <option>Jogador 10</option>
+                                            <option>Jogador 11</option>
+                                            <option>Jogador 12</option>
+                                            <option>Diretor</option>
+                                            <option>Técnico</option>
+                                        	</select>
+                                        </div>
+                                    </div>
+                                </div>
+                           </form>
+                    	</div>
+                        
+                        
+                        
+                        <div class="col-sm-12">
+                        	<div class="row">
+                                <div class="col-sm-6">
+                                    <div class="ibox-content">
+                                        <table class="table">
+                                            <thead>
+                                                <tr>
+                                                    <th>Camisa</th>
+                                                    <th>Atleta</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>
+                                                        <div class="col-sm-6">
+                                                            <select class="form-control m-b" name="account">
+                                                                <option></option>
+                                                                <option> 1</option>
+                                                                <option> 2</option>
+                                                                <option> 3</option>
+                                                                <option> 4</option>
+                                                                <option> 5</option>
+                                                                <option> 6</option>
+                                                                <option> 7</option>
+                                                                <option> 8</option>
+                                                                <option> 9</option>
+                                                                <option> 10</option>
+                                                                <option> 11</option>
+                                                                <option> 12</option>
+                                                                <option> 13</option>
+                                                                <option> 14</option>
+                                                            	</select>
+                                                        </div>
+                                                    </td>
+                                                    <td>Jogador 1</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <div class="col-sm-6">
+                                                            <select class="form-control m-b" name="account">
+                                                                <option></option>
+                                                                <option> 1</option>
+                                                                <option> 2</option>
+                                                                <option> 3</option>
+                                                                <option> 4</option>
+                                                                <option> 5</option>
+                                                                <option> 6</option>
+                                                                <option> 7</option>
+                                                                <option> 8</option>
+                                                                <option> 9</option>
+                                                                <option> 10</option>
+                                                                <option> 11</option>
+                                                                <option> 12</option>
+                                                                <option> 13</option>
+                                                                <option> 14</option>
+                                                            	</select>
+                                                        </div>
+                                                    </td>
+                                                    <td>Jogador 2</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <div class="col-sm-6">
+                                                            <select class="form-control m-b" name="account">
+                                                                <option></option>
+                                                                <option> 1</option>
+                                                                <option> 2</option>
+                                                                <option> 3</option>
+                                                                <option> 4</option>
+                                                                <option> 5</option>
+                                                                <option> 6</option>
+                                                                <option> 7</option>
+                                                                <option> 8</option>
+                                                                <option> 9</option>
+                                                                <option> 10</option>
+                                                                <option> 11</option>
+                                                                <option> 12</option>
+                                                                <option> 13</option>
+                                                                <option> 14</option>
+                                                            </select>
+                                                        </div>
+                                                    </td>
+                                                    <td>Jogador 3</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <div class="col-sm-6">
+                                                            <select class="form-control m-b" name="account">
+                                                                <option></option>
+                                                                <option> 1</option>
+                                                                <option> 2</option>
+                                                                <option> 3</option>
+                                                                <option> 4</option>
+                                                                <option> 5</option>
+                                                                <option> 6</option>
+                                                                <option> 7</option>
+                                                                <option> 8</option>
+                                                                <option> 9</option>
+                                                                <option> 10</option>
+                                                                <option> 11</option>
+                                                                <option> 12</option>
+                                                                <option> 13</option>
+                                                                <option> 14</option>
+                                                            </select>
+                                                        </div>
+                                                    </td>
+                                                    <td>Jogador 4</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <div class="col-sm-6">
+                                                            <select class="form-control m-b" name="account">
+                                                                <option></option>
+                                                                <option> 1</option>
+                                                                <option> 2</option>
+                                                                <option> 3</option>
+                                                                <option> 4</option>
+                                                                <option> 5</option>
+                                                                <option> 6</option>
+                                                                <option> 7</option>
+                                                                <option> 8</option>
+                                                                <option> 9</option>
+                                                                <option> 10</option>
+                                                                <option> 11</option>
+                                                                <option> 12</option>
+                                                                <option> 13</option>
+                                                                <option> 14</option>
+                                                            </select>
+                                                        </div>
+                                                    </td>
+                                                    <td>Jogador 5</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <div class="col-sm-6">
+                                                            <select class="form-control m-b" name="account">
+                                                                <option></option>
+                                                                <option> 1</option>
+                                                                <option> 2</option>
+                                                                <option> 3</option>
+                                                                <option> 4</option>
+                                                                <option> 5</option>
+                                                                <option> 6</option>
+                                                                <option> 7</option>
+                                                                <option> 8</option>
+                                                                <option> 9</option>
+                                                                <option> 10</option>
+                                                                <option> 11</option>
+                                                                <option> 12</option>
+                                                                <option> 13</option>
+                                                                <option> 14</option>
+                                                            </select>
+                                                        </div>
+                                                    </td>
+                                                    <td>Jogador 6</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                	</div>
+                                </div>
+                                
+                                <div class="col-sm-6">
+                                    <div class="ibox-content">
+                                        <table class="table">
+                                            <thead>
+                                                <tr>
+                                                    <th>Camisa</th>
+                                                    <th>Atleta</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>
+                                                        <div class="col-sm-6">
+                                                            <select class="form-control m-b" name="account">
+                                                                <option></option>
+                                                                <option> 1</option>
+                                                                <option> 2</option>
+                                                                <option> 3</option>
+                                                                <option> 4</option>
+                                                                <option> 5</option>
+                                                                <option> 6</option>
+                                                                <option> 7</option>
+                                                                <option> 8</option>
+                                                                <option> 9</option>
+                                                                <option> 10</option>
+                                                                <option> 11</option>
+                                                                <option> 12</option>
+                                                                <option> 13</option>
+                                                                <option> 14</option>
+                                                            </select>
+                                                        </div>
+                                                    </td>
+                                                    <td>Jogador 7</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <div class="col-sm-6">
+                                                            <select class="form-control m-b" name="account">
+                                                                <option></option>
+                                                                <option> 1</option>
+                                                                <option> 2</option>
+                                                                <option> 3</option>
+                                                                <option> 4</option>
+                                                                <option> 5</option>
+                                                                <option> 6</option>
+                                                                <option> 7</option>
+                                                                <option> 8</option>
+                                                                <option> 9</option>
+                                                                <option> 10</option>
+                                                                <option> 11</option>
+                                                                <option> 12</option>
+                                                                <option> 13</option>
+                                                                <option> 14</option>
+                                                            </select>
+                                                        </div>
+                                                    </td>
+                                                    <td>Jogador 8</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <div class="col-sm-6">
+                                                            <select class="form-control m-b" name="account">
+                                                                <option></option>
+                                                                <option> 1</option>
+                                                                <option> 2</option>
+                                                                <option> 3</option>
+                                                                <option> 4</option>
+                                                                <option> 5</option>
+                                                                <option> 6</option>
+                                                                <option> 7</option>
+                                                                <option> 8</option>
+                                                                <option> 9</option>
+                                                                <option> 10</option>
+                                                                <option> 11</option>
+                                                                <option> 12</option>
+                                                                <option> 13</option>
+                                                                <option> 14</option>
+                                                            </select>
+                                                        </div>
+                                                    </td>
+                                                    <td>Jogador 9</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <div class="col-sm-6">
+                                                            <select class="form-control m-b" name="account">
+                                                                <option></option>
+                                                                <option> 1</option>
+                                                                <option> 2</option>
+                                                                <option> 3</option>
+                                                                <option> 4</option>
+                                                                <option> 5</option>
+                                                                <option> 6</option>
+                                                                <option> 7</option>
+                                                                <option> 8</option>
+                                                                <option> 9</option>
+                                                                <option> 10</option>
+                                                                <option> 11</option>
+                                                                <option> 12</option>
+                                                                <option> 13</option>
+                                                                <option> 14</option>
+                                                            </select>
+                                                        </div>
+                                                    </td>
+                                                    <td>Jogador 10</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <div class="col-sm-6">
+                                                            <select class="form-control m-b" name="account">
+                                                                <option></option>
+                                                                <option> 1</option>
+                                                                <option> 2</option>
+                                                                <option> 3</option>
+                                                                <option> 4</option>
+                                                                <option> 5</option>
+                                                                <option> 6</option>
+                                                                <option> 7</option>
+                                                                <option> 8</option>
+                                                                <option> 9</option>
+                                                                <option> 10</option>
+                                                                <option> 11</option>
+                                                                <option> 12</option>
+                                                                <option> 13</option>
+                                                                <option> 14</option>
+                                                            </select>
+                                                        </div>
+                                                    </td>
+                                                    <td>Jogador 11</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <div class="col-sm-6">
+                                                            <select class="form-control m-b" name="account">
+                                                                <option></option>
+                                                                <option> 1</option>
+                                                                <option> 2</option>
+                                                                <option> 3</option>
+                                                                <option> 4</option>
+                                                                <option> 5</option>
+                                                                <option> 6</option>
+                                                                <option> 7</option>
+                                                                <option> 8</option>
+                                                                <option> 9</option>
+                                                                <option> 10</option>
+                                                                <option> 11</option>
+                                                                <option> 12</option>
+                                                                <option> 13</option>
+                                                                <option> 14</option>
+                                                            </select>
+                                                        </div>
+                                                    </td>
+                                                    <td>Jogador 12</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                	</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="ibox float-e-margins">
+                        <div class="ibox-title">
+                            <h2>Gols</h2>
+                        </div>
+                        <div class="ibox-content" class="col-sm-12">
+                            <form method="get" class="form-horizontal">
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                            	<label class="col-sm-8 control-label">Wi9</label>
+                                    			<div class="col-sm-4">
+                                                	<input type="text" class="form-control">
+                                                </div>
+                                			</div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                    			<div class="col-sm-4">
+                                                	<input type="text" class="form-control">
+                                                </div>
+                                            	<label class="col-sm-8 control-label" style="text-align:left;">Elenco</label>
+                                			</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="col-sm-6">
+                                    <select class="form-control m-b" name="account">
+                                        <option>Selecionar</option>
+                                        <option>Jogador 1</option>
+                                        <option>Jogador 2</option>
+                                        <option>Jogador 3</option>
+                                        <option>Jogador 4</option>
+                                        <option>Jogador 5</option>
+                                        <option>Jogador 6</option>
+                                        <option>Jogador 7</option>
+                                        <option>Jogador 8</option>
+                                        <option>Jogador 9</option>
+                                        <option>Jogador 10</option>
+                                        <option>Jogador 11</option>
+                                        <option>Jogador 12</option>
+                                        <option>Técnico</option>
+                                        <option>Diretor</option>
+                                    </select>
+                                </div>
+                                <div class="col-sm-6">
+                                    <select class="form-control m-b" name="account">
+                                        <option>Selecionar</option>
+                                        <option>Jogador 1</option>
+                                        <option>Jogador 2</option>
+                                        <option>Jogador 3</option>
+                                        <option>Jogador 4</option>
+                                        <option>Jogador 5</option>
+                                        <option>Jogador 6</option>
+                                        <option>Jogador 7</option>
+                                        <option>Jogador 8</option>
+                                        <option>Jogador 9</option>
+                                        <option>Jogador 10</option>
+                                        <option>Jogador 11</option>
+                                        <option>Jogador 12</option>
+                                        <option>Técnico</option>
+                                        <option>Diretor</option>
+                                    </select>
+                                </div>
+                    		</form>
+                		</div>
+                	</div>
+                    
+                    <div class="ibox float-e-margins">
+                        <div class="ibox-title">
+                            <h2>Cartões Amarelos</h2>
+                        </div>
+                        <div class="ibox-content" class="col-sm-12">
+                            <form method="get" class="form-horizontal">
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                            	<label class="col-sm-8 control-label">Wi9</label>
+                                    			<div class="col-sm-4">
+                                                	<input type="text" class="form-control">
+                                                </div>
+                                			</div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                    			<div class="col-sm-4">
+                                                	<input type="text" class="form-control">
+                                                </div>
+                                            	<label class="col-sm-8 control-label" style="text-align:left;">Elenco</label>
+                                			</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="col-sm-6">
+                                    <select class="form-control m-b" name="account">
+                                        <option>Selecionar</option>
+                                        <option>Jogador 1</option>
+                                        <option>Jogador 2</option>
+                                        <option>Jogador 3</option>
+                                        <option>Jogador 4</option>
+                                        <option>Jogador 5</option>
+                                        <option>Jogador 6</option>
+                                        <option>Jogador 7</option>
+                                        <option>Jogador 8</option>
+                                        <option>Jogador 9</option>
+                                        <option>Jogador 10</option>
+                                        <option>Jogador 11</option>
+                                        <option>Jogador 12</option>
+                                        <option>Técnico</option>
+                                        <option>Diretor</option>
+                                    </select>
+                                </div>
+                                <div class="col-sm-6">
+                                    <select class="form-control m-b" name="account">
+                                        <option>Selecionar</option>
+                                        <option>Jogador 1</option>
+                                        <option>Jogador 2</option>
+                                        <option>Jogador 3</option>
+                                        <option>Jogador 4</option>
+                                        <option>Jogador 5</option>
+                                        <option>Jogador 6</option>
+                                        <option>Jogador 7</option>
+                                        <option>Jogador 8</option>
+                                        <option>Jogador 9</option>
+                                        <option>Jogador 10</option>
+                                        <option>Jogador 11</option>
+                                        <option>Jogador 12</option>
+                                        <option>Técnico</option>
+                                        <option>Diretor</option>
+                                    </select>
+                                </div>
+                    		</form>
+                		</div>
+                    </div>
+                    
+                    <div class="ibox float-e-margins">
+                        <div class="ibox-title">
+                            <h2>Cartões Vermelhos</h2>
+                        </div>
+                        <div class="ibox-content" class="col-sm-12">
+                            <form method="get" class="form-horizontal">
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                            	<label class="col-sm-8 control-label">Wi9</label>
+                                    			<div class="col-sm-4">
+                                                	<input type="text" class="form-control">
+                                                </div>
+                                			</div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                    			<div class="col-sm-4">
+                                                	<input type="text" class="form-control">
+                                                </div>
+                                            	<label class="col-sm-8 control-label" style="text-align:left;">Elenco</label>
+                                			</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="col-sm-6">
+                                    <select class="form-control m-b" name="account">
+                                        <option>Selecionar</option>
+                                        <option>Jogador 1</option>
+                                        <option>Jogador 2</option>
+                                        <option>Jogador 3</option>
+                                        <option>Jogador 4</option>
+                                        <option>Jogador 5</option>
+                                        <option>Jogador 6</option>
+                                        <option>Jogador 7</option>
+                                        <option>Jogador 8</option>
+                                        <option>Jogador 9</option>
+                                        <option>Jogador 10</option>
+                                        <option>Jogador 11</option>
+                                        <option>Jogador 12</option>
+                                        <option>Técnico</option>
+                                        <option>Diretor</option>
+                                    </select>
+                                </div>
+                                <div class="col-sm-6">
+                                    <select class="form-control m-b" name="account">
+                                        <option>Selecionar</option>
+                                        <option>Jogador 1</option>
+                                        <option>Jogador 2</option>
+                                        <option>Jogador 3</option>
+                                        <option>Jogador 4</option>
+                                        <option>Jogador 5</option>
+                                        <option>Jogador 6</option>
+                                        <option>Jogador 7</option>
+                                        <option>Jogador 8</option>
+                                        <option>Jogador 9</option>
+                                        <option>Jogador 10</option>
+                                        <option>Jogador 11</option>
+                                        <option>Jogador 12</option>
+                                        <option>Técnico</option>
+                                        <option>Diretor</option>
+                                    </select>
+                                </div>
+                    		</form>
+                		</div>
+                	</div>
+                    
+                    
+                    <div class="ibox float-e-margins">
+                        <div class="ibox-title">
+                            <h2>Arbitragem</h2>
+                        </div>
+                        <form method="get" class="form-horizontal">
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">Mesário</label>
+                                <div class="col-sm-10"><input type="text" class="form-control">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">Árbitro 1</label>
+                                <div class="col-sm-10"><input type="text" class="form-control">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">Árbitro 2</label>
+                                <div class="col-sm-10"><input type="text" class="form-control">
+                                </div>
+                            </div>
+                        </form>
+                        
+                        <div class="ibox-content no-padding">
+                        	<div class="ibox-title">
+                            <h2>Observações</h2>
+                                <button id="edit" class="btn btn-primary btn-xs m-l-sm" onclick="edit()" type="button"><i class="fa fa-pencil"></i>Escrever</button>
+                                <button id="save" class="btn btn-primary  btn-xs" onclick="save()" type="button"><i class="fa fa-check"></i>Concluir</button>
+							</div>
+
+                            <div class="click2edit wrapper p-md">
+                                
+                                dummy text of the printing and typesetting industry. <strong>Lorem Ipsum has been the industry's</strong> standard dummy text ever since the 1500s,
+                                when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic
+                                typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with
+                                <br/>
+                                <br/>
+                                <ul>
+                                    <li>Remaining essentially unchanged</li>
+                                    <li>Make a type specimen book</li>
+                                    <li>Unknown printer</li>
+                                </ul>
+                            </div>
+
+                        </div>
+                        <div class="pull-right">
+                        	<button class="btn btn-success " type="button"><i class="fa fa-check"></i>&nbsp;&nbsp;<span class="bold">Salvar</span></button>
+						</div>
+                    </div>
+                </div>
+        	</div>
+        </div>
+    </div>
+</div>
+        
+        
+           
+
+    <!-- Mainly scripts -->
+    <script src="js/jquery-2.1.1.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/plugins/metisMenu/jquery.metisMenu.js"></script>
+    <script src="js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+
+    <!-- Custom and plugin javascript -->
+    <script src="js/inspinia.js"></script>
+    <script src="js/plugins/pace/pace.min.js"></script>
+    
+     <!-- SUMMERNOTE -->
+    <script src="js/plugins/summernote/summernote.min.js"></script>
+
+
+    <!-- iCheck -->
+    <script src="js/plugins/iCheck/icheck.min.js"></script>
+        <script>
+            $(document).ready(function () {
+                $('.i-checks').iCheck({
+                    checkboxClass: 'icheckbox_square-green',
+                    radioClass: 'iradio_square-green',
+                });
+            });
+        </script>
+        <script>
+        $(document).ready(function(){
+
+            $('.summernote').summernote();
+
+       });
+        var edit = function() {
+            $('.click2edit').summernote({focus: true});
+        };
+        var save = function() {
+            var aHTML = $('.click2edit').code(); //save HTML If you need(aHTML: array).
+            $('.click2edit').destroy();
+        };
+    </script>
+
+</body>
+
+</html>

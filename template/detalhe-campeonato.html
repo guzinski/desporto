@@ -1,0 +1,484 @@
+
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>SISTEMA DESPORTIVO WI9</title>
+
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="font-awesome/css/font-awesome.css" rel="stylesheet">
+    <link href="css/plugins/iCheck/custom.css" rel="stylesheet">
+	<link href="css/plugins/slick/slick.css" rel="stylesheet">
+    <link href="css/plugins/slick/slick-theme.css" rel="stylesheet">
+
+    <link href="css/animate.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+
+    <link href="css/plugins/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css" rel="stylesheet">
+
+</head>
+
+
+
+<body>
+    <div id="wrapper">
+        <nav class="navbar-default navbar-static-side" role="navigation">
+            <div class="sidebar-collapse">
+                <ul class="nav metismenu" id="side-menu">
+                    <li class="nav-header">
+                        <div class="dropdown profile-element"> <span>
+                            <!--<img alt="image" class="img-circle" src="img/profile_small.jpg" />-->
+                             </span>
+                            <!--<a data-toggle="dropdown" class="dropdown-toggle" href="#">-->
+                            <a href="painel.html"><h2><strong>DESPORTO</strong></h2></a>
+                             <!--</span> <span class="text-muted text-xs block">Art Director <b class="caret"></b></span> </span> </a>
+                            <ul class="dropdown-menu animated fadeInRight m-t-xs">
+                                <li><a href="profile.html">Profile</a></li>
+                                <li><a href="contacts.html">Contacts</a></li>
+                                <li><a href="mailbox.html">Mailbox</a></li>
+                                <li class="divider"></li>
+                                <li><a href="login.html">Logout</a></li>
+                            </ul>-->
+                        </div>
+                    </li>
+                    <li>
+                        <a href="#"><i class="fa fa-futbol-o"></i> <span class="nav-label">CAMPEONATOS</span> <span class="fa arrow"></span></a>
+                        <ul class="nav nav-second-level">
+                            <li><a href="novo-campeonato.html">Novo</a></li>
+                            <li><a href="campeonatos.html">Em Andamento</a></li>
+                            <li><a href="campeonatos-encerrados.html">Encerrados</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="#"><i class="fa fa-search"></i> <span class="nav-label">CONSULTA</span> <span class="fa arrow"></span></a>
+                        <ul class="nav nav-second-level">
+                            <li><a href="consulta-atleta.html">Atleta</a></li>
+                            <li><a href="consulta-equipe.html">Equipe</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="regulamento.html"><i class="fa fa-file-text"></i> <span class="nav-label">REGULAMENTOS</span></a>
+                    </li>
+                    <li>
+                        <a href="julgamento.html"><i class="fa fa-user"></i> <span class="nav-label">JULGAMENTOS</span></a>
+                    </li>
+                    
+                    
+                </ul>
+
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="gray-bg dashbard-1">
+        <div class="row border-bottom">
+        <nav class="navbar navbar-static-top" role="navigation" style="margin-bottom: 0">
+        <div class="navbar-header">
+            <a class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="#"><i class="fa fa-bars"></i> </a>
+            <!--<form role="search" class="navbar-form-custom" action="search_results.html">
+                <div class="form-group">
+                    <input type="text" placeholder="Search for something..." class="form-control" name="top-search" id="top-search">
+                </div>
+            </form>-->
+        </div>
+            <ul class="nav navbar-top-links navbar-right">
+                <li>
+                	<a href="index.html">
+                    <i class="fa fa-sign-out"></i> Log out
+                	</a>
+                </li>
+            </ul>
+
+        </nav>
+        </div>
+        
+        
+        <div class="row  border-bottom white-bg dashboard-header">
+        	
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="ibox float-e-margins">
+                        <div class="ibox-title">
+                            <h5>Futsal | Bronze</h5>
+                        </div>
+                        <div class="ibox-content" class="col-sm-6">
+                        	<div class="pull-lefth">
+                                <div class="form-group">
+                                	<label class="col-sm-12 control-label">Chave</label>
+                                    <div class="col-sm-12">
+                                        <select class="form-control m-b" name="account">
+                                            <option>Selecionar</option>
+                                            <option>Chave A</option>
+                                            <option>Chave B</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                           	</div>
+                            <div class="col-sm-12">
+                            	<div class="row">
+                                    <div class="col-lg-12">
+                                        <div class="ibox float-e-margins">
+                                            <div class="ibox-content">
+
+                                                <table class="table table-bordered">
+                                                    <thead>
+                                                    <tr>
+                                                        <th>Posição</th>
+                                                        <th>Equipe</th>
+                                                        <th>Pontos</th>
+                                                        <th>Vitórias</th>
+                                                        <th>Empates</th>
+                                                        <th>Derrotas</th>
+                                                        <th>GP</th>
+                                                        <th>GC</th>
+                                                        <th>SG</th>
+                                                        <th>CA</th>
+                                                        <th>CV</th>
+                                                        <th>%</th>
+                                                        
+                                                        
+                                                        
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    <tr>
+                                                        <td>1</td>
+                                                        <td><a href="perfil-equipe.html">MAZEMBI</a></td>
+                                                        <td>19</td>
+                                                        <td>8</td> 
+                                                        <td>6</td>
+                                                        <td>1</td>
+                                                        <td>45</td>
+                                                        <td>21</td>
+                                                        <td>24</td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td>79,17</td>                                                     
+                                                    </tr>
+                                                    <tr>
+                                                        <td>2</td>
+                                                        <td><a href="perfil-equipe.html">ELENCO</a></td>
+                                                        <td>18</td>
+                                                        <td>8</td> 
+                                                        <td>6</td>
+                                                        <td>1</td>
+                                                        <td>35</td>
+                                                        <td>21</td>
+                                                        <td>14</td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td>75,00</td>                                                     
+                                                    </tr>
+                                                    <tr>
+                                                        <td>3</td>
+                                                        <td><a href="perfil-equipe.html">WI9</a></td>
+                                                        <td>18</td>
+                                                        <td>8</td> 
+                                                        <td>6</td>
+                                                        <td>1</td>
+                                                        <td>33</td>
+                                                        <td>21</td>
+                                                        <td>12</td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td>75,00</td>                                                      
+                                                    </tr>
+                                                    <tr>
+                                                        <td>4</td>
+                                                        <td><a href="perfil-equipe.html">ZENIT</a></td>
+                                                        <td>17</td>
+                                                        <td>5</td>
+                                                        <td>2</td>
+                                                        <td>1</td>
+                                                        <td>30</td>
+                                                        <td>18</td>
+                                                        <td>12</td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td>70,83</td>                                                     
+                                                    </tr>
+                                                    
+                                                    
+                                                    
+                                                    
+                                                    </tbody>
+                                                </table>
+                    
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="pull-right">
+                    <a href=""><button class="btn btn-success " type="button"><i class="fa fa-print"></i>&nbsp;&nbsp;<span class="bold">Tabela</span></button></a>
+                    <a href=""><button class="btn btn-success " type="button"><i class="fa fa-calendar-o"></i>&nbsp;&nbsp;<span class="bold">Gerar Carnê</span></button></a>
+                    <a href="editar-equipes.html"><button class="btn btn-success " type="button"><i class="fa fa-users"></i>&nbsp;&nbsp;<span class="bold">Editar Equipes</span></button></a>
+                    <a href=""><button class="btn btn-success " type="button"><i class="fa fa-bars"></i>&nbsp;&nbsp;<span class="bold">Ficha Equipe</span></button></a>
+                    <a href="campeonato-finais.html"><button class="btn btn-success " type="button"><i class="fa fa-share"></i>&nbsp;&nbsp;<span class="bold">Próxima Fase</span></button></a>
+                    </div>
+                </div>
+        	</div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="ibox float-e-margins">
+                        <div class="ibox-title">
+                            <h5>Artilheiros</h5>
+                        </div>
+                        <div class="ibox-content">
+                            <table class="table">
+                                <thead>
+                                <tr>
+                                    <th>Atleta</th>
+                                    <th>Equipe</th>
+                                    <th>Gols</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <!--<tr>
+                                    <td><a href="perfil-atleta.html">Rafa</a></td>
+                                    <td><a href="perfil-equipe.html">Mazembe</a></td>
+                                    <td><strong>22</strong></td>
+                                </tr>-->
+                                <tr>
+                                    <td><a href="perfil-atleta.html">Rafael Floriano</a></td>
+                                    <td><a href="perfil-equipe.html">Wi9</a></td>
+                                    <td><strong>20</strong></td>
+                                </tr>
+                                
+                                </tbody></a>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+        	</div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="ibox float-e-margins">
+                        <div class="ibox-title">
+                            <h5>Rodadas</h5>
+                        </div>
+                        
+                        <div class="slick_demo_1">
+	                        <div>
+                                <div class="ibox-content">
+                                    <h2>RODADA 1</h2><hr>
+                                    <table class="table">
+                                        <thead>
+                                        <tr>
+                                            <th>Data</th>
+                                            <th>Horário</th>
+                                            <th>Equipe</th>
+                                            <th>Placar</th>
+                                            <th>X</th>
+                                            <th>Placar</th>
+                                            <th>Equipe</th>
+                                            <th>Detalhe</th>
+                                            <th>Súmula</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr>
+                                            <td>05/06/2016</td>
+                                            <td>19:30</td>
+                                            <td>Wi9</td>
+                                            <td></td>
+                                            <td>x</td>
+                                            <td></td>
+                                            <td>Elenco</td>
+                                            <td><a href="detalhe-partida.html">Detalhe</a></td>
+                                            <td><a href=""><i class="fa fa-print"></i></a></td>
+                                        </tr>
+                                        <tr>
+                                            <td>05/06/2016</td>
+                                            <td>20:30</td>
+                                            <td>Zenit</td>
+                                            <td></td>
+                                            <td>x</td>
+                                            <td></td>
+                                            <td>Mazembe</td>
+                                            <td><a href="detalhe-partida.html">Detalhe</a></td>
+                                            <td><a href=""><i class="fa fa-print"></i></a></td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="ibox-content">
+                                    <h2>RODADA 2</h2><hr>
+                                    <table class="table">
+                                        <thead>
+                                        <tr>
+                                            <th>Data</th>
+                                            <th>Horário</th>
+                                            <th>Equipe</th>
+                                            <th>Placar</th>
+                                            <th>X</th>
+                                            <th>Placar</th>
+                                            <th>Equipe</th>
+                                            <th>Detalhe</th>
+                                            <th>Súmula</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr>
+                                            <td>08/06/2016</td>
+                                            <td>19:30</td>
+                                            <td>Zenit</td>
+                                            <td></td>
+                                            <td>x</td>
+                                            <td></td>
+                                            <td>Elenco</td>
+                                            <td><a href="detalhe-partida.html">Detalhe</a></td>
+                                            <td><a href=""><i class="fa fa-print"></i></a></td>
+                                        </tr>
+                                        <tr>
+                                            <td>08/06/2016</td>
+                                            <td>20:30</td>
+                                            <td>Wi9</td>
+                                            <td></td>
+                                            <td>x</td>
+                                            <td></td>
+                                            <td>Mazembe</td>
+                                            <td><a href="detalhe-partida.html">Detalhe</a></td>
+                                            <td><a href=""><i class="fa fa-print"></i></a></td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="ibox-content">
+                                    <h2>RODADA 3</h2><hr>
+                                    <table class="table">
+                                        <thead>
+                                        <tr>
+                                            <th>Data</th>
+                                            <th>Horário</th>
+                                            <th>Equipe</th>
+                                            <th>Placar</th>
+                                            <th>X</th>
+                                            <th>Placar</th>
+                                            <th>Equipe</th>
+                                            <th>Detalhe</th>
+                                            <th>Súmula</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr>
+                                            <td>15/06/2016</td>
+                                            <td>19:30</td>
+                                            <td>Zenit</td>
+                                            <td></td>
+                                            <td>x</td>
+                                            <td></td>
+                                            <td>Wi9</td>
+                                            <td><a href="detalhe-partida.html">Detalhe</a></td>
+                                            <td><a href=""><i class="fa fa-print"></i></a></td>
+                                        </tr>
+                                        <tr>
+                                            <td>15/06/2016</td>
+                                            <td>20:30</td>
+                                            <td>Elenco</td>
+                                            <td></td>
+                                            <td>x</td>
+                                            <td></td>
+                                            <td>Mazembe</td>
+                                            <td><a href="detalhe-partida.html">Detalhe</a></td>
+                                            <td><a href=""><i class="fa fa-print"></i></a></td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        	</div>
+        </div>
+        <div class="row">
+        	<div class="footer">
+        		<div>
+        			desenvolvimento <a href="http://agenciawi9.com.br/" alt="Wi9 Agência Digital" title="Wi9 Agência Digital" target="_blank">Wi9 Agência Digital</a>
+        		</div>
+       		 </div>
+        </div> 
+    </div>
+
+    <!-- Mainly scripts -->
+    <script src="js/jquery-2.1.1.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/plugins/metisMenu/jquery.metisMenu.js"></script>
+
+    <script src="js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+
+    <!-- Custom and plugin javascript -->
+    <script src="js/inspinia.js"></script>
+    <script src="js/plugins/pace/pace.min.js"></script>
+    
+    <!-- slick carousel-->
+    <script src="js/plugins/slick/slick.min.js"></script>
+
+
+    <!-- iCheck -->
+    <script src="js/plugins/iCheck/icheck.min.js"></script>
+        <script>
+        $(document).ready(function(){
+
+
+            $('.slick_demo_1').slick({
+                dots: true
+            });
+
+            $('.slick_demo_2').slick({
+                infinite: true,
+                slidesToShow: 3,
+                slidesToScroll: 1,
+                centerMode: true,
+                responsive: [
+                    {
+                        breakpoint: 1024,
+                        settings: {
+                            slidesToShow: 3,
+                            slidesToScroll: 3,
+                            infinite: true,
+                            dots: true
+                        }
+                    },
+                    {
+                        breakpoint: 600,
+                        settings: {
+                            slidesToShow: 2,
+                            slidesToScroll: 2
+                        }
+                    },
+                    {
+                        breakpoint: 480,
+                        settings: {
+                            slidesToShow: 1,
+                            slidesToScroll: 1
+                        }
+                    }
+                ]
+            });
+
+            $('.slick_demo_3').slick({
+                infinite: true,
+                speed: 500,
+                fade: true,
+                cssEase: 'linear',
+                adaptiveHeight: true
+            });
+        });
+
+    </script>
+
+</body>
+
+</html>
