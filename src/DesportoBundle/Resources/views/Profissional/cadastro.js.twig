@@ -1,0 +1,158 @@
+<script type="text/javascript">
+    jQuery(document).ready(function(){
+        jQuery('#loading').hide();
+        jQuery("#profissional_cpf").mask("999.999.999-99");
+        jQuery("#profissional_nascimento").mask("99/99/9999").datepicker();;
+        jQuery("#profissional_telefone").mask("(99) 9999-9999");
+
+        jQuery("#basicForm").validate({
+            rules: {
+                "profissional[cpf]":             {required: true, cpf: true},
+                "profissional[nascimento]":      {brazilianDate: true},
+            },
+            highlight: function(element) {
+                jQuery(element).closest('.form-group').removeClass('has-success').addClass('has-error');
+            },
+            success: function(element) {
+                jQuery(element).closest('.form-group').removeClass('has-error');
+            },
+            errorPlacement: function(error, element) {
+                jQuery(element).closest('.form-group').append(error);
+            },
+            validClass: "",
+            submitHandler: function(form) {
+                jQuery('button').hide();
+                jQuery('#loading').fadeIn(200);
+                form.submit();
+           }
+        });
+        
+        var totalArquivos = {{ form.arquivos|length }};
+        
+        var previewNodeFoto = document.querySelector("#previews-foto");
+        var previewTemplateFoto = previewNodeFoto.innerHTML;
+        previewNodeFoto.innerHTML = "";
+        
+        Dropzone.autoDiscover = false;
+        
+        Dropzone.confirm = function(question, accepted, rejected) {
+            bootbox.confirm(question, function(result) {
+                return result ? accepted() : null != rejected ? rejected() : void 0;
+            });
+        };       
+                
+        jQuery(".arquivos").dropzone({
+            url: '{{ path("upload_chunk") }}',
+            uploadMultiple: false,
+            previewsContainer: "#previews-arquivos",
+            previewTemplate: previewTemplateFoto,
+            clickable: ".fileinput-button",
+            dictDefaultMessage: "Arraste arquivos para cá",
+            dictCancelUpload: "Cancelar upload",
+            dictCancelUploadConfirmation: "Tem certeza que deseja cancelar upload?",
+            dictRemoveFile: "Remover Imagem",
+            dictMaxFilesExceeded: "Somente uma imagem é permitida",
+            dictRemoveFileConfirmation: "Excluir definitavamente o arquivo?",
+        });
+
+        jQuery(".foto").dropzone({
+            url: '{{ path("upload_chunk") }}',
+            uploadMultiple: false,
+            previewsContainer: "#previews-foto",
+            previewTemplate: previewTemplateFoto,   
+            clickable: ".fotoinput-button",
+            thumbnailWidth: 90,
+            thumbnailHeight: 120,
+            maxFiles: 1,
+            acceptedFiles: "image/*",
+            dictDefaultMessage: "Arraste arquivos para cá",
+            dictCancelUpload: "Cancelar upload",
+            dictCancelUploadConfirmation: "Tem certeza que deseja cancelar upload?",
+            dictRemoveFile: "Remover Imagem",
+            dictMaxFilesExceeded: "Somente uma imagem é permitida",
+            dictRemoveFileConfirmation: "Excluir definitavamente a imagem?"
+        });
+        
+
+        
+        var foto = Dropzone.forElement(".foto").on("error", function(file, errorMessage){
+            bootbox.alert("Erro ao enviar Arquivo <strong>"+file.name+"</strong><br/> "+errorMessage);
+            this.removeFile(file);
+        }).on("success", function(file, data){
+            var parse = JSON.parse(data);
+            file.previewElement.querySelector(".barProgress").style.display = "none";
+            file.previewElement.querySelector("a[data-dz-name]").innerHTML = parse.fileName;
+            file.previewElement.querySelector("a[data-dz-name]").setAttribute("href", parse.link);            
+            if (file.temp !== false) {
+                file.nome = parse.fileName
+                file.id = parse.fileName;
+                file.temp = true;
+                jQuery("input[name='profissional[foto]']").val(file.id);
+            }
+            jQuery(".foto").hide();
+        }).on("removedfile", function (file) {
+            if (file.temp) {
+                jQuery.post("{{ path('upload_delete_temp') }}", {id: file.id});
+            } else if (!file.temp && file.id!="") {
+                jQuery("form").append(jQuery("<input />").attr("type", "hidden").attr("name", "fotoExcluida").val(file.id));
+            }
+            jQuery("input[name='profissional[foto]']").val("");
+            jQuery(".foto").show();
+        });
+        
+        var myDrop = Dropzone.forElement(".arquivos").on("addedfile", function(file, data){
+            this.createThumbnailFromUrl(file, '{{ asset('bundles/desporto/images/photos/media-doc.png') }}');
+        }).on("error", function(file, errorMessage){
+            bootbox.alert("Erro ao enviar Arquivo <strong>"+file.name+"</strong><br/> "+errorMessage);
+            myDrop.emit("removedfile", file);
+        }).on("success", function(file, data){
+            var parse = JSON.parse(data);
+            file.previewElement.querySelector(".barProgress").style.display = "none";
+            file.previewElement.querySelector("a[data-dz-name]").innerHTML = parse.fileName;
+            file.previewElement.querySelector("a[data-dz-name]").setAttribute("href", parse.link);            
+            
+            if (file.temp !== false) {
+                file.nome = parse.fileName
+                file.id = totalArquivos;
+                file.temp = true;
+                jQuery("form").append(jQuery("<input />").attr("type", "hidden").attr("name", "profissional[arquivos]["+totalArquivos+"]").attr("id", "profissional_arquivos_"+file.id).val(parse.fileName));
+                totalArquivos++;
+            }
+        }).on("removedfile", function (file) {
+            if (file.temp) {
+                jQuery.post("{{ path('upload_delete_temp') }}", {id: file.nome});
+            }
+            jQuery("#profissional_arquivos_"+file.id).remove();
+        });
+        {% if profissional.foto != null %}
+            var imagem = {
+                name:       '{{ profissional.foto }}', 
+                id:         '{{ profissional.foto }}',
+                accepted:   true,
+                upload:     {progress: 0, total: '0', bytesSent: 0},
+                temp:       false
+            };
+            // Call the default addedfile event handler
+            foto.files.push(imagem);
+            foto.emit("addedfile", imagem);
+            foto.createThumbnailFromUrl(imagem, '{{ path('profissional_arquivo_download', {nome: profissional.foto}) }}' );
+            foto.emit("success", imagem, "{\"fileName\": \"{{ profissional.foto }}\", \"link\": \"{{ path('profissional_arquivo_download', {nome: profissional.foto}) }}\" }");
+        {% endif %}
+        {% for arquivo in form.arquivos %}
+            // Create the mock file:
+            var imagem = {
+                name:       '{{ arquivo.vars.value }}', 
+                id:         '{{ loop.index0 }}',
+                accepted:   true,
+                upload:     {progress: 0, total: '0', bytesSent: 0},
+                temp:       false
+            };
+            // Call the default addedfile event handler
+            myDrop.files.push(imagem);
+            myDrop.emit("addedfile", imagem);
+            myDrop.createThumbnailFromUrl(imagem, '{{ asset('bundles/desporto/images/photos/media-doc.png') }}');
+            myDrop.emit("success", imagem, "{\"fileName\": \"{{ arquivo.vars.value }}\", \"link\": \"{{ path('profissional_arquivo_download', {nome: arquivo.vars.value}) }}\" }");
+            jQuery("form").append("{{ form_widget(arquivo) }}");
+        {% endfor %}        
+});
+</script>

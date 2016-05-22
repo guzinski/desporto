@@ -3,25 +3,17 @@
 namespace DesportoBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * Arquivo
  *
  * @ORM\Table(name="arquivo")
+ * @UniqueEntity(fields={"nome"}, message="Já existe um documeno com esse nome cadastrado")
  * @ORM\Entity()
  */
-class Arquivo
+class Arquivo extends BaseEntity
 {
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     */
-    private $id;
-
-    
     /**
      * @var string
      *
@@ -29,29 +21,12 @@ class Arquivo
      */
     private $nome;    
     
-    /**
-     * @var Profissional
-     *
-     * @ORM\ManyToOne(targetEntity="Profissional", inversedBy="arquivos")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="profissional", referencedColumnName="id")
-     * })
-     */
-    private $profissional;
-    
-    public function __construct($nome = NULL, $cliente = NULL)
+    public function __construct($nome = NULL)
     {
+        parent::__construct();
         if (!is_null($nome)) {
             $this->setNome($nome);
         }
-        if (!is_null($cliente)) {
-            $this->setCliente($cliente);
-        }
-    }
-    
-    public function getId()
-    {
-        return $this->id;
     }
 
     public function getNome()
@@ -64,21 +39,13 @@ class Arquivo
     {
         $this->nome = $nome;
         return $this;
-    }
-
-    public function getProfissional()
-    {
-        return $this->profissional;
-    }
-
-    public function setProfissional(Profissional $profissional)
-    {
-        $this->profissional = $profissional;
-        return $this;
-    }
-
-
+    }    
     
     
+    public function getLabel()
+    {
+        return $this->nome;
+    }
+
     
 }

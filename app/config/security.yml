@@ -33,4 +33,7 @@ security:
             access_denied_handler: kernel.listener.access_denied.handler
             
     access_control:
-        - { path: ^/login,      roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/login,          roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/usuario,        roles: ROLE_USUARIO }
+        - { path: ^/profissional,   roles: ROLE_PROFISSIONAL }
+        - { path: ^/equipe,         roles: ROLE_EQUIPE }

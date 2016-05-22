@@ -4,3 +4,14 @@ services:
         arguments: ["@session", "@router"]
         tags:
            - { name: kernel.event_listener, event: security.kernel_response, method: handle}
+    upload:
+        class:  DesportoBundle\Service\Upload
+        arguments: ["@request_stack"]
+    profissional:
+        class:  DesportoBundle\Service\Profissional
+        arguments: ["@request_stack", "@kernel", "@upload", "@doctrine.orm.entity_manager" ]
+    desporto.form.profissional:
+        class: DesportoBundle\Form\ProfissionalType
+        arguments: ["@doctrine.orm.entity_manager"]
+        tags:
+            - { name: form.type }

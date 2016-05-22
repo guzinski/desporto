@@ -3,13 +3,13 @@ namespace DesportoBundle\Form;
 
 use DesportoBundle\Entity\Nivel;
 use DesportoBundle\Entity\Usuario;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * Description of UsuarioType
@@ -18,10 +18,6 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
  */
 class UsuarioType extends AbstractType
 {
-    public function getName()
-    {
-        return "usuario";
-    }
     
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -42,11 +38,10 @@ class UsuarioType extends AbstractType
 
     }
 
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
             'data_class' => Usuario::class,
         ));
     }
-
 }

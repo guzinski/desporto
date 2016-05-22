@@ -1,0 +1,107 @@
+{% extends "DesportoBundle::layout.html.twig" %}
+{% form_theme form 'DesportoBundle:Form:fields.html.twig' %}
+{% block title %}Desporto | Cadastro{% endblock %}
+{% block head %}
+    <link href="{{ asset('bundles/desporto/css/dropzone.css') }}" rel="stylesheet" />
+    <script src="{{ asset('bundles/desporto/js/jquery.validate.min.js') }}"></script>
+    <script src="{{ asset('bundles/desporto/js/messages_ptbr.js') }}"></script>
+    <script src="{{ asset('bundles/desporto/js/validate/additional-methods.js') }}"></script>
+    <script src="{{ asset('bundles/desporto/js/jquery.maskedinput.min.js') }}"></script>
+    <script src="{{ asset('bundles/desporto/js/jquery.maskMoney.js') }}"></script>
+    <script src="{{ asset('bundles/desporto/js/jquery-ui-1.10.3.min.js') }}"></script>
+    <script src="{{ asset('bundles/desporto/js/dropzone.min.js') }}"></script>
+    <script src="{{ asset('bundles/desporto/js/bootbox.min.js') }}"></script>
+    {% include 'DesportoBundle::Profissional/cadastro.js.twig' %}
+{% endblock %}
+
+{% block mainpanel %}
+<div class="pageheader">
+    <div class="media">
+        <div class="pageicon pull-left">
+            <i class="fa fa-pencil"></i>
+        </div>
+        <div class="media-body">
+            <ul class="breadcrumb">
+                <li><a href="{{ path('index') }}"><i class="glyphicon glyphicon-home"></i></a></li>
+                <li><a href="{{ path('profissional_index') }}">Profissional</a></li>
+                <li>{{ profissional.getid>0 ? "Edição de" : "Cadastro de" }} Profissional </li>
+            </ul>
+            <h4>{{ profissional.getid>0 ? "Edição de" : "Cadastro de" }} Profissional </h4>
+        </div>
+    </div><!-- media -->
+</div><!-- pageheader -->
+
+<div class="contentpanel">
+    <div class="row">
+        <div class="col-md-12">
+            <form method="POST" class="form-horizontal form-bordered" id="basicForm" action="">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h5 class="panel-title">Dados pessoais</h5>
+                        <p>
+                            Compos com * são obrigatórios
+                        </p>
+                    </div>
+                    <div class="panel-body">
+                        {{ form_errors(form) }}
+                        <div class="row">
+                            {{ form_row(form.nome) }}
+                            {{ form_row(form.nascimento) }}
+                            {{ form_row(form.cpf) }}
+                            {{ form_row(form.rg) }}
+                            {{ form_row(form.endereco) }}
+                            {{ form_row(form.telefone) }}
+                        </div><!-- row -->
+                    </div><!-- panel-body -->
+                </div><!-- panel -->
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h5 class="panel-title">Foto</h5>
+                    </div>
+                    <div class="panel-body">
+                        <div class="media-options foto">
+                            <button type="button" class="btn btn-success fotoinput-button">Adicionar Foto</button>
+                        </div>
+                        {{ form_widget(form.foto) }}
+                        
+                        <div  class="row media-manager">
+                            <div id="previews-foto">
+                                {% include 'DesportoBundle::Profissional/upload-template.html.twig' %}
+                            </div>
+                        </div>
+                    </div>
+                </div><!-- panel -->
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h5 class="panel-title">Documentos</h5>
+                    </div>
+                    <div class="panel-body">
+                        <div class="media-options arquivos">
+                            <button type="button" class="btn btn-success fileinput-button">Adicionar Arquivos</button>
+                        </div>
+                        <hr/>
+                        <div  class="row media-manager">
+                            <div id="previews-arquivos">
+                            </div>
+                        </div>
+                    </div>
+                </div><!-- panel -->
+
+
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <div class="row">
+                            <button class="btn btn-primary mr5">Salvar</button>
+                            <img src="{{ asset('bundles/desporto/images/loading.gif') }}" id="loading" alt="Carregando" />
+                            <a class="btn btn-danger" href="javascript:history.back()">Voltar</a>
+                        </div>
+                    </div>
+                </div><!-- panel -->
+                
+                {{ form_row(form._token) }}
+            </form>
+            
+        </div><!-- col-md-12 -->
+    </div><!-- row -->
+</div><!-- contentpanel -->
+{% endblock %}

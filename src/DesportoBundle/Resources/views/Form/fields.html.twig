@@ -51,12 +51,12 @@
 
 {% block form_row %}
     <div class="form-group  {% if errors|length > 0 %} has-error {% endif %}">
-        <label class="col-sm-3 control-label">{{ form_label(form) }}
+        <label class="col-sm-4 col-md-3 col-lg-2 control-label">{{ form_label(form) }}
             {% if required %}
                 <span class="asterisk">*</span>
             {% endif %}
         </label>
-        <div class="col-sm-5">
+        <div class="col-sm-8 col-md-9 col-lg-5">
             {{ form_widget(form, { 'attr': {'class': 'form-control'} }) }}
         </div>
         {{ form_errors(form) }}

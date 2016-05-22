@@ -38,7 +38,7 @@ class AccessDeniedHandler implements AccessDeniedHandlerInterface
             $response = new Response(json_encode(array('status' => 'protected')));
             return $response;
         } else {
-            return new RedirectResponse($this->_router->generate('_sem_permissao'));
+            return new RedirectResponse($this->_router->generate('sem_permissao'));
         }
     }
 

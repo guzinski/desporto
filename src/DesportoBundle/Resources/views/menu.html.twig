@@ -15,6 +15,13 @@
             </ul>
         </li>
         {% endif  %}
+        {% if is_granted('ROLE_PROFISSIONAL') %}
+        <li class="parent {% if 'profissional' in app.request.get('_route')  %} active{% endif %}"><a href=""><i class="fa fa-search"></i> <span>Consulta</span></a>
+            <ul class="children" >
+                <li {% if app.request.get('_route') == 'profissional_index' %} class="active"{% endif %}><a href="{{ path('profissional_index') }}">Profissionais</a></li>
+            </ul>
+        </li>
+        {% endif  %}
     </ul>
 
 </div><!-- leftpanel -->

@@ -10,11 +10,11 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * Cliente
+ * Profissional
  *
- * @ORM\Table(name="cliente")
+ * @ORM\Table(name="profissional")
  * @UniqueEntity(fields={"cpf"}, message="Este CPF já está cadastrado", repositoryMethod="uniqueEntity")
- * @ORM\Entity(repositoryClass="DesportoBundle\Repository\ClienteRepository")
+ * @ORM\Entity(repositoryClass="DesportoBundle\Repository\ProfissionalRepository")
  */
 class Profissional extends BaseEntity
 {
@@ -32,7 +32,7 @@ class Profissional extends BaseEntity
     
     /**
      * @var string
-     * @Assert\NotBlank(message="Deve ser colocado uma foto para o cliente")
+     * @Assert\NotBlank(message="Deve ser colocado uma foto para o profissional")
      * @ORM\Column(type="string", length=50, nullable=false)
      */
     private $foto;
@@ -60,27 +60,6 @@ class Profissional extends BaseEntity
 
     /**
      * @var string
-     *
-     * @ORM\Column(type="string", length=10, nullable=true)
-     */
-    private $cep;
-
-    /**
-     * @var string
-     * 
-     * @ORM\Column(type="string", length=2, nullable=true)
-     */
-    private $uf;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(type="string", length=100, nullable=true)
-     */
-    private $cidade;
-
-    /**
-     * @var string
      * 
      * @ORM\Column(type="string", length=150, nullable=true)
      */
@@ -94,10 +73,12 @@ class Profissional extends BaseEntity
     private $telefone;
     
     /**
-     * @var Collection
-     * 
-     * @ORM\OneToMany(targetEntity="Arquivo", mappedBy="cliente", cascade={"all"})
-     **/
+     * @ORM\ManyToMany(targetEntity="Arquivo", cascade={"all"})
+     * @ORM\JoinTable(name="profissional_arquivo",
+     *      joinColumns={@ORM\JoinColumn(name="profissional", referencedColumnName="id")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="arquivo", referencedColumnName="id", unique=true)}
+     * )
+     */
     private $arquivos;
 
     
@@ -150,21 +131,6 @@ class Profissional extends BaseEntity
         return $this->rg;
     }
 
-    public function getCep()
-    {
-        return $this->cep;
-    }
-
-    public function getUf()
-    {
-        return $this->uf;
-    }
-
-    public function getCidade()
-    {
-        return $this->cidade;
-    }
-
     public function getEndereco()
     {
         return $this->endereco;
@@ -210,31 +176,13 @@ class Profissional extends BaseEntity
 
     public function setCpf($cpf)
     {
-        $this->cpf = $cpf;
+        $this->cpf = preg_replace("/[^0-9]/", "", $cpf);
         return $this;
     }
 
     public function setRg($rg)
     {
         $this->rg = $rg;
-        return $this;
-    }
-
-    public function setCep($cep)
-    {
-        $this->cep = $cep;
-        return $this;
-    }
-
-    public function setUf($uf)
-    {
-        $this->uf = $uf;
-        return $this;
-    }
-
-    public function setCidade($cidade)
-    {
-        $this->cidade = $cidade;
         return $this;
     }
 
