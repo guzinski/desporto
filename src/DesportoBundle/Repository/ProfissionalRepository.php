@@ -20,7 +20,7 @@ class ProfissionalRepository extends EntityRepository
      * @param string $busca
      * @param int $maxResults
      * @param int $firstResult
-     * @return type
+     * @return array
      */
     public function getProfissionais($busca, $maxResults, $firstResult)
     {

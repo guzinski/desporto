@@ -13,7 +13,7 @@ use Symfony\Component\HttpFoundation\RequestStack;
  *
  * @author Luciano
  */
-class Profissional
+class ProfissionalService
 {
     /**
      *
@@ -27,7 +27,7 @@ class Profissional
     protected $kernel;
     /**
      *
-     * @var Upload 
+     * @var UploadService 
      */
     protected $upload;
     /**
@@ -36,7 +36,7 @@ class Profissional
      */
     protected $em;
 
-    public function __construct(RequestStack $requestStack, AppKernel $kernel, Upload $upload,  EntityManager $em)
+    public function __construct(RequestStack $requestStack, AppKernel $kernel, UploadService $upload,  EntityManager $em)
     {
         $this->requestStack = $requestStack;
         $this->kernel = $kernel;

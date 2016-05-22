@@ -12,7 +12,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
  *
  * @author Luciano
  */
-class Upload
+class UploadService
 {
     protected $allowedExtensions = array();
     protected $sizeLimit = null;

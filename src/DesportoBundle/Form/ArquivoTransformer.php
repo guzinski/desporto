@@ -2,9 +2,9 @@
 
 namespace DesportoBundle\Form;
 
+use DesportoBundle\Entity\Arquivo;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManager;
-use DesportoBundle\Entity\Arquivo;
 use Symfony\Component\Form\DataTransformerInterface;
 
 /**
@@ -34,7 +34,7 @@ class ArquivoTransformer implements DataTransformerInterface
         
         foreach ($value as $nome) {
             $arquivo = $this->em
-                    ->getRepository(\DesportoBundle\Entity\Arquivo::class)
+                    ->getRepository(Arquivo::class)
                     ->findOneBy(array('nome' => $nome));
             if (empty($arquivo)) {
                 $arquivo = new Arquivo($nome);

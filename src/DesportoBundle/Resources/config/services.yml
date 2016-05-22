@@ -5,13 +5,21 @@ services:
         tags:
            - { name: kernel.event_listener, event: security.kernel_response, method: handle}
     upload:
-        class:  DesportoBundle\Service\Upload
+        class:  DesportoBundle\Service\UploadService
         arguments: ["@request_stack"]
     profissional:
-        class:  DesportoBundle\Service\Profissional
+        class:  DesportoBundle\Service\ProfissionalService
+        arguments: ["@request_stack", "@kernel", "@upload", "@doctrine.orm.entity_manager" ]
+    equipe:
+        class:  DesportoBundle\Service\EquipeService
         arguments: ["@request_stack", "@kernel", "@upload", "@doctrine.orm.entity_manager" ]
     desporto.form.profissional:
         class: DesportoBundle\Form\ProfissionalType
+        arguments: ["@doctrine.orm.entity_manager"]
+        tags:
+            - { name: form.type }
+    desporto.form.equipe:
+        class: DesportoBundle\Form\EquipeType
         arguments: ["@doctrine.orm.entity_manager"]
         tags:
             - { name: form.type }

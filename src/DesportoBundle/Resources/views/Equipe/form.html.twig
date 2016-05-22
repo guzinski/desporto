@@ -1,6 +1,6 @@
 {% extends "DesportoBundle::layout.html.twig" %}
 {% form_theme form 'DesportoBundle:Form:fields.html.twig' %}
-{% block title %}Desporto | Cadastro de Profissional{% endblock %}
+{% block title %}Desporto | Cadastro de Equipe{% endblock %}
 {% block head %}
     <link href="{{ asset('bundles/desporto/css/dropzone.css') }}" rel="stylesheet" />
     <script src="{{ asset('bundles/desporto/js/jquery.validate.min.js') }}"></script>
@@ -11,7 +11,7 @@
     <script src="{{ asset('bundles/desporto/js/jquery-ui-1.10.3.min.js') }}"></script>
     <script src="{{ asset('bundles/desporto/js/dropzone.min.js') }}"></script>
     <script src="{{ asset('bundles/desporto/js/bootbox.min.js') }}"></script>
-    {% include 'DesportoBundle::Profissional/cadastro.js.twig' %}
+    {% include 'DesportoBundle::Equipe/cadastro.js.twig' %}
 {% endblock %}
 
 {% block mainpanel %}
@@ -23,10 +23,10 @@
         <div class="media-body">
             <ul class="breadcrumb">
                 <li><a href="{{ path('index') }}"><i class="glyphicon glyphicon-home"></i></a></li>
-                <li><a href="{{ path('profissional_index') }}">Profissional</a></li>
-                <li>{{ profissional.getid>0 ? "Edição de" : "Cadastro de" }} Profissional </li>
+                <li><a href="{{ path('equipe_index') }}">Equipe</a></li>
+                <li>{{ equipe.getid>0 ? "Edição de" : "Cadastro de" }} Equipes </li>
             </ul>
-            <h4>{{ profissional.getid>0 ? "Edição de" : "Cadastro de" }} Profissional </h4>
+            <h4>{{ equipe.getid>0 ? "Edição de" : "Cadastro de" }} Equipes </h4>
         </div>
     </div><!-- media -->
 </div><!-- pageheader -->
@@ -37,7 +37,7 @@
             <form method="POST" class="form-horizontal form-bordered" id="basicForm" action="">
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        <h5 class="panel-title">Dados pessoais</h5>
+                        <h5 class="panel-title">Dados da Equipe</h5>
                         <p>
                             Compos com * são obrigatórios
                         </p>
@@ -46,9 +46,7 @@
                         {{ form_errors(form) }}
                         <div class="row">
                             {{ form_row(form.nome) }}
-                            {{ form_row(form.nascimento) }}
-                            {{ form_row(form.cpf) }}
-                            {{ form_row(form.rg) }}
+                            {{ form_row(form.responsavel) }}
                             {{ form_row(form.endereco) }}
                             {{ form_row(form.telefone) }}
                         </div><!-- row -->
@@ -56,16 +54,16 @@
                 </div><!-- panel -->
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        <h5 class="panel-title">Foto</h5>
+                        <h5 class="panel-title">Brasão</h5>
                     </div>
                     <div class="panel-body">
-                        <div class="media-options foto">
-                            <button type="button" class="btn btn-success fotoinput-button">Adicionar Foto</button>
+                        <div class="media-options brasao">
+                            <button type="button" class="btn btn-success brasaoinput-button">Adicionar Brasão</button>
                         </div>
-                        {{ form_widget(form.foto) }}
+                        {{ form_widget(form.brasao) }}
                         
                         <div  class="row media-manager">
-                            <div id="previews-foto">
+                            <div id="previews-brasao">
                                 {% include 'DesportoBundle::Form/upload-template.html.twig' %}
                             </div>
                         </div>

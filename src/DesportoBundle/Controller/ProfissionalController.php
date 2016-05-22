@@ -3,14 +3,14 @@
 namespace DesportoBundle\Controller;
 
 use DesportoBundle\Entity\Profissional;
-use DesportoBundle\Entity\Usuario;
 use DesportoBundle\Form\ProfissionalType;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
  * Description of ProfissionalController
@@ -28,8 +28,6 @@ class ProfissionalController extends Controller
     {
         return array();
     }
-
-    
     
     /**
      * @Route("/pagination", name="profissional_pagination")
@@ -53,10 +51,18 @@ class ProfissionalController extends Controller
                 $profissional->getNascimento()->format('d/m/Y'),
             ];
         }
+        
+        $recordsTotal = $repProfissional->count();
+        if (!empty($busca['value'])) {
+            $recordsFiltered = $repProfissional->count($busca['value']);
+        } else {
+            $recordsFiltered = $recordsTotal;
+        }
+        
         $return = [
             'draw' => $request->get("draw"),
-            'recordsTotal' => $repProfissional->count(),
-            'recordsFiltered' => $repProfissional->count($busca['value']),
+            'recordsTotal' => $recordsTotal,
+            'recordsFiltered' => $recordsFiltered,
             'data' => $dados,
         ];
         return new Response(json_encode($return));
@@ -94,19 +100,20 @@ class ProfissionalController extends Controller
      */
     public function excluirAction(Request $resquest) 
     {
-        $respone = array();
-        $id = $resquest->request->getInt("id", null);
-        if (null != $id) {
-            $em = $this->getDoctrine()->getManager();
-            $usuario = $em->find(Usuario::class, $id);
-            $em->remove($usuario);
-            $em->flush();
-            $respone['ok'] = 1;
-        } else {
-            $respone['ok'] = 0;
-            $respone['error'] = "Erro ao exclui usuário";
-        }
-        return new Response(json_encode($respone));
+        return new Response();;
+//        $respone = array();
+//        $id = $resquest->request->getInt("id", null);
+//        if (null != $id) {
+//            $em = $this->getDoctrine()->getManager();
+//            $usuario = $em->find(Usuario::class, $id);
+//            $em->remove($usuario);
+//            $em->flush();
+//            $respone['ok'] = 1;
+//        } else {
+//            $respone['ok'] = 0;
+//            $respone['error'] = "Erro ao exclui usuário";
+//        }
+//        return new Response(json_encode($respone));
     }
 
     

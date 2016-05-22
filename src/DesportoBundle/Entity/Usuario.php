@@ -11,7 +11,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
  * @ORM\Table(name="usuario")
  * @ORM\Entity
  */
-class Usuario implements UserInterface
+class Usuario extends BaseEntity implements UserInterface
 {
     /**
      * @var string
@@ -44,17 +44,32 @@ class Usuario implements UserInterface
      */
     private $nivel;
 
-
+    
     /**
-     * @var integer
-     *
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     */
-    private $id;
-
-
+     * @var Collection
+     * @ORM\OneToMany(targetEntity="Equipe", mappedBy="usuarioCadastro")
+     **/
+    private $equipesCadastradas = null;
+    
+    
+    /**
+     * @var Collection
+     * @ORM\OneToMany(targetEntity="Equipe", mappedBy="usuarioExclusao")
+     **/
+    private $equipesExcluidas = null;
+    
+    
+    /**
+     * @var Collection
+     * @ORM\OneToMany(targetEntity="Profissional", mappedBy="usuarioCadastro")
+     **/
+    private $profissionaisCadastradas = null;
+    
+    /**
+     * @var Collection
+     * @ORM\OneToMany(targetEntity="Profissional", mappedBy="usuarioExclusao")
+     **/
+    private $profissionaisExcluidas = null;
 
     /**
      * Set nome
@@ -124,16 +139,6 @@ class Usuario implements UserInterface
     {
         return $this->senha;
     }
-
-    /**
-     * Get id
-     *
-     * @return integer 
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
     
     public function eraseCredentials()
     {
@@ -190,6 +195,58 @@ class Usuario implements UserInterface
         $this->nivel = $nivel;
         return $this;
     }
+    
+    public function getLabel()
+    {
+        return $this->nome;
+    }
+
+    
+    public function getEquipesCadastradas()
+    {
+        return $this->equipesCadastradas;
+    }
+
+    public function getEquipesExcluidas()
+    {
+        return $this->equipesExcluidas;
+    }
+
+    public function getProfissionaisCadastradas()
+    {
+        return $this->profissionaisCadastradas;
+    }
+
+    public function getProfissionaisExcluidas()
+    {
+        return $this->profissionaisExcluidas;
+    }
+
+    public function setEquipesCadastradas(Collection $equipesCadastradas)
+    {
+        $this->equipesCadastradas = $equipesCadastradas;
+        return $this;
+    }
+
+    public function setEquipesExcluidas(Collection $equipesExcluidas)
+    {
+        $this->equipesExcluidas = $equipesExcluidas;
+        return $this;
+    }
+
+    public function setProfissionaisCadastradas(Collection $profissionaisCadastradas)
+    {
+        $this->profissionaisCadastradas = $profissionaisCadastradas;
+        return $this;
+    }
+
+    public function setProfissionaisExcluidas(Collection $profissionaisExcluidas)
+    {
+        $this->profissionaisExcluidas = $profissionaisExcluidas;
+        return $this;
+    }
+
+
 
 
 

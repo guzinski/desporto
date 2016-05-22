@@ -61,7 +61,6 @@ class Equipe extends BaseEntity
      * )
      */
     private $arquivos;
-
     
     /**
      * @var DateTime
@@ -73,12 +72,22 @@ class Equipe extends BaseEntity
     /**
      * @var Usuario
      *
-     * @ORM\ManyToOne(targetEntity="Usuario", inversedBy="produtos")
+     * @ORM\ManyToOne(targetEntity="Usuario", inversedBy="equipesCadastradas")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="usuario", referencedColumnName="id")
      * })
      */
-    private $usuario;
+    private $usuarioCadastro;
+    
+    /**
+     * @var Usuario
+     *
+     * @ORM\ManyToOne(targetEntity="Usuario", inversedBy="equipesExcluidas")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="usuario", referencedColumnName="id")
+     * })
+     */
+    private $usuarioExclusao;
 
     public function __construct()
     {
@@ -154,10 +163,6 @@ class Equipe extends BaseEntity
         return $this->dataExclusao;
     }
 
-    public function getUsuario()
-    {
-        return $this->usuario;
-    }
 
     public function setResponsavel($responsavel)
     {
@@ -176,10 +181,26 @@ class Equipe extends BaseEntity
         $this->dataExclusao = $dataExclusao;
         return $this;
     }
-
-    public function setUsuario(Usuario $usuario)
+    
+    public function getUsuarioCadastro()
     {
-        $this->usuario = $usuario;
+        return $this->usuarioCadastro;
+    }
+
+    public function setUsuarioCadastro(Usuario $usuarioCadastro)
+    {
+        $this->usuarioCadastro = $usuarioCadastro;
+        return $this;
+    }
+
+    public function getUsuarioExclusao()
+    {
+        return $this->usuarioExclusao;
+    }
+
+    public function setUsuarioExclusao(Usuario $usuarioExclusao)
+    {
+        $this->usuarioExclusao = $usuarioExclusao;
         return $this;
     }
 

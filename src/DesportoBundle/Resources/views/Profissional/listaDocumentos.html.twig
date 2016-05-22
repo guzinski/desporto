@@ -1,8 +1,0 @@
-<div class="list-group">
-    {% for arquivo in cliente.arquivos %}
-        <a class="list-group-item" target="_blank" href="{{ path("cliente_arquivo_download", {"nome": arquivo.nome}) }}">{{arquivo.nome}}</a>
-    {% else %}
-        <p>Nenhum arquivo para este cliente</p>
-    {% endfor %}
-    
-</div>

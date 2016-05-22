@@ -92,12 +92,22 @@ class Profissional extends BaseEntity
     /**
      * @var Usuario
      *
-     * @ORM\ManyToOne(targetEntity="Usuario", inversedBy="produtos")
+     * @ORM\ManyToOne(targetEntity="Usuario", inversedBy="profissionaisCadastradas")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="usuario", referencedColumnName="id")
      * })
      */
-    private $usuario;
+    private $usuarioCadastro;
+    
+    /**
+     * @var Usuario
+     *
+     * @ORM\ManyToOne(targetEntity="Usuario", inversedBy="profissionaisExcluidas")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="usuario", referencedColumnName="id")
+     * })
+     */
+    private $usuarioExclusao;
 
     
     public function __construct()
@@ -149,11 +159,6 @@ class Profissional extends BaseEntity
     public function getDataExclusao()
     {
         return $this->dataExclusao;
-    }
-
-    public function getUsuario()
-    {
-        return $this->usuario;
     }
 
     public function setNome($nome)
@@ -210,15 +215,32 @@ class Profissional extends BaseEntity
         return $this;
     }
 
-    public function setUsuario(Usuario $usuario)
-    {
-        $this->usuario = $usuario;
-        return $this;
-    }
-
     public function getLabel()
     {
         $this->nome." - ".$this->cpf;
+    }
+
+
+    public function getUsuarioCadastro()
+    {
+        return $this->usuarioCadastro;
+    }
+
+    public function getUsuarioExclusao()
+    {
+        return $this->usuarioExclusao;
+    }
+
+    public function setUsuarioCadastro(Usuario $usuarioCadastro)
+    {
+        $this->usuarioCadastro = $usuarioCadastro;
+        return $this;
+    }
+
+    public function setUsuarioExclusao(Usuario $usuarioExclusao)
+    {
+        $this->usuarioExclusao = $usuarioExclusao;
+        return $this;
     }
 
 
