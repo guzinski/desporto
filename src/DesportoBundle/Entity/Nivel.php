@@ -56,8 +56,11 @@ class Nivel
     private $permissoes;
 
 
-    public function __construct()
+    public function __construct($nome = null)
     {
+        if ($nome != null) {
+            $this->setNome($nome);
+        }
         $this->setUsuarios(new ArrayCollection());
         $this->setPermissoes(new ArrayCollection());
     }

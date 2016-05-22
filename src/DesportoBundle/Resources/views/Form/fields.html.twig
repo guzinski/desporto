@@ -1,0 +1,78 @@
+{% block _cliente_tipo_widget %}
+{% spaceless %}
+    {% if expanded %}
+        <div>
+        {% for child in form %}
+            {{ form_widget(child) }}
+        {% endfor %}
+        </div>
+    {% endif %}
+{% endspaceless %}
+{% endblock _cliente_tipo_widget %}
+
+{% block _cliente_tipo_row %}
+    <div class="form-group">
+        <div class="col-sm-12">
+            {{ form_widget(form, { 'attr': {'class': 'form-control'} }) }}
+        </div>
+        {{ form_errors(form) }}
+    </div>
+{% endblock _cliente_tipo_row %}
+
+{% block _nivel_permissoes_widget %}
+{% spaceless %}
+    {% if expanded %}
+        <div>
+        {% for child in form %}
+            {{ form_widget(child) }}
+        {% endfor %}
+        </div>
+    {% endif %}
+{% endspaceless %}
+{% endblock _nivel_permissoes_widget %}
+
+{% block radio_widget %}
+{% spaceless %}
+    <div class="rdio rdio-default">
+        <input type="radio" {{ block('widget_attributes') }}{% if value is defined %} value="{{ value }}"{% endif %}{% if checked %} checked="checked"{% endif %} />
+        <label  for="{{ id }}">{{ label|trans }}</label>
+    </div>
+{% endspaceless %}
+{% endblock radio_widget %}
+
+{% block checkbox_widget %}
+{% spaceless %}
+    <div class="checkbox block">
+        <label  for="{{ id }}"><input type="checkbox" {{ block('widget_attributes') }}{% if value is defined %} value="{{ value }}"{% endif %}{% if checked %} checked="checked"{% endif %} />{{ label|trans }}</label>
+    </div>
+{% endspaceless %}
+{% endblock checkbox_widget %}
+
+
+{% block form_row %}
+    <div class="form-group  {% if errors|length > 0 %} has-error {% endif %}">
+        <label class="col-sm-3 control-label">{{ form_label(form) }}
+            {% if required %}
+                <span class="asterisk">*</span>
+            {% endif %}
+        </label>
+        <div class="col-sm-5">
+            {{ form_widget(form, { 'attr': {'class': 'form-control'} }) }}
+        </div>
+        {{ form_errors(form) }}
+    </div>
+{% endblock form_row %}
+
+{% block form_errors %}
+    {% spaceless %}
+        {% if errors|length > 0 %}
+            {% for error in errors %}
+                <div class="row">
+                    <div class="alert alert-danger">
+                        <label class="error">{{ error.message }}</label>
+                    </div>
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endspaceless %}
+{% endblock form_errors %}

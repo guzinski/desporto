@@ -1,24 +1,36 @@
 # To get started with security, check out the documentation:
 # http://symfony.com/doc/current/book/security.html
 security:
-
+    encoders:
+        DesportoBundle\Entity\Usuario: plaintext
+            
     # http://symfony.com/doc/current/book/security.html#where-do-users-come-from-user-providers
     providers:
-        in_memory:
-            memory: ~
+        main:
+            entity: { class: DesportoBundle:Usuario, property: email }
 
     firewalls:
         # disables authentication for assets and the profiler, adapt it according to your needs
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
-
-        main:
+        login_firewall:
+            pattern:   ^/login$
             anonymous: ~
-            # activate different ways to authenticate
-
-            # http_basic: ~
-            # http://symfony.com/doc/current/book/security.html#a-configuring-how-your-users-will-authenticate
-
-            # form_login: ~
-            # http://symfony.com/doc/current/cookbook/security/form_login_setup.html
+        secured_area:
+            pattern:    ^/
+            form_login: 
+                check_path: _login_check
+                login_path: login
+                require_previous_session: true
+                use_referer: true
+                use_forward: true
+                always_use_default_target_path: false
+                # default_target_path:            /
+            logout:
+                path:   _logout
+                target: index
+            access_denied_handler: kernel.listener.access_denied.handler
+            
+    access_control:
+        - { path: ^/login,      roles: IS_AUTHENTICATED_ANONYMOUSLY }

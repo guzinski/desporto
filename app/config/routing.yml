@@ -3,6 +3,7 @@ desporto:
     type:     annotation
     prefix:   /
 
-app:
-    resource: "@AppBundle/Controller/"
-    type:     annotation
+_login_check:
+    path:    /login/verificacao
+_logout:
+    path:    /login/sair

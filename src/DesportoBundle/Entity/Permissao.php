@@ -47,8 +47,14 @@ class Permissao
      */
     private $niveis;
     
-    public function __construct()
+    public function __construct($nome = null, $role = null)
     {
+        if ($nome != null) {
+            $this->setNome($nome);
+        }
+        if ($role != null) {
+            $this->setRole($role);
+        }
         $this->setNiveis(new ArrayCollection());
     }
 

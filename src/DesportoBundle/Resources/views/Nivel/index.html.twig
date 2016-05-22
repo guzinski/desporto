@@ -1,0 +1,119 @@
+{% extends "SindipescaCobrancaBundle::layout.html.twig" %}
+{% if form %}
+{% form_theme form 'SindipescaCobrancaBundle:Form:fields.html.twig' %}
+{% endif %}
+{% block title %}Sindipesca | Configurações{% endblock %}
+{% block head %}
+    <link href="{{ asset('bundles/sindipescacobranca/css/basic.css') }}" rel="stylesheet" />
+    <link href="{{ asset('bundles/sindipescacobranca/css/dropzone.css') }}" rel="stylesheet" />
+    <link href="{{ asset('bundles/sindipescacobranca/css/bootstrap-wysihtml5.css') }}" rel="stylesheet" />
+    <script src="{{ asset('bundles/sindipescacobranca/js/jquery.validate.min.js') }}"></script>
+    <script src="{{ asset('bundles/sindipescacobranca/js/messages_ptbr.js') }}"></script>
+    <script src="{{ asset('bundles/sindipescacobranca/js/validate/additional-methods.js') }}"></script>
+    <script src="{{ asset('bundles/sindipescacobranca/js/jquery-ui-1.10.3.min.js') }}"></script>
+    <script src="{{ asset('bundles/sindipescacobranca/js/dropzone.min.js') }}"></script>
+    <script src="{{ asset('bundles/sindipescacobranca/js/select2.min.js') }}"></script>
+    <script src="{{ asset('bundles/sindipescacobranca/js/jquery.maskMoney.js') }}"></script>
+    <script type="text/javascript">
+        jQuery(document).ready(function(){
+            jQuery('#loading').hide();
+            jQuery('select').select2().on("change", function(e) {
+                if (e.val!="") {
+                    location.href = "{{ path("_nivel") }}/"+e.val
+                }
+            })
+            jQuery('.select2-container').removeClass("form-control").css("width", "100%")
+
+            jQuery("#basicForm").validate({
+                highlight: function(element) {
+                    jQuery(element).closest('.form-group').removeClass('has-success').addClass('has-error');
+                },
+                success: function(element) {
+                    jQuery(element).closest('.form-group').removeClass('has-error');
+                },
+                errorPlacement: function(error, element) {
+                    jQuery(element).closest('.form-group').append(error);
+                },
+                submitHandler: function(form) {
+                    jQuery("#salvar").hide();
+                    jQuery('#loading').show();
+                    form.submit();
+               }
+            });
+            
+        });
+            
+            
+        
+    </script>
+{% endblock %}
+
+{% block mainpanel %}
+<div class="pageheader">
+    <div class="media">
+        <div class="pageicon pull-left">
+            <i class="fa fa-gear"></i>
+        </div>
+        <div class="media-body">
+            <ul class="breadcrumb">
+                <li><a href=""><i class="glyphicon glyphicon-gear"></i></a></li>
+                <li><a href="">Configurações</a></li>
+            </ul>
+            <h4>Configurações de acesso</h4>
+        </div>
+    </div><!-- media -->
+</div><!-- pageheader -->
+
+<div class="contentpanel">
+    <div class="row">
+        <div class="col-md-12">
+            
+            <form method="POST" class="form-horizontal form-bordered" id="basicForm" action="">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <div class="panel-btns" style="display: none;">
+                            <a title="" data-toggle="tooltip" class="panel-minimize tooltips" href="" data-original-title="Minimize Panel"><i class="fa fa-minus"></i></a>
+                            <a title="" data-toggle="tooltip" class="panel-close tooltips" href="" data-original-title="Close Panel"><i class="fa fa-times"></i></a>
+                        </div><!-- panel-btns -->
+                        <h4 class="panel-title">Selecione um nível</h4>
+                        <p>Um nível precisa se selecionado para alterar susas permissões</p>
+                    </div>
+                    <div class="panel-body">
+                        <div class="form-group">
+                            <div class="col-sm-8">
+                                <select id="nivel">
+                                    <option value="">Selecione</option>
+                                    {% for nivel in niveis %}
+                                        <option {% if nivel.id==id %} selected="selected" {% endif %} value="{{ nivel.id }}">{{ nivel.nome }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div><!-- form-group -->
+                    </div><!-- panel-body -->
+                </div>
+                {% if form %}
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <div class="row">
+                        {{ form_row(form.permissoes) }}
+                        {{ form_row(form._token) }}
+                        {{ form_errors(form) }}
+                    </div><!-- row -->
+                </div><!-- panel-body -->
+                <div class="panel-footer">
+                  <div class="row">
+                    <div class="col-sm-9 col-sm-offset-3">
+                        <img src="{{ asset('bundles/sindipescacobranca/images/loading.gif') }}" id="loading" alt="Carregando" />
+                        <button id="salvar" class="btn btn-primary mr5">Salvar</button>
+                        <button type="button" onclick="history.back()" class="btn btn-default mr5">Cancelar</button>
+                    </div>
+                  </div>
+                </div><!-- panel-footer -->  
+            </div><!-- panel -->
+            {% endif %}
+            </form>
+            
+        </div><!-- col-md-12 -->
+    </div><!-- row -->
+</div><!-- contentpanel -->
+{% endblock %}
