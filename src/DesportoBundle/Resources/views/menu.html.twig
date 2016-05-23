@@ -23,6 +23,15 @@
             </ul>
         </li>
         {% endif  %}
+        {% if is_granted('ROLE_CAMPEONATO') %}
+        <li class="parent {% if 'campeonato' in app.request.get('_route') %} active{% endif %}"><a href=""><i class="fa fa-search"></i> <span>Campeonatos</span></a>
+            <ul class="children" >
+                <li {% if 'campeonato' in app.request.get('_route') %} class="active"{% endif %}><a href="{{ path('campeonato_novo') }}">Novo</a></li>
+                <li {% if 'campeonato' in app.request.get('_route') %} class="active"{% endif %}><a href="{{ path('campeonato_andamento') }}">Em Andamento</a></li>
+                <li {% if 'campeonato' in app.request.get('_route') %} class="active"{% endif %}><a href="{{ path('campeonato_encerrados') }}">Encerrados</a></li>
+            </ul>
+        </li>
+        {% endif  %}
     </ul>
 
 </div><!-- leftpanel -->

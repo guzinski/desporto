@@ -84,6 +84,7 @@ class EquipeController extends Controller
             $equipe = $em->find(Equipe::class, $id);
         } else {
             $equipe = new Equipe();
+            $equipe->setUsuarioCadastro($this->getUser());
         }
         $arquivos = clone $equipe->getArquivos();
         $form = $this->createForm(EquipeType::class, $equipe);

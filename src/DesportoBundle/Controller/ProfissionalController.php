@@ -82,6 +82,7 @@ class ProfissionalController extends Controller
             $profissional = $em->find(Profissional::class, $id);
         } else {
             $profissional = new Profissional();
+            $profissional->setUsuarioCadastro($this->getUser());
         }
         $arquivos = clone $profissional->getArquivos();
         $form = $this->createForm(ProfissionalType::class, $profissional);

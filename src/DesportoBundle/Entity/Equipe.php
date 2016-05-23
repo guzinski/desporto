@@ -88,6 +88,13 @@ class Equipe extends BaseEntity
      * })
      */
     private $usuarioExclusao;
+    
+    /**
+     * @var Collection
+     * @ORM\ManyToMany(targetEntity="EdicaoCampeonato", mappedBy="equipes")
+     **/
+    private $edicoesCampeonatos;
+
 
     public function __construct()
     {

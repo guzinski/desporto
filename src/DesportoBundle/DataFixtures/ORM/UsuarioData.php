@@ -9,7 +9,7 @@ use DesportoBundle\Entity\Permissao;
 use DesportoBundle\Entity\Usuario;
 
 /**
- * Description of NivelData
+ * Description of UsuarioData
  *
  * @author Luciano
  */
