@@ -1,0 +1,198 @@
+{% extends "DesportoBundle::layout.html.twig" %}
+{% block title %}Desporto | Cadastro de Campeonato{% endblock %}
+{% block head %}
+    <link href="{{ asset('bundles/desporto/css/dropzone.css') }}" rel="stylesheet" />
+    <script src="{{ asset('bundles/desporto/js/jquery.validate.min.js') }}"></script>
+    <script src="{{ asset('bundles/desporto/js/messages_ptbr.js') }}"></script>
+    <script src="{{ asset('bundles/desporto/js/validate/additional-methods.js') }}"></script>
+    <script src="{{ asset('bundles/desporto/js/jquery.maskedinput.min.js') }}"></script>
+    <script src="{{ asset('bundles/desporto/js/jquery.maskMoney.js') }}"></script>
+    <script src="{{ asset('bundles/desporto/js/jquery-ui-1.10.3.min.js') }}"></script>
+    <script src="{{ asset('bundles/desporto/js/dropzone.min.js') }}"></script>
+    <script src="{{ asset('bundles/desporto/js/bootbox.min.js') }}"></script>
+    <script src="{{ asset('bundles/desporto/js/bootstrap-wizard.min.js') }}"></script>
+    <script src="{{ asset('bundles/desporto/js/select2.min.js') }}"></script>
+    <script type="text/javascript" >
+    jQuery(document).ready(function(){
+        
+        // This will empty first option in select to enable placeholder
+        jQuery('select option:first-child').text('');
+
+        // Select2
+        jQuery("select").select2({
+            minimumResultsForSearch: -1
+        });
+
+        jQuery('#progressWizard').bootstrapWizard({
+            onTabShow: function(tab, navigation, index) {
+                tab.prevAll().addClass('done');
+                tab.nextAll().removeClass('done');
+                tab.removeClass('done');
+
+                var $total = navigation.find('li').length;
+                var $current = index + 1;
+
+                if($current >= $total) {
+                    $('#progressWizard').find('.wizard .next').addClass('hide');
+                    $('#progressWizard').find('.wizard .finish').removeClass('hide');
+                } else {
+                    $('#progressWizard').find('.wizard .next').removeClass('hide');
+                    $('#progressWizard').find('.wizard .finish').addClass('hide');
+                }
+
+                var $percent = ($current/$total) * 100;
+                $('#progressWizard').find('.progress-bar').css('width', $percent+'%');
+            }
+        });
+    })
+
+        
+    </script>
+{% endblock %}
+
+{% block mainpanel %}
+<div class="pageheader">
+    <div class="media">
+        <div class="pageicon pull-left">
+            <i class="fa fa-pencil"></i>
+        </div>
+        <div class="media-body">
+            <ul class="breadcrumb">
+                <li><a href="{{ path('index') }}"><i class="glyphicon glyphicon-home"></i></a></li>
+                <li><a href="{{ path('equipe_index') }}">Campeonato</a></li>
+                <li> Cadastro de Campeonato </li>
+            </ul>
+            <h4> Cadastro de Campeonato </h4>
+        </div>
+    </div><!-- media -->
+</div><!-- pageheader -->
+
+<div class="contentpanel">
+    <div class="row">
+        <div class="col-md-12">
+            <h5 class="lg-title">Wizard with Progress Bar</h5>
+            <p class="mb20">Same with basic wizard setup but with progress bar.</p>
+
+            <!-- PROGRESS WIZARD -->
+            <form method="post" action="teste" id="progressWizard" class="panel-wizard">
+                <ul class="nav nav-justified nav-wizard">
+                    <li><a href="#tab1-2" data-toggle="tab"><strong>Step 1:</strong> Basic Info</a></li>
+                    <li><a href="#tab2-2" data-toggle="tab"><strong>Step 2:</strong> Product Info</a></li>
+                    <li><a href="#tab3-2" data-toggle="tab"><strong>Step 3:</strong> Payment</a></li>
+                </ul>
+
+                <div class="progress progress-xs">
+                    <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+
+                <div class="tab-content">
+
+                    <div class="tab-pane" id="tab1-2">
+                        <div class="form-group">
+                            <label class="col-sm-4">Firstname</label>
+                            <div class="col-sm-8">
+                                <input type="text" name="firstname" class="form-control" />
+                            </div>
+                        </div><!-- form-group -->
+
+                        <div class="form-group">
+                            <label class="col-sm-4">Lastname</label>
+                            <div class="col-sm-8">
+                                <input type="text" name="lastname" class="form-control" />
+                            </div>
+                        </div><!-- form-group -->
+
+                        <div class="form-group">
+                            <label class="col-sm-4">Gender</label>
+                            <div class="col-sm-8">
+                                <div class="rdio rdio-primary">
+                                    <input type="radio" checked="checked" id="male2" value="m" name="radio">
+                                    <label for="male2">Male</label>
+                                </div>
+                                <div class="rdio rdio-primary">
+                                    <input type="radio" value="f" id="female2" name="radio">
+                                    <label for="female2">Female</label>
+                                </div>
+                            </div>
+                        </div><!-- form-group -->
+                    </div><!-- tab-pane -->
+
+                    <div class="tab-pane" id="tab2-2">
+                        <div class="form-group">
+                            <label class="col-sm-4">Product ID</label>
+                            <div class="col-sm-5">
+                                <input type="text" name="product_id" class="form-control" />
+                            </div>
+                        </div><!-- form-group -->
+
+                        <div class="form-group">
+                            <label class="col-sm-4">Product Name</label>
+                            <div class="col-sm-8">
+                                <input type="text" name="product_name" class="form-control" />
+                            </div>
+                        </div><!-- form-group -->
+
+                        <div class="form-group">
+                            <label class="col-sm-4">Category</label>
+                            <div class="col-sm-4">
+                                <select class="width100p" data-placeholder="Choose One">
+                                    <option value="">Choose One</option>
+                                    <option value="">3D Animation</option>
+                                    <option value="">Web Design</option>
+                                    <option value="">Software Engineering</option>
+                                </select>
+                            </div>
+                        </div><!-- form-group -->
+                    </div><!-- tab-pane -->
+
+                    <div class="tab-pane" id="tab3-2">
+                        <div class="form-group">
+                            <label class="col-sm-4">Card No</label>
+                            <div class="col-sm-8">
+                                <input type="text" name="cardno" class="form-control" />
+                            </div>
+                        </div><!-- form-group -->
+
+                        <div class="form-group">
+                            <label class="col-sm-4">Expiration</label>
+                            <div class="col-sm-4">
+                                <select class="width100p" data-placeholder="Month">
+                                    <option value="">Choose One</option>
+                                    <option value="">January</option>
+                                    <option value="">February</option>
+                                    <option value="">March</option>
+                                    <option value="">...</option>
+                                </select>
+                            </div>
+                            <div class="col-sm-4">
+                                <select class="width100p" data-placeholder="Year">
+                                    <option value="">Choose One</option>
+                                    <option value="">2013</option>
+                                    <option value="">2014</option>
+                                    <option value="">2015</option>
+                                    <option value="">...</option>
+                                </select>
+                            </div>
+                        </div><!-- form-group -->
+
+                        <div class="form-group">
+                            <label class="col-sm-4">CSV</label>
+                            <div class="col-sm-4">
+                                <input type="text" name="csv" class="form-control" />
+                            </div>
+                        </div><!-- form-group -->
+                    </div><!-- tab-pane -->
+                </div><!-- tab-content -->
+
+                <ul class="list-unstyled wizard">
+                    <li class="pull-left previous"><button type="button" class="btn btn-default">Previous</button></li>
+                    <li class="pull-right next"><button type="button" class="btn btn-primary">Next</button></li>
+                    <li class="pull-right finish hide"><button type="submit" class="btn btn-primary">Finish</button></li>
+                </ul>
+
+            </form><!-- panel-wizard -->
+            
+        </div><!-- col-md-12 -->
+    </div><!-- row -->
+</div><!-- contentpanel -->
+{% endblock %}

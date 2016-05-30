@@ -25,6 +25,7 @@ class UsuarioData implements FixtureInterface
         $nivel->getPermissoes()->add(new Permissao("Usuários", "USUARIO"));
         $nivel->getPermissoes()->add(new Permissao("Profissional", "PROFISSIONAL"));
         $nivel->getPermissoes()->add(new Permissao("Equipe", "EQUIPE"));
+        $nivel->getPermissoes()->add(new Permissao("Campeonato", "CAMPEONATO"));
 
         $manager->persist($nivel);
         

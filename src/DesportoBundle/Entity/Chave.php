@@ -36,13 +36,58 @@ class Chave extends BaseEntity
     private $equipes;
     
     /**
+     * número da chave
      * @var int
      *
-     * Número da chave
-     * 
      * @ORM\Column(type="integer", nullable=false)
      */
     private $numero;
+    
+    public function getId()
+    {
+        return $this->id;
+    }
+    
+    public function getLabel()
+    {
+        return $this->getNumero();
+    }
 
+
+    public function getUsuario()
+    {
+        return $this->usuario;
+    }
+
+    public function getEquipes()
+    {
+        return $this->equipes;
+    }
+
+    public function getNumero()
+    {
+        return $this->numero;
+    }
+
+    public function setUsuario(EdicaoCampeonato $usuario)
+    {
+        $this->usuario = $usuario;
+        return $this;
+    }
+
+    public function setEquipes($equipes)
+    {
+        $this->equipes = $equipes;
+        return $this;
+    }
+
+    public function setNumero($numero)
+    {
+        $this->numero = $numero;
+        return $this;
+    }
+
+
+    
     
 }

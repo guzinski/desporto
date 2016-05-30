@@ -15,20 +15,19 @@
             </ul>
         </li>
         {% endif  %}
+        {% if is_granted('ROLE_CAMPEONATO') %}
+        <li class="parent {% if 'campeonato' in app.request.get('_route')  %} active{% endif %}"><a href=""><i class="fa fa-users"></i> <span>Campeonatos</span></a>
+            <ul class="children" >
+                <li><a href="#">Em Andamento</a></li>
+                <li><a href="#">Finalizados</a></li>
+            </ul>
+        </li>
+        {% endif  %}
         {% if is_granted('ROLE_PROFISSIONAL') or is_granted('ROLE_EQUIPE') %}
         <li class="parent {% if 'profissional' in app.request.get('_route') or 'equipe' in app.request.get('_route') %} active{% endif %}"><a href=""><i class="fa fa-search"></i> <span>Consulta</span></a>
             <ul class="children" >
                 <li {% if 'profissional' in app.request.get('_route') %} class="active"{% endif %}><a href="{{ path('profissional_index') }}">Profissionais</a></li>
                 <li {% if 'equipe' in app.request.get('_route') %} class="active"{% endif %}><a href="{{ path('equipe_index') }}">Equipes</a></li>
-            </ul>
-        </li>
-        {% endif  %}
-        {% if is_granted('ROLE_CAMPEONATO') %}
-        <li class="parent {% if 'campeonato' in app.request.get('_route') %} active{% endif %}"><a href=""><i class="fa fa-search"></i> <span>Campeonatos</span></a>
-            <ul class="children" >
-                <li {% if 'campeonato' in app.request.get('_route') %} class="active"{% endif %}><a href="{{ path('campeonato_novo') }}">Novo</a></li>
-                <li {% if 'campeonato' in app.request.get('_route') %} class="active"{% endif %}><a href="{{ path('campeonato_andamento') }}">Em Andamento</a></li>
-                <li {% if 'campeonato' in app.request.get('_route') %} class="active"{% endif %}><a href="{{ path('campeonato_encerrados') }}">Encerrados</a></li>
             </ul>
         </li>
         {% endif  %}
