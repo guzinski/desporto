@@ -54,17 +54,16 @@ class EdicaoCampeonato extends BaseEntity
 
     
     /**
-     * número de equipes inscritas
-     * @var int
      * 
+     * @var int
+     * número de equipes inscritas
      * @ORM\Column(name="quantidade_equipes", type="integer", nullable=false)
      */
     private $quantidadeEquipes;
     
     /**
-     * quantidade máxima de jogadores por equipe
      * @var int
-     *
+     * quantidade máxima de jogadores por equipe
      * @ORM\Column(name="quantidade_jogadores", type="integer", nullable=false)
      */
     private $quantidadeJogadores;
@@ -232,7 +231,7 @@ class EdicaoCampeonato extends BaseEntity
         return $this;
     }
 
-    public function setQuantidadeJogadores(int $quantidadeJogadores)
+    public function setQuantidadeJogadores($quantidadeJogadores)
     {
         $this->quantidadeJogadores = $quantidadeJogadores;
         return $this;
