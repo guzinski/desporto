@@ -1,35 +1,5 @@
-{% block _cliente_tipo_widget %}
-{% spaceless %}
-    {% if expanded %}
-        <div>
-        {% for child in form %}
-            {{ form_widget(child) }}
-        {% endfor %}
-        </div>
-    {% endif %}
-{% endspaceless %}
-{% endblock _cliente_tipo_widget %}
 
-{% block _cliente_tipo_row %}
-    <div class="form-group">
-        <div class="col-sm-12">
-            {{ form_widget(form, { 'attr': {'class': 'form-control'} }) }}
-        </div>
-        {{ form_errors(form) }}
-    </div>
-{% endblock _cliente_tipo_row %}
 
-{% block _nivel_permissoes_widget %}
-{% spaceless %}
-    {% if expanded %}
-        <div>
-        {% for child in form %}
-            {{ form_widget(child) }}
-        {% endfor %}
-        </div>
-    {% endif %}
-{% endspaceless %}
-{% endblock _nivel_permissoes_widget %}
 
 {% block radio_widget %}
 {% spaceless %}

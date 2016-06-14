@@ -1,4 +1,5 @@
 {% extends "DesportoBundle::layout.html.twig" %}
+{% form_theme form 'DesportoBundle:Form:fields.html.twig' %}
 {% block title %}Desporto | Cadastro de Campeonato{% endblock %}
 {% block head %}
     <link href="{{ asset('bundles/desporto/css/dropzone.css') }}" rel="stylesheet" />
@@ -14,24 +15,26 @@
     <script src="{{ asset('bundles/desporto/js/select2.min.js') }}"></script>
     <script type="text/javascript" >
     jQuery(document).ready(function(){
-        
-        // This will empty first option in select to enable placeholder
-        jQuery('select option:first-child').text('');
-
         // Select2
         jQuery("select").select2({
             minimumResultsForSearch: -1
         });
+        jQuery('.select2-container').removeClass("form-control").css("width", "100%")
+        
+        
+        jQuery("input[type='number']").keyup(function(){
+            var valor = jQuery(this).val();
+            jQuery(this).val(valor.replace(/[^\d]/gi, ""));
+        }).spinner({ min:1 });
 
+        
         jQuery('#progressWizard').bootstrapWizard({
             onTabShow: function(tab, navigation, index) {
                 tab.prevAll().addClass('done');
                 tab.nextAll().removeClass('done');
                 tab.removeClass('done');
-
                 var $total = navigation.find('li').length;
                 var $current = index + 1;
-
                 if($current >= $total) {
                     $('#progressWizard').find('.wizard .next').addClass('hide');
                     $('#progressWizard').find('.wizard .finish').removeClass('hide');
@@ -39,7 +42,6 @@
                     $('#progressWizard').find('.wizard .next').removeClass('hide');
                     $('#progressWizard').find('.wizard .finish').addClass('hide');
                 }
-
                 var $percent = ($current/$total) * 100;
                 $('#progressWizard').find('.progress-bar').css('width', $percent+'%');
             }
@@ -70,8 +72,8 @@
 <div class="contentpanel">
     <div class="row">
         <div class="col-md-12">
-            <h5 class="lg-title">Wizard with Progress Bar</h5>
-            <p class="mb20">Same with basic wizard setup but with progress bar.</p>
+            <h5 class="lg-title">Dados do Campeonato</h5>
+            <p class="mb20">Informe os dados da edição do campeonato.</p>
 
             <!-- PROGRESS WIZARD -->
             <form method="post" action="teste" id="progressWizard" class="panel-wizard">
@@ -88,33 +90,19 @@
                 <div class="tab-content">
 
                     <div class="tab-pane" id="tab1-2">
-                        <div class="form-group">
-                            <label class="col-sm-4">Firstname</label>
-                            <div class="col-sm-8">
-                                <input type="text" name="firstname" class="form-control" />
-                            </div>
-                        </div><!-- form-group -->
+                        
+                        <div class="row">
+                            {{ form_row(form.campeonato) }}
+                            {{ form_row(form.modalidade) }}
+                            {{ form_row(form.quantidadeEquipes) }}
+                            {{ form_row(form.quantidadeJogadores) }}
+                            {{ form_row(form.tipo) }}
+                            {{ form_row(form.quantidadeChaves) }}
+                            {{ form_row(form.desempate1) }}
+                            {{ form_row(form.desempate2) }}
+                            {{ form_row(form.desempate3) }}
+                        </div>
 
-                        <div class="form-group">
-                            <label class="col-sm-4">Lastname</label>
-                            <div class="col-sm-8">
-                                <input type="text" name="lastname" class="form-control" />
-                            </div>
-                        </div><!-- form-group -->
-
-                        <div class="form-group">
-                            <label class="col-sm-4">Gender</label>
-                            <div class="col-sm-8">
-                                <div class="rdio rdio-primary">
-                                    <input type="radio" checked="checked" id="male2" value="m" name="radio">
-                                    <label for="male2">Male</label>
-                                </div>
-                                <div class="rdio rdio-primary">
-                                    <input type="radio" value="f" id="female2" name="radio">
-                                    <label for="female2">Female</label>
-                                </div>
-                            </div>
-                        </div><!-- form-group -->
                     </div><!-- tab-pane -->
 
                     <div class="tab-pane" id="tab2-2">

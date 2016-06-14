@@ -14,8 +14,8 @@ use Doctrine\ORM\Mapping as ORM;
 class EdicaoCampeonato extends BaseEntity
 {
     
-    const MASCULINO = "F";
-    const FEMININO = "M";
+    const MASCULINO = "M";
+    const FEMININO = "F";
     
     const TORNEIO = "T";
     const CHAVE = "C";
@@ -45,7 +45,7 @@ class EdicaoCampeonato extends BaseEntity
     /**
      *  @ORM\Column(type="string", columnDefinition="ENUM('F', 'M')", nullable=false)
      */
-    private $categoria;
+    private $modalidade;
     
     /**
      *  @ORM\Column(type="string", columnDefinition="ENUM('T', 'C')", nullable=false)
@@ -72,7 +72,7 @@ class EdicaoCampeonato extends BaseEntity
      * número de chaves do campeonato
      * @var int
      * 
-     * @ORM\Column(name="quantidade_chaves", type="integer", nullable=true)
+     * @ORM\Column(name="quantidade_chaves", type="integer", nullable=false)
      */
     private $quantidadeChaves;
     
@@ -139,11 +139,6 @@ class EdicaoCampeonato extends BaseEntity
     public function getCampeonato()
     {
         return $this->campeonato;
-    }
-
-    public function getCategoria()
-    {
-        return $this->categoria;
     }
 
     public function getTipo()
@@ -213,14 +208,12 @@ class EdicaoCampeonato extends BaseEntity
         return $this;
     }
 
-    public function setCategoria($categoria)
-    {
-        $this->categoria = $categoria;
-        return $this;
-    }
-
     public function setTipo($tipo)
     {
+        if (!in_array($tipo, array(self::TORNEIO, self::CHAVE))) {
+            throw new \InvalidArgumentException("Tipo Inválido");
+        }
+
         $this->tipo = $tipo;
         return $this;
     }
@@ -251,18 +244,27 @@ class EdicaoCampeonato extends BaseEntity
 
     public function setDesempate1($desempate1)
     {
+        if (!in_array($desempate1, array(self::VITORIA, self::DISCIPLINA, self::SALDO_GOLS))) {
+            throw new \InvalidArgumentException("Desempate 1 Inválido");
+        }
         $this->desempate1 = $desempate1;
         return $this;
     }
 
     public function setDesempate2($desempate2)
     {
+        if (!in_array($desempate2, array(self::VITORIA, self::DISCIPLINA, self::SALDO_GOLS))) {
+            throw new \InvalidArgumentException("Desempate 2 Inválido");
+        }
         $this->desempate2 = $desempate2;
         return $this;
     }
 
     public function setDesempate3($desempate3)
     {
+        if (!in_array($desempate3, array(self::VITORIA, self::DISCIPLINA, self::SALDO_GOLS))) {
+            throw new \InvalidArgumentException("Desempate 3 Inválido");
+        }
         $this->desempate3 = $desempate3;
         return $this;
     }
@@ -285,7 +287,23 @@ class EdicaoCampeonato extends BaseEntity
         return $this;
     }
 
+    public function getModalidade()
+    {
+        return $this->modalidade;
+    }
+
+    public function setModalidade($modalidade)
+    {
+        if (!in_array($tipo, array(self::MASCULINO, self::FEMININO))) {
+            throw new \InvalidArgumentException("Modalidade  Inválida");
+        }
+
         
+        $this->modalidade = $modalidade;
+        return $this;
+    }
+
+            
     
     public function getLabel()
     {

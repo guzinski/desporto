@@ -81,10 +81,12 @@ class Campeonato
     
     public function __toString()
     {
-        $this->getNome();
+        return $this->getNome();
     }
-
-
-
+    
+    public function getCampeonato()
+    {
+        return $this;
+    }
 
 }

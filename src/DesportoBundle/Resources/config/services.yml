@@ -23,3 +23,8 @@ services:
         arguments: ["@doctrine.orm.entity_manager"]
         tags:
             - { name: form.type }
+    desporto.form.edicaoCampeonato:
+        class: DesportoBundle\Form\EdicaoCampeonatoType
+        arguments: ["@doctrine.orm.entity_manager"]
+        tags:
+            - { name: form.type }

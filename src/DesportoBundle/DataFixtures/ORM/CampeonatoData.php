@@ -2,6 +2,8 @@
 
 namespace DesportoBundle\DataFixtures\ORM;
 
+use DesportoBundle\Entity\Campeonato;
+use DesportoBundle\Entity\Modalidade;
 use Doctrine\Common\DataFixtures\FixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 
@@ -14,14 +16,14 @@ class CampeonatoData implements FixtureInterface
 {
     public function load(ObjectManager $manager)
     {
-        $modalidadeCampo = New \DesportoBundle\Entity\Modalidade("Campo");
-        $modalidadeFutsal = New \DesportoBundle\Entity\Modalidade("Futsal");
+        $modalidadeCampo = New Modalidade("Campo");
+        $modalidadeFutsal = New Modalidade("Futsal");
         
-        $campoSerieOuro = new \DesportoBundle\Entity\Campeonato("Campo - Série Ouro", $modalidadeCampo);
-        $campoSeriePrata = new \DesportoBundle\Entity\Campeonato("Campo - Série Prata", $modalidadeCampo);
-        $futsalSerieOuro = new \DesportoBundle\Entity\Campeonato("Futsal - Série Ouro", $modalidadeFutsal);
-        $futsalSeriePrata = new \DesportoBundle\Entity\Campeonato("Futsal - Série Prata", $modalidadeFutsal);
-        $futsalSerieBronze = new \DesportoBundle\Entity\Campeonato("Futsal - Série Bronze", $modalidadeFutsal);
+        $campoSerieOuro = new Campeonato("Campo - Série Ouro", $modalidadeCampo);
+        $campoSeriePrata = new Campeonato("Campo - Série Prata", $modalidadeCampo);
+        $futsalSerieOuro = new Campeonato("Futsal - Série Ouro", $modalidadeFutsal);
+        $futsalSeriePrata = new Campeonato("Futsal - Série Prata", $modalidadeFutsal);
+        $futsalSerieBronze = new Campeonato("Futsal - Série Bronze", $modalidadeFutsal);
         
         
         $manager->persist($campoSerieOuro);
