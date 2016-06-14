@@ -27,7 +27,7 @@
             jQuery(this).val(valor.replace(/[^\d]/gi, ""));
         }).spinner({ min:1 });
 
-        
+
         jQuery('#progressWizard').bootstrapWizard({
             onTabShow: function(tab, navigation, index) {
                 tab.prevAll().addClass('done');
@@ -46,6 +46,28 @@
                 $('#progressWizard').find('.progress-bar').css('width', $percent+'%');
             }
         });
+        
+        jQuery("#progressWizard").validate({
+            highlight: function(element) {
+                jQuery(element).closest('.form-group').removeClass('has-success').addClass('has-error');
+            },
+            success: function(element) {
+                jQuery(element).closest('.form-group').removeClass('has-error');
+            },
+            errorPlacement: function(error, element) {
+                jQuery(element).closest('.form-group').append(error);
+            },
+            validClass: "",
+            submitHandler: function(form) {
+                jQuery('button').hide();
+                jQuery('#loading').fadeIn(200);
+                form.submit();
+           }
+        });
+
+        
+        
+        
     })
 
         
@@ -78,9 +100,9 @@
             <!-- PROGRESS WIZARD -->
             <form method="post" action="teste" id="progressWizard" class="panel-wizard">
                 <ul class="nav nav-justified nav-wizard">
-                    <li><a href="#tab1-2" data-toggle="tab"><strong>Step 1:</strong> Basic Info</a></li>
-                    <li><a href="#tab2-2" data-toggle="tab"><strong>Step 2:</strong> Product Info</a></li>
-                    <li><a href="#tab3-2" data-toggle="tab"><strong>Step 3:</strong> Payment</a></li>
+                    <li><a href="#tab1-2" data-toggle="tab"><strong>Passo 1:</strong> Informações da competição</a></li>
+                    <li><a href="#tab2-2" data-toggle="tab"><strong>Passo 2:</strong> Seleção das equipes</a></li>
+                    <li><a href="#tab3-2" data-toggle="tab"><strong>Passo 3:</strong> Sorteio das chaves</a></li>
                 </ul>
 
                 <div class="progress progress-xs">
@@ -173,9 +195,9 @@
                 </div><!-- tab-content -->
 
                 <ul class="list-unstyled wizard">
-                    <li class="pull-left previous"><button type="button" class="btn btn-default">Previous</button></li>
-                    <li class="pull-right next"><button type="button" class="btn btn-primary">Next</button></li>
-                    <li class="pull-right finish hide"><button type="submit" class="btn btn-primary">Finish</button></li>
+                    <li class="pull-left previous"><button type="button" class="btn btn-default">Voltar</button></li>
+                    <li class="pull-right next"><button type="button" class="btn btn-primary">Próximo</button></li>
+                    <li class="pull-right finish hide"><button type="submit" class="btn btn-primary">salvar</button></li>
                 </ul>
 
             </form><!-- panel-wizard -->
