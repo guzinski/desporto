@@ -3,9 +3,11 @@
 namespace DesportoBundle\Entity;
 
 use DateTime;
+use DesportoBundle\Repository\ProfissionalRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use InvalidArgumentException;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -14,11 +16,11 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @ORM\Table(name="profissional")
  * @UniqueEntity(fields={"cpf"}, message="Este CPF já está cadastrado", repositoryMethod="uniqueEntity")
- * @ORM\Entity(repositoryClass="DesportoBundle\Repository\ProfissionalRepository")
+ * @ORM\Entity(repositoryClass="ProfissionalRepository")
  */
 class Profissional extends BaseEntity
 {
-   
+    
     const DIRETOR = "DIRETOR";
     const TECNICO = "TECNICO";
     const JOGADOR = "JOGADOR";
@@ -43,6 +45,12 @@ class Profissional extends BaseEntity
      * @ORM\Column(type="date", nullable=false)
      */
     private $nascimento;
+    
+    /**
+     *  @ORM\Column(type="sexotype", nullable=false)
+     */
+    private $sexo;
+
     
     /**
      * @var string
@@ -243,7 +251,21 @@ class Profissional extends BaseEntity
         return $this;
     }
 
+    public function getSexo()
+    {
+        return $this->sexo;
+    }
 
-    
+    public function setSexo($sexo)
+    {
+        if (!in_array($tipo, array(\DesportoBundle\Doctrine\Type\EnumSexoType::MASCULINO, \DesportoBundle\Doctrine\Type\EnumSexoType::FEMININO))) {
+            throw new InvalidArgumentException("Sexo Inválida");
+        }
+        
+        $this->sexo = $sexo;
+        return $this;
+    }
+
+
     
 }

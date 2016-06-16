@@ -14,11 +14,9 @@ use Doctrine\ORM\Mapping as ORM;
 class EdicaoCampeonato extends BaseEntity
 {
     
-    const MASCULINO = "M";
-    const FEMININO = "F";
-    
     const TORNEIO = "T";
     const CHAVE = "C";
+    const PONTOS_CORRIDOS = "p";
     
     
     const VITORIA = "V";
@@ -43,12 +41,12 @@ class EdicaoCampeonato extends BaseEntity
     private $campeonato;
 
     /**
-     *  @ORM\Column(type="string", columnDefinition="ENUM('F', 'M')", nullable=false)
+     *  @ORM\Column(type="sexotype", nullable=false)
      */
     private $modalidade;
     
     /**
-     *  @ORM\Column(type="string", columnDefinition="ENUM('T', 'C')", nullable=false)
+     *  @ORM\Column(type="string", columnDefinition="ENUM('T', 'C', 'p')", nullable=false)
      */
     private $tipo;
 

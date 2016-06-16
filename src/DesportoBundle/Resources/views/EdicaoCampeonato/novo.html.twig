@@ -15,20 +15,64 @@
     <script src="{{ asset('bundles/desporto/js/select2.min.js') }}"></script>
     <script type="text/javascript" >
     jQuery(document).ready(function(){
-        // Select2
+        //Select
         jQuery("select").select2({
             minimumResultsForSearch: -1
         });
         jQuery('.select2-container').removeClass("form-control").css("width", "100%")
         
-        
+        //Inputs numéricos
         jQuery("input[type='number']").keyup(function(){
             var valor = jQuery(this).val();
             jQuery(this).val(valor.replace(/[^\d]/gi, ""));
         }).spinner({ min:1 });
 
 
+        //Regras de campeonatos com chaves
+        jQuery("#edicao_campeonato_quantidadeChaves, #edicao_campeonato_quantidadeClassificadosChave").parent().parent().hide();
+
+
+        jQuery("#edicao_campeonato_tipo").change(function(){
+            if (jQuery(this).val()=="C") {
+                jQuery("#edicao_campeonato_quantidadeChaves, #edicao_campeonato_quantidadeClassificadosChave").parent().parent().show();
+            } else {
+                jQuery("#edicao_campeonato_quantidadeChaves, #edicao_campeonato_quantidadeClassificadosChave").parent().parent().hide();
+            }
+        });
+
+
+
+
+        jQuery("#progressWizard").validate({
+            rules: {
+                'edicao_campeonato[quantidadeEquipes]' : {min: 4, max: 64, digits: true},
+                'edicao_campeonato[quantidadeJogadores]' : {min: 5, max: 32, digits: true},
+            },
+            highlight: function(element) {
+                jQuery(element).closest('.form-group').removeClass('has-success').addClass('has-error');
+            },
+            success: function(element) {
+                jQuery(element).closest('.form-group').removeClass('has-error');
+            },
+            errorPlacement: function(error, element) {
+                jQuery(element).closest('.form-group').append(error);
+            },
+            validClass: "",
+            submitHandler: function(form) {
+                jQuery('button').hide();
+                jQuery('#loading').fadeIn(200);
+                form.submit();
+           }
+        });
+
+
+
         jQuery('#progressWizard').bootstrapWizard({
+            onNext: function(tab, navigation, index) {
+                if (!jQuery("#progressWizard").valid()) {
+                    return false;
+                }
+            },
             onTabShow: function(tab, navigation, index) {
                 tab.prevAll().addClass('done');
                 tab.nextAll().removeClass('done');
@@ -47,23 +91,6 @@
             }
         });
         
-        jQuery("#progressWizard").validate({
-            highlight: function(element) {
-                jQuery(element).closest('.form-group').removeClass('has-success').addClass('has-error');
-            },
-            success: function(element) {
-                jQuery(element).closest('.form-group').removeClass('has-error');
-            },
-            errorPlacement: function(error, element) {
-                jQuery(element).closest('.form-group').append(error);
-            },
-            validClass: "",
-            submitHandler: function(form) {
-                jQuery('button').hide();
-                jQuery('#loading').fadeIn(200);
-                form.submit();
-           }
-        });
 
         
         
@@ -84,9 +111,9 @@
             <ul class="breadcrumb">
                 <li><a href="{{ path('index') }}"><i class="glyphicon glyphicon-home"></i></a></li>
                 <li><a href="{{ path('equipe_index') }}">Campeonato</a></li>
-                <li> Cadastro de Campeonato </li>
+                <li> Novo Campeonato </li>
             </ul>
-            <h4> Cadastro de Campeonato </h4>
+            <h4> Novo Campeonato </h4>
         </div>
     </div><!-- media -->
 </div><!-- pageheader -->
@@ -116,10 +143,12 @@
                         <div class="row">
                             {{ form_row(form.campeonato) }}
                             {{ form_row(form.modalidade) }}
+                            {{ form_row(form.tipo) }}
                             {{ form_row(form.quantidadeEquipes) }}
                             {{ form_row(form.quantidadeJogadores) }}
-                            {{ form_row(form.tipo) }}
                             {{ form_row(form.quantidadeChaves) }}
+                            {{ form_row(form.quantidadeClassificadosChave) }}
+                            
                             {{ form_row(form.desempate1) }}
                             {{ form_row(form.desempate2) }}
                             {{ form_row(form.desempate3) }}

@@ -2,12 +2,14 @@
 
 namespace DesportoBundle\Form;
 
+use DesportoBundle\Doctrine\Type\EnumSexoType;
 use DesportoBundle\Entity\Campeonato;
 use DesportoBundle\Entity\EdicaoCampeonato;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -36,14 +38,13 @@ class EdicaoCampeonatoType extends AbstractType
             
         ));
         $builder->add("modalidade", ChoiceType::class, array(
-            'choices' => array('Feminino' => EdicaoCampeonato::FEMININO, 'Masculino' => EdicaoCampeonato::MASCULINO),
+            'choices' => array('Feminino' => EnumSexoType::FEMININO, 'Masculino' => EnumSexoType::MASCULINO),
             'placeholder' => "Selecione"
-            
         ));
         $builder->add("quantidadeEquipes");
         $builder->add("quantidadeJogadores");
         $builder->add("tipo", ChoiceType::class, array(
-            'choices' => array('Torneio' => EdicaoCampeonato::TORNEIO, 'Chave' => EdicaoCampeonato::CHAVE),
+            'choices' => array('Torneio' => EdicaoCampeonato::TORNEIO, 'Chave' => EdicaoCampeonato::CHAVE, 'Pontos Corridos'=> EdicaoCampeonato::PONTOS_CORRIDOS),
             'placeholder' => "Selecione"
             
         ));
@@ -64,7 +65,9 @@ class EdicaoCampeonatoType extends AbstractType
             'choices' => $desempate,
             'placeholder' => "Selecione"
         ));
-        $builder->add("quantidadeChaves");
+        $builder->add("quantidadeChaves", NumberType::class, array('label'=>'Número de chaves'));
+        $builder->add("quantidadeClassificadosChave", NumberType::class, array('label'=>'Classificados por Chave'));
+        
         
     }
 
