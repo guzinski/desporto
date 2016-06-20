@@ -3690,3 +3690,37 @@ textArea {
 .has-error .select2-container .select2-choice  {
     border-color: #a94442;
 }
+
+.ui-autocomplete {
+    margin-top: -1px;
+    border-radius: 0 0 4px 4px;
+    background-color: #ffffff;
+    border: 1px solid #999;
+    -webkit-box-shadow: 0 4px 5px rgba(0, 0, 0, 0.15);
+    -moz-box-shadow: 0 4px 5px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 4px 5px rgba(0, 0, 0, 0.15);
+    -webkit-background-clip: padding-box;
+    -moz-background-clip: padding;
+    background-clip: padding-box;
+    *border-right-width: 2px;
+    *border-bottom-width: 2px;
+}
+.ui-autocomplete .ui-menu-item > a.ui-corner-all {
+  display: block;
+  padding: 3px 15px;
+  clear: both;
+  font-weight: normal;
+  line-height: 18px;
+  color: #555555;
+  white-space: nowrap;
+}
+.ui-autocomplete .ui-menu-item > a.ui-corner-all.ui-state-hover, .ui-autocomplete .ui-menu-item > a.ui-corner-all.ui-state-active, .ui-autocomplete .ui-menu-item > a.ui-corner-all.ui-state-focus {
+  color: #ffffff;
+  text-decoration: none;
+  background-color: #428bca;
+  border-radius: 2px;
+  -webkit-border-radius: 0px;
+  -moz-border-radius: 0px;
+  background-image: none;
+}
+Sign up for free

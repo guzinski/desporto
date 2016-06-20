@@ -89,7 +89,42 @@
                 
                 if (index === 1) {
                     
-                    
+                    var totalEquipes = jQuery("#edicao_campeonato_quantidadeEquipes").val();
+                    var html = '{% include 'DesportoBundle::EdicaoCampeonato/inputEqiope.html.twig' %}';
+                    jQuery("#tab2-2 .row").html("");
+                    for (var i=0; i<totalEquipes; i++) {
+                        
+                        jQuery("#tab2-2 .row").append(html.replace(/__num__/g, i+1));
+                        
+                        
+                    }
+                        var availableTags = [
+                            "ActionScript",
+                            "AppleScript",
+                            "Asp",
+                            "BASIC",
+                            "C",
+                            "C++",
+                            "Clojure",
+                            "COBOL",
+                            "ColdFusion",
+                            "Erlang",
+                            "Fortran",
+                            "Groovy",
+                            "Haskell",
+                            "Java",
+                            "JavaScript",
+                            "Lisp",
+                            "Perl",
+                            "PHP",
+                            "Python",
+                            "Ruby",
+                            "Scala",
+                            "Scheme"
+                          ];
+                          jQuery( ".completeEquipe" ).autocomplete({
+                            source: availableTags
+                          });
                     
                     
                     
@@ -168,16 +203,9 @@
                     </div><!-- tab-pane -->
 
                     <div class="tab-pane" id="tab2-2">
-                        
-                        <div class="form-group  ">
-                            <label class="col-sm-4 col-md-3 col-lg-2 control-label">
-                                Equipe
-                            </label>
-                            <div class="col-sm-8 col-md-9 col-lg-5">
-                                <input type="text" class="form-control" />
-                            </div>
-
-                        </div>                        
+                        <div class="row">
+                            
+                        </div>
                     </div><!-- tab-pane -->
 
                     <div class="tab-pane" id="tab3-2">

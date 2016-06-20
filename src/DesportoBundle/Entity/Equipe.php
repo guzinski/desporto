@@ -3,7 +3,6 @@
 namespace DesportoBundle\Entity;
 
 use DateTime;
-use DesportoBundle\Repository\EquipeRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -19,7 +18,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     ignoreNull=false,
  *     message="Já existe uma equipe cadatrada com este nome."
  * )
- * @ORM\Entity(repositoryClass="EquipeRepository")
+ * @ORM\Entity(repositoryClass="DesportoBundle\Repository\EquipeRepository")
  */
 class Equipe extends BaseEntity
 {
