@@ -3,7 +3,6 @@
 namespace DesportoBundle\Entity;
 
 use DateTime;
-use DesportoBundle\Repository\ProfissionalRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -16,7 +15,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @ORM\Table(name="profissional")
  * @UniqueEntity(fields={"cpf"}, message="Este CPF já está cadastrado", repositoryMethod="uniqueEntity")
- * @ORM\Entity(repositoryClass="ProfissionalRepository")
+ * @ORM\Entity(repositoryClass="DesportoBundle\Repository\ProfissionalRepository")
  */
 class Profissional extends BaseEntity
 {

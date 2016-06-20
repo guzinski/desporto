@@ -29,6 +29,7 @@ class EquipeType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->add("nome", TextType::class)
+                ->add("apelido", TextType::class)
                 ->add("brasao", HiddenType::class)
                 ->add("responsavel", TextType::class, ['label'=>"Responsável"])
                 ->add("endereco", TextType::class)

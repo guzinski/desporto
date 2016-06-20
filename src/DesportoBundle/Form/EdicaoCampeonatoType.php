@@ -5,10 +5,12 @@ namespace DesportoBundle\Form;
 use DesportoBundle\Doctrine\Type\EnumSexoType;
 use DesportoBundle\Entity\Campeonato;
 use DesportoBundle\Entity\EdicaoCampeonato;
+use DesportoBundle\Entity\Equipe;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -31,7 +33,7 @@ class EdicaoCampeonatoType extends AbstractType
     
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        
+        //Passo 1
         $builder->add("campeonato", EntityType::class, array(
             'class' => Campeonato::class,
             'placeholder' => "Selecione"
@@ -42,7 +44,8 @@ class EdicaoCampeonatoType extends AbstractType
             'placeholder' => "Selecione"
         ));
         $builder->add("quantidadeEquipes");
-        $builder->add("quantidadeJogadores");
+        $builder->add("quantidadeMinimaJogadores");
+        $builder->add("quantidadeMaximaJogadores");
         $builder->add("tipo", ChoiceType::class, array(
             'choices' => array('Torneio' => EdicaoCampeonato::TORNEIO, 'Chave' => EdicaoCampeonato::CHAVE, 'Pontos Corridos'=> EdicaoCampeonato::PONTOS_CORRIDOS),
             'placeholder' => "Selecione"
@@ -67,7 +70,13 @@ class EdicaoCampeonatoType extends AbstractType
         ));
         $builder->add("quantidadeChaves", NumberType::class, array('label'=>'Número de chaves'));
         $builder->add("quantidadeClassificadosChave", NumberType::class, array('label'=>'Classificados por Chave'));
-        
+       
+        //Passo 2
+        $builder->add($builder->create("equipes", CollectionType::class, array(
+                'label'         => false,
+                'data_class'    => null
+        ))->addModelTransformer(new EquipeTransformer($this->manager)));
+
         
     }
 

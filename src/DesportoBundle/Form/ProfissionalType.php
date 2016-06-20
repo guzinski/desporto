@@ -2,12 +2,13 @@
 
 namespace DesportoBundle\Form;
 
+use DesportoBundle\Doctrine\Type\EnumSexoType;
 use DesportoBundle\Entity\Profissional;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
-use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -38,6 +39,10 @@ class ProfissionalType extends AbstractType
                             'widget' => 'single_text',
                             'format' => 'dd/MM/yyyy',
                   ))
+                ->add("sexo", ChoiceType::class, array(
+                    'choices' => array('Feminino' => EnumSexoType::FEMININO, 'Masculino' => EnumSexoType::MASCULINO),
+                    'placeholder' => "Selecione"
+                ))
                 ->add("cpf", TextType::class, ['label'=>"CPF"])
                 ->add("rg", TextType::class, ['label'=>"RG", 'required'=>FALSE])
                 ->add("endereco", TextType::class)

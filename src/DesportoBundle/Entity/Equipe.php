@@ -3,8 +3,10 @@
 namespace DesportoBundle\Entity;
 
 use DateTime;
+use DesportoBundle\Repository\EquipeRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
 
@@ -12,11 +14,22 @@ use Symfony\Component\Validator\Constraints as Assert;
  * Profissional
  *
  * @ORM\Table(name="equipe")
- * 
- * @ORM\Entity(repositoryClass="DesportoBundle\Repository\EquipeRepository")
+ * @UniqueEntity(
+ *     fields={"nome", "dataExclusao"},
+ *     ignoreNull=false,
+ *     message="Já existe uma equipe cadatrada com este nome."
+ * )
+ * @ORM\Entity(repositoryClass="EquipeRepository")
  */
 class Equipe extends BaseEntity
 {
+    
+    /**
+     * @var string
+     * @Assert\NotBlank(message="Apelido")
+     * @ORM\Column(type="string", length=50, nullable=false)
+     */
+    private $apelido;
     
     /**
      * @var string
@@ -210,6 +223,19 @@ class Equipe extends BaseEntity
         $this->usuarioExclusao = $usuarioExclusao;
         return $this;
     }
+    
+    public function getApelido()
+    {
+        return $this->apelido;
+    }
+
+    public function setApelido($apelido)
+    {
+        $this->apelido = $apelido;
+        return $this;
+    }
+
+
 
 
 

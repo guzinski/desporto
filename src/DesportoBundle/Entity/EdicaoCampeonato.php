@@ -52,8 +52,8 @@ class EdicaoCampeonato extends BaseEntity
 
     
     /**
-     * 
      * @var int
+     * 
      * número de equipes inscritas
      * @ORM\Column(name="quantidade_equipes", type="integer", nullable=false)
      */
@@ -61,10 +61,19 @@ class EdicaoCampeonato extends BaseEntity
     
     /**
      * @var int
-     * quantidade máxima de jogadores por equipe
-     * @ORM\Column(name="quantidade_jogadores", type="integer", nullable=false)
+     * 
+     * quantidade mínima de jogadores por equipe
+     * @ORM\Column(name="quantidade_minima_jogadores", type="integer", nullable=false)
      */
-    private $quantidadeJogadores;
+    private $quantidadeMinimaJogadores;
+    
+    /**
+     * @var int
+     * 
+     * quantidade máxima de jogadores por equipe
+     * @ORM\Column(name="quantidade_maxima_jogadores", type="integer", nullable=false)
+     */
+    private $quantidadeMaximaJogadores;
     
     /**
      * número de chaves do campeonato
@@ -149,11 +158,6 @@ class EdicaoCampeonato extends BaseEntity
         return $this->quantidadeEquipes;
     }
 
-    public function getQuantidadeJogadores()
-    {
-        return $this->quantidadeJogadores;
-    }
-
     public function getQuantidadeChaves()
     {
         return $this->quantidadeChaves;
@@ -219,12 +223,6 @@ class EdicaoCampeonato extends BaseEntity
     public function setQuantidadeEquipes($quantidadeEquipes)
     {
         $this->quantidadeEquipes = $quantidadeEquipes;
-        return $this;
-    }
-
-    public function setQuantidadeJogadores($quantidadeJogadores)
-    {
-        $this->quantidadeJogadores = $quantidadeJogadores;
         return $this;
     }
 
@@ -300,9 +298,25 @@ class EdicaoCampeonato extends BaseEntity
         $this->modalidade = $modalidade;
         return $this;
     }
-
-            
     
+    public function getQuantidadeMinimaJogadores() {
+        return $this->quantidadeMinimaJogadores;
+    }
+
+    public function getQuantidadeMaximaJogadores() {
+        return $this->quantidadeMaximaJogadores;
+    }
+
+    public function setQuantidadeMinimaJogadores($quantidadeMinimaJogadores) {
+        $this->quantidadeMinimaJogadores = $quantidadeMinimaJogadores;
+        return $this;
+    }
+
+    public function setQuantidadeMaximaJogadores($quantidadeMaximaJogadores) {
+        $this->quantidadeMaximaJogadores = $quantidadeMaximaJogadores;
+        return $this;
+    }
+
     public function getLabel()
     {
         $this->campeonato->getNome()." - ".$this->edicao;
