@@ -18,14 +18,14 @@ class EquipeRepository extends EntityRepository
      * @param int $firstResult
      * @return array
      */
-    public function getEquipes($busca, $maxResults, $firstResult)
+    public function getEquipes($busca, $maxResults = 0, $firstResult = 0)
     {
         $query = $this->createQueryBuilder("E");
         
         $query->select("E");
         if (!empty($busca)) {
             $query->andWhere($query->orWhere($query->expr()->like("E.nome", ":busca"))
-                                    ->orWhere($query->expr()->like("E.responsavel", ":busca"))
+                                    ->orWhere($query->expr()->like("E.apelido", ":busca"))
                                     ->getDQLPart("where"));
             $query->setParameter("busca", "%{$busca}%");
         }

@@ -32,7 +32,6 @@ class EquipeController extends Controller
     
     /**
      * @Route("/pagination", name="equipe_pagination")
-     * @Template()
      */
     public function paginationAction(Request $request)
     {
@@ -68,7 +67,31 @@ class EquipeController extends Controller
         ];
         return new Response(json_encode($return));
     }
-
+    
+    /**
+     * @Route("/complete", name="equipe_complete")
+     */
+    public function completeAction(Request $request)
+    {
+        $busca          = $request->get("term");
+        if (empty($busca)) {
+            throw new \Symfony\Component\Asset\Exception\InvalidArgumentException;
+        }
+         
+        $repEquipe = $this->getDoctrine()
+                            ->getRepository(Equipe::class);
+        $equipes = $repEquipe->getEquipes($busca);
+        
+        $dados = array();
+        foreach ($equipes as $equipe) {
+            $dados[] = [
+                'label' => $equipe->getNome(),
+                'value' => $equipe->getNome(),
+            ];
+        }
+        
+        return new Response(json_encode($dados));
+    }
     
     /**
      * @Route("/editar/{id}", name="equipe_form")

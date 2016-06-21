@@ -32,9 +32,9 @@
 
         jQuery("#edicao_campeonato_tipo").change(function(){
             if (jQuery(this).val()=="C") {
-                jQuery("#edicao_campeonato_quantidadeChaves, #edicao_campeonato_quantidadeClassificadosChave").parent().parent().show();
+                jQuery("#edicao_campeonato_quantidadeChaves, #edicao_campeonato_quantidadeClassificadosChave").removeClass("ignore").parent().parent().show();
             } else {
-                jQuery("#edicao_campeonato_quantidadeChaves, #edicao_campeonato_quantidadeClassificadosChave").parent().parent().hide();
+                jQuery("#edicao_campeonato_quantidadeChaves, #edicao_campeonato_quantidadeClassificadosChave").addClass("ignore").parent().parent().hide();
             }
         });
 
@@ -53,6 +53,7 @@
             errorPlacement: function(error, element) {
                 jQuery(element).closest('.form-group').append(error);
             },
+            ignore: ".ignore",
             validClass: "",
             submitHandler: function(form) {
                 jQuery('button').hide();
@@ -93,40 +94,17 @@
                     var html = '{% include 'DesportoBundle::EdicaoCampeonato/inputEqiope.html.twig' %}';
                     jQuery("#tab2-2 .row").html("");
                     for (var i=0; i<totalEquipes; i++) {
-                        
                         jQuery("#tab2-2 .row").append(html.replace(/__num__/g, i+1));
-                        
-                        
                     }
-                        var availableTags = [
-                            "ActionScript",
-                            "AppleScript",
-                            "Asp",
-                            "BASIC",
-                            "C",
-                            "C++",
-                            "Clojure",
-                            "COBOL",
-                            "ColdFusion",
-                            "Erlang",
-                            "Fortran",
-                            "Groovy",
-                            "Haskell",
-                            "Java",
-                            "JavaScript",
-                            "Lisp",
-                            "Perl",
-                            "PHP",
-                            "Python",
-                            "Ruby",
-                            "Scala",
-                            "Scheme"
-                          ];
-                          jQuery( ".completeEquipe" ).autocomplete({
-                            source: availableTags
-                          });
-                    
-                    
+                    jQuery(".completeEquipe").autocomplete({
+                        source: "{{ path('equipe_complete') }}",
+                        minLength: 3,
+                        select: function(event, ui) {
+                            jQuery(this).val(ui.item.label)
+                            jQuery(this).next().val(ui.item.label)
+                        }
+
+                    });
                     
                 }
                 
@@ -172,9 +150,9 @@
             <!-- PROGRESS WIZARD -->
             <form method="post" action="teste" id="progressWizard" class="panel-wizard">
                 <ul class="nav nav-justified nav-wizard">
-                    <li><a href="#tab1-2" data-toggle="tab"><strong>Passo 1:</strong> Informações da competição</a></li>
-                    <li><a href="#tab2-2" data-toggle="tab"><strong>Passo 2:</strong> Seleção das equipes</a></li>
-                    <li><a href="#tab3-2" data-toggle="tab"><strong>Passo 3:</strong> Sorteio das chaves</a></li>
+                    <li><a href="#tab1-2" ><strong>Passo 1:</strong> Informações da competição</a></li>
+                    <li><a href="#tab2-2" ><strong>Passo 2:</strong> Seleção das equipes</a></li>
+                    <li><a href="#tab3-2" ><strong>Passo 3:</strong> Sorteio das chaves</a></li>
                 </ul>
 
                 <div class="progress progress-xs">

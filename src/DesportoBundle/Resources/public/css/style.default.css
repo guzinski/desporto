@@ -3690,7 +3690,7 @@ textArea {
 .has-error .select2-container .select2-choice  {
     border-color: #a94442;
 }
-
+/*
 .ui-autocomplete {
     margin-top: -1px;
     border-radius: 0 0 4px 4px;
@@ -3723,4 +3723,45 @@ textArea {
   -moz-border-radius: 0px;
   background-image: none;
 }
-Sign up for free
+*/
+.ui-menu {
+    -moz-border-bottom-colors: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    background: #fcfcfc none repeat scroll 0 0;
+    border-color: -moz-use-text-color #cccccc #cccccc;
+    border-image: none;
+    border-radius: 0 0 2px 2px;
+    border-style: none solid solid;
+    border-width: medium 1px 1px;
+    display: block;
+    float: left;
+    list-style: outside none none;
+    margin: 0;
+    z-index: 100 !important;
+}
+.ui-menu .ui-menu {
+    margin-top: -3px;
+}
+.ui-menu .ui-menu-item {
+    margin: 0;
+    padding: 0;
+}
+.ui-menu .ui-menu-item a {
+    color: #999999;
+    display: block;
+    padding: 8px 10px;
+    text-decoration: none;
+}
+.ui-menu .ui-menu-item:last-child a {
+    border-bottom: 0 none;
+}
+.ui-menu .ui-menu-item a.ui-state-hover, .ui-menu .ui-menu-item a.ui-state-active {
+    background: #eeeeee none repeat scroll 0 0;
+    color: #666666;
+    cursor: pointer;
+}
+form input.ui-autocomplete-loading[type="text"] {
+    background: #fff url("../images/loading.gif") no-repeat scroll 98% center;
+}
