@@ -10,6 +10,8 @@
         jQuery(document).ready(function(){
             jQuery('#equipeTable').DataTable({
                     responsive: true,
+                    "processing": true,
+                    "serverSide": true,
                     "ajax": "{{ path('equipe_pagination') }}",
                 });
 

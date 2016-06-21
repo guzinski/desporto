@@ -206,7 +206,7 @@ class Profissional extends BaseEntity
 
     public function setTelefone($telefone)
     {
-        $this->telefone = $telefone;
+        $this->telefone = preg_replace("/[^0-9]/", "", $telefone);;
         return $this;
     }
 
@@ -257,7 +257,7 @@ class Profissional extends BaseEntity
 
     public function setSexo($sexo)
     {
-        if (!in_array($tipo, array(\DesportoBundle\Doctrine\Type\EnumSexoType::MASCULINO, \DesportoBundle\Doctrine\Type\EnumSexoType::FEMININO))) {
+        if (!in_array($sexo, array(\DesportoBundle\Doctrine\Type\EnumSexoType::MASCULINO, \DesportoBundle\Doctrine\Type\EnumSexoType::FEMININO))) {
             throw new InvalidArgumentException("Sexo Inválida");
         }
         
