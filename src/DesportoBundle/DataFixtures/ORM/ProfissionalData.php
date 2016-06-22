@@ -828,20 +828,20 @@ Kauã|C|Sousa|male|Avenida Senador Teotônio Vilela 1217|KauaCunhaSousa@superrit
         
         
         $profisisonalArray = explode("\n", $string);
-        
-        foreach ($profisisonalArray as $proffisonalLine) {
+
+        foreach ($profisisonalArray as $profissionalLine) {
             
-            $proffisonalLine = explode("|", $proffisonalLine);
+            $profissionalLine = explode("|", $profissionalLine);
             $profissional = new Profissional();
             
             $profissional->setCpf($this->gerarCpf())
-                    ->setNascimento(\DateTime::createFromFormat("n/j/Y", $proffisonalLine[7]))
-                    ->setEndereco($proffisonalLine[4])
-                    ->setNome($proffisonalLine[0]. " ". $proffisonalLine[1]. ". ". $proffisonalLine[2])
+                    ->setNascimento(\DateTime::createFromFormat("m/d/Y", trim($profissionalLine[7])))
+                    ->setEndereco($profissionalLine[4])
+                    ->setNome($profissionalLine[0]. " ". $profissionalLine[1]. ". ". $profissionalLine[2])
                     ->setRg("15641654")
                     ->setFoto("")
-                    ->setSexo(strtoupper(substr($proffisonalLine[3], 0, 1)))
-                    ->setTelefone($proffisonalLine[6])
+                    ->setSexo(strtoupper(substr($profissionalLine[3], 0, 1)))
+                    ->setTelefone($profissionalLine[6])
                     ->setDataCadastro(new \DateTime("now"));
             
             $manager->persist($profissional);
@@ -860,13 +860,11 @@ Kauã|C|Sousa|male|Avenida Senador Teotônio Vilela 1217|KauaCunhaSousa@superrit
             for($i=$w; $i < 9; $i++){
                 $x=($i-10)*-1;
                 $w==0?$num[$i]=rand(0,9):'';
-                echo ($w==0?$num[$i]:'');
                 ($w==-1 && $i==$w && $num[11]==0)?
                     $num[11]+=$num[10]*2    :
                     $num[10-$w]+=$num[$i-$w]*$x;
             }
             $num[10-$w]=(($num[10-$w]%11)<2?0:(11-($num[10-$w]%11)));
-            echo $num[10-$w];
         }
         return $num[0].$num[1].$num[2].$num[3].$num[4].$num[5].$num[6].$num[7].$num[8].$num[10].$num[11];
     }

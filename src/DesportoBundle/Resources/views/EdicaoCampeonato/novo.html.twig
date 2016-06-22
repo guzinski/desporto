@@ -98,7 +98,6 @@
                     }
                     jQuery(".completeEquipe").autocomplete({
                         source: "{{ path('equipe_complete') }}",
-                        minLength: 3,
                         select: function(event, ui) {
                             jQuery(this).val(ui.item.label)
                             jQuery(this).next().val(ui.item.label)
@@ -150,9 +149,9 @@
             <!-- PROGRESS WIZARD -->
             <form method="post" action="teste" id="progressWizard" class="panel-wizard">
                 <ul class="nav nav-justified nav-wizard">
-                    <li><a href="#tab1-2" ><strong>Passo 1:</strong> Informações da competição</a></li>
-                    <li><a href="#tab2-2" ><strong>Passo 2:</strong> Seleção das equipes</a></li>
-                    <li><a href="#tab3-2" ><strong>Passo 3:</strong> Sorteio das chaves</a></li>
+                    <li><a href="#tab1-2" data-toggle="tab"><strong>Passo 1:</strong> Informações da competição</a></li>
+                    <li><a href="#tab2-2" data-toggle="tab"><strong>Passo 2:</strong> Seleção das equipes</a></li>
+                    <li><a href="#tab3-2" data-toggle="tab"><strong>Passo 3:</strong> Sorteio das chaves</a></li>
                 </ul>
 
                 <div class="progress progress-xs">
