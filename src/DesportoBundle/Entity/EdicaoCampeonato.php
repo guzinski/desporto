@@ -2,7 +2,11 @@
 
 namespace DesportoBundle\Entity;
 
+use DesportoBundle\Doctrine\Type\EnumSexoType;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Exception\InvalidArgumentException;
 
 
 /**
@@ -33,7 +37,7 @@ class EdicaoCampeonato extends BaseEntity
     /**
      * @var Campeonato
      *
-     * @ORM\ManyToOne(targetEntity="Campeonato", inversedBy="edicoes")
+     * @ORM\ManyToOne(targetEntity="Campeonato", inversedBy="edicoesCampeonato")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="campeonato", referencedColumnName="id")
      * })
@@ -136,8 +140,26 @@ class EdicaoCampeonato extends BaseEntity
      */
     private $usuarioExclusao;
 
+    /**
+     * @var Collection
+     * @ORM\OneToMany(targetEntity="Chave", mappedBy="edicaoCampeonato")
+     **/
+    private $chaves;
+    
+    
+    private $faseDeGrupos;
+    private $oitavas;
+    private $quartas;
+    private $semiFinal;
+    private $final;
 
     
+    public function __construct()
+    {
+        $this->chaves = new ArrayCollection();
+    }
+
+
     public function getEdicao()
     {
         return $this->edicao;
@@ -213,7 +235,7 @@ class EdicaoCampeonato extends BaseEntity
     public function setTipo($tipo)
     {
         if (!in_array($tipo, array(self::TORNEIO, self::CHAVE))) {
-            throw new \InvalidArgumentException("Tipo Inválido");
+            throw new InvalidArgumentException("Tipo Inválido");
         }
 
         $this->tipo = $tipo;
@@ -241,7 +263,7 @@ class EdicaoCampeonato extends BaseEntity
     public function setDesempate1($desempate1)
     {
         if (!in_array($desempate1, array(self::VITORIA, self::DISCIPLINA, self::SALDO_GOLS))) {
-            throw new \InvalidArgumentException("Desempate 1 Inválido");
+            throw new InvalidArgumentException("Desempate 1 Inválido");
         }
         $this->desempate1 = $desempate1;
         return $this;
@@ -250,7 +272,7 @@ class EdicaoCampeonato extends BaseEntity
     public function setDesempate2($desempate2)
     {
         if (!in_array($desempate2, array(self::VITORIA, self::DISCIPLINA, self::SALDO_GOLS))) {
-            throw new \InvalidArgumentException("Desempate 2 Inválido");
+            throw new InvalidArgumentException("Desempate 2 Inválido");
         }
         $this->desempate2 = $desempate2;
         return $this;
@@ -259,7 +281,7 @@ class EdicaoCampeonato extends BaseEntity
     public function setDesempate3($desempate3)
     {
         if (!in_array($desempate3, array(self::VITORIA, self::DISCIPLINA, self::SALDO_GOLS))) {
-            throw new \InvalidArgumentException("Desempate 3 Inválido");
+            throw new InvalidArgumentException("Desempate 3 Inválido");
         }
         $this->desempate3 = $desempate3;
         return $this;
@@ -290,11 +312,9 @@ class EdicaoCampeonato extends BaseEntity
 
     public function setModalidade($modalidade)
     {
-        if (!in_array($tipo, array(self::MASCULINO, self::FEMININO))) {
-            throw new \InvalidArgumentException("Modalidade  Inválida");
+        if (!in_array($modalidade, array(EnumSexoType::MASCULINO, EnumSexoType::FEMININO))) {
+            throw new InvalidArgumentException("Modalidade  Inválida");
         }
-
-        
         $this->modalidade = $modalidade;
         return $this;
     }
@@ -322,7 +342,75 @@ class EdicaoCampeonato extends BaseEntity
         $this->campeonato->getNome()." - ".$this->edicao;
     }
 
-    
+    public function getOitavas()
+    {
+        return $this->oitavas;
+    }
+
+    public function getQuartas()
+    {
+        return $this->quartas;
+    }
+
+    public function getSemiFinal()
+    {
+        return $this->semiFinal;
+    }
+
+    public function getFinal()
+    {
+        return $this->final;
+    }
+
+    public function setOitavas($oitavas)
+    {
+        $this->oitavas = $oitavas;
+        return $this;
+    }
+
+    public function setQuartas($quartas)
+    {
+        $this->quartas = $quartas;
+        return $this;
+    }
+
+    public function setSemiFinal($semiFinal)
+    {
+        $this->semiFinal = $semiFinal;
+        return $this;
+    }
+
+    public function setFinal($final)
+    {
+        $this->final = $final;
+        return $this;
+    }
+
+
+    public function getFaseDeGrupos()
+    {
+        return $this->faseDeGrupos;
+    }
+
+    public function setFaseDeGrupos($faseDeGrupos)
+    {
+        $this->faseDeGrupos = $faseDeGrupos;
+        return $this;
+    }
+
+
+    public function getChaves()
+    {
+        return $this->chaves;
+    }
+
+    public function setChaves(Collection $chaves)
+    {
+        $this->chaves = $chaves;
+        return $this;
+    }
+
+
     
     
 }

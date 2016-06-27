@@ -8,8 +8,10 @@ use DesportoBundle\Form\EdicaoCampeonatoType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Form\Exception\InvalidArgumentException;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Description of CampeonatoController
@@ -33,15 +35,98 @@ class EdicaoCampeonatoController extends Controller
         $form->handleRequest($request);
         if ($form->isValid()) {
             $campeonato->setUsuarioCadastro($this->getUser());
-
+            
+            $em->persist($campeonato);
+            $em->flush();
+            
 //            $this->get("equipe")->salvarEquipe($campeonato, $arquivos);                        
             return new RedirectResponse($this->generateUrl('equipe_index'));
         }
         return ['form'=>$form->createView()];
     }
 
+    /**
+     * @Route("/numero/chaves", name="campeonato_numero_chaves")
+     * Retorna os npumeros de chaves disponíveis
+     * @param Request $request
+     * @return RedirectResponse
+     */
+    public function numeroChavesAction(Request $request)
+    {
+        $numEquipes = $request->get("numeroEquipes");
+        
+        if (is_null($numEquipes)) {
+            throw new InvalidArgumentException;
+        }
+        
+        $result = array();
+        
+        $result[] = ['id'=>"", 'text'=>"Selecione"];
+        for ($i=1; $i<$numEquipes/2; $i++) {
+            if (log($i, 2)-(int)log($i, 2) == 0 && $numEquipes%$i == 0) {
+                $result[] = ['id'=>$i,'text'=>$i];
+            }
+        }
+        return new Response(json_encode($result));
+    }
     
     
+    /**
+     * @Route("/numero/classificados", name="campeonato_numero_classificados")
+     * Retorna os npumeros de chaves disponíveis
+     * @param Request $request
+     * @return RedirectResponse
+     */
+    public function numeroClassificadosAction(Request $request)
+    {
+        $numEquipes = $request->get("numeroEquipes");
+        $numChaves  = $request->get("numeroChaves");
+        
+        if (is_null($numEquipes) || is_null($numChaves)) {
+            throw new InvalidArgumentException;
+        }
+        
+        $numEquipesChave = $numEquipes/$numChaves;
+        
+        $result = array();
+        
+        $result[] = ['id'=>"", 'text'=>"Selecione"];
+        for ($i=1; $i<$numEquipesChave; $i++) {
+            if ($i*$numChaves>16) {
+                break;
+            }
+            if (log($i*$numChaves, 2)-(int)log($i*$numChaves, 2) == 0 ) {
+                $result[] = ['id'=>$i,'text'=>$i];
+            }
+        }
+        return new Response(json_encode($result));
+    }
+    
+    
+    /**
+     * @Route("/html/chaves", name="campeonato_html_chaves")
+     * Retorna o HTMl para o form de Chaves
+     * @param Request $request
+     * @return RedirectResponse
+     */
+    public function htmlChavesAction(Request $request)
+    {
+        $numChaves     = $request->get("numeroChaves");
+        $numEquipes    = $request->get("numeroEquipes");
+        
+        if (is_null($numChaves) || is_null($numEquipes)) {
+            throw new InvalidArgumentException;
+        }
+        
+        $numEquipesChave = $numEquipes/$numChaves;
+        
+        return $this->render("DesportoBundle::EdicaoCampeonato/chave.html.twig", 
+            [   
+                'numChaves'=>($numChaves-1),
+                'numEquipesChave'=>($numEquipesChave-1)
+            ]
+        );
+    }
     
     
     

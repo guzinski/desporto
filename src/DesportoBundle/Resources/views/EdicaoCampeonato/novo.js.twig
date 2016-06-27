@@ -1,0 +1,226 @@
+<script type="text/javascript" >
+    jQuery(document).ready(function(){
+        //Select
+        jQuery("select, #edicao_campeonato_quantidadeChaves, #edicao_campeonato_quantidadeClassificadosChave").select2({
+            minimumResultsForSearch: -1,
+        }).removeClass("form-control");
+
+        jQuery('.select2-container').css("width", "100%");
+
+        //Inputs numéricos
+        jQuery("input[type='number']").keyup(function(){
+            var valor = jQuery(this).val();
+            jQuery(this).val(valor.replace(/[^\d]/gi, ""));
+        }).spinner({ min:1 });
+
+        //jQuery( "#edicao_campeonato_quantidadeEquipes" ).on( "spinchange", equipesChange);
+
+        //Regras de campeonatos com chaves
+        jQuery("#edicao_campeonato_oitavas, #edicao_campeonato_quartas, #edicao_campeonato_semifinal, #edicao_campeonato_final").addClass("ignore").closest(".form-group").fadeOut();
+        jQuery("#edicao_campeonato_quantidadeEquipes").change(equipesChange);
+        jQuery("#edicao_campeonato_tipo").change(tipoChange);
+        jQuery("#edicao_campeonato_quantidadeChaves, #edicao_campeonato_quantidadeClassificadosChave").change(classificadoschange);
+        jQuery("#edicao_campeonato_quantidadeChaves").change(quantidadeChavesChange);
+        tipoChange();
+
+        jQuery("#progressWizard").validate({
+            rules: {
+                'edicao_campeonato[quantidadeEquipes]' : {min: 4, max: 64, digits: true},
+                'edicao_campeonato[quantidadeMinimaJogadores]' : {min: 5, max: function() {return jQuery('#edicao_campeonato_quantidadeMaximaJogadores').val() ==  "" ? 32 : jQuery('#edicao_campeonato_quantidadeMaximaJogadores').val() }, digits: true},
+                'edicao_campeonato[quantidadeMaximaJogadores]' : {min: function() {jQuery('#edicao_campeonato_quantidadeMinimaJogadores').val() ==  "" ? 5 : jQuery('#edicao_campeonato_quantidadeMinimaJogadores').val()}, max: 32, digits: true},
+            },
+            messages: {
+                'edicao_campeonato[campeonato]' : {required: "Selecione o campeonato"},
+                'edicao_campeonato[modalidade]' : {required: "Selecione o modalidade"},
+                'edicao_campeonato[tipo]' : {required: "Selecione o tipo"},
+                'edicao_campeonato[quantidadeChaves]' : {required: "Selecione o número de chaves"},
+                'edicao_campeonato[quantidadeClassificadosChave]' : {required: "Selecione o número de calssificados por chave"},
+            },
+            highlight: function(element) {
+                jQuery(element).closest('.form-group').removeClass('has-success').addClass('has-error');
+            },
+            success: function(element) {
+                jQuery(element).closest('.form-group').removeClass('has-error');
+            },
+            errorPlacement: function(error, element) {
+                jQuery(element).closest('.form-group').append(error);
+            },
+            ignore: ".ignore",
+            validClass: "",
+            submitHandler: function(form) {
+                jQuery('button').hide();
+                jQuery('#loading').fadeIn(200);
+                form.submit();
+           }
+        });
+
+
+
+        jQuery('#progressWizard').bootstrapWizard({
+            onNext: function(tab, navigation, index) {
+                if (!jQuery("#progressWizard").valid()) {
+                    return false;
+                }
+            },
+            onTabShow: function(tab, navigation, index) {
+                tab.prevAll().addClass('done');
+                tab.nextAll().removeClass('done');
+                tab.removeClass('done');
+                var $total = navigation.find('li').length;
+                var $current = index + 1;
+
+                if($current >= $total) {
+                    $('#progressWizard').find('.wizard .next').addClass('hide');
+                    $('#progressWizard').find('.wizard .finish').removeClass('hide');
+                } else {
+                    $('#progressWizard').find('.wizard .next').removeClass('hide');
+                    $('#progressWizard').find('.wizard .finish').addClass('hide');
+                }
+                var $percent = ($current/$total) * 100;
+                $('#progressWizard').find('.progress-bar').css('width', $percent+'%');
+
+
+                if (index === 1) {
+                    var tipo = jQuery("#edicao_campeonato_tipo").val();
+                    if (tipo=="C") {
+                        jQuery(".locked").show();
+                        jQuery.ajax({
+                            type: 'POST',
+                            url: '{{ path('campeonato_html_chaves') }}',
+                            data: {
+                                'numeroChaves': jQuery( "#edicao_campeonato_quantidadeChaves" ).val(),
+                                'numeroEquipes': jQuery( "#edicao_campeonato_quantidadeEquipes" ).val()
+                            },
+                            success: function(data) {
+                                jQuery("#tab2-2 .row").html(data);
+                            },
+                            async:false
+                          }).fail( defaultError);
+                        jQuery(".locked").hide();
+                    } else if (tipo=="P") {
+                        var totalEquipes = jQuery("#edicao_campeonato_quantidadeEquipes").val();
+                        var html = '{% include 'DesportoBundle::EdicaoCampeonato/inputEqiope.html.twig' %}';
+                        jQuery("#tab2-2 .row").html("");
+                        for (var i=0; i<totalEquipes; i++) {
+                            jQuery("#tab2-2 .row").append(html.replace(/__num__/g, i+1));
+                        }
+                    }
+                    jQuery(".completeEquipe").autocomplete({
+                        source: "{{ path('equipe_complete') }}",
+                        select: function(event, ui) {
+                            jQuery(this).val(ui.item.label)
+                            jQuery(this).next().val(ui.item.label)
+                        }
+
+                    });
+
+                }
+
+            }
+        });
+
+    })
+    
+    
+    function equipesChange() {
+        jQuery(".locked").show();
+        jQuery.post('{{ path('campeonato_numero_chaves') }}', {
+            'numeroEquipes': jQuery( "#edicao_campeonato_quantidadeEquipes" ).val()
+        }, function(data) {
+            jQuery("#edicao_campeonato_quantidadeChaves").select2("destroy");
+            jQuery("#edicao_campeonato_quantidadeChaves").html("");
+            data.forEach(function (value) {
+                jQuery("#edicao_campeonato_quantidadeChaves").append(new Option(value.text, value.id));
+            });
+            jQuery("#edicao_campeonato_quantidadeChaves").select2({minimumResultsForSearch: -1,});
+            jQuery('.select2-container').css("width", "100%");
+            jQuery(".locked").hide();
+        }, "json").fail(defaultError);
+        classificadoschange();
+    }
+    
+    
+    function classificadoschange() {
+        var quant = jQuery("#edicao_campeonato_quantidadeEquipes").val();
+            if (jQuery("#edicao_campeonato_tipo").val()=="T") {
+                if (quant==4) {
+                    jQuery("#edicao_campeonato_semifinal, #edicao_campeonato_final").removeClass("ignore").closest(".form-group").fadeIn();
+                } else if (quant==8) {
+                    jQuery("#edicao_campeonato_quartas, #edicao_campeonato_semifinal, #edicao_campeonato_final").removeClass("ignore").closest(".form-group").fadeIn();
+                } else if (quant==16) {
+                    jQuery("#edicao_campeonato_oitavas, #edicao_campeonato_quartas, #edicao_campeonato_semifinal, #edicao_campeonato_final").removeClass("ignore").closest(".form-group").fadeIn();
+                } else {
+                    jQuery("#edicao_campeonato_oitavas, #edicao_campeonato_quartas, #edicao_campeonato_semifinal, #edicao_campeonato_final").addClass("ignore").closest(".form-group").fadeOut();
+                }
+            } else if (jQuery("#edicao_campeonato_tipo").val()=="C") {
+                var quantChaves = jQuery("#edicao_campeonato_quantidadeChaves").val();
+                var quantClassficados = jQuery("#edicao_campeonato_quantidadeClassificadosChave").val();
+                if (quantChaves=="" || quantClassficados=="") {
+                    jQuery("#edicao_campeonato_oitavas, #edicao_campeonato_quartas, #edicao_campeonato_semifinal, #edicao_campeonato_final").addClass("ignore").closest(".form-group").fadeOut();
+                } else {
+                    if (quantChaves*quantClassficados==4) {
+                        jQuery("#edicao_campeonato_semifinal, #edicao_campeonato_final").removeClass("ignore").closest(".form-group").fadeIn();
+                    } else if (quantChaves*quantClassficados==8) {
+                        jQuery("#edicao_campeonato_quartas, #edicao_campeonato_semifinal, #edicao_campeonato_final").removeClass("ignore").closest(".form-group").fadeIn();
+                    } else if (quantChaves*quantClassficados==16) {
+                        jQuery("#edicao_campeonato_oitavas, #edicao_campeonato_quartas, #edicao_campeonato_semifinal, #edicao_campeonato_final").removeClass("ignore").closest(".form-group").fadeIn();
+                    } else {
+                        jQuery("#edicao_campeonato_oitavas, #edicao_campeonato_quartas, #edicao_campeonato_semifinal, #edicao_campeonato_final").addClass("ignore").closest(".form-group").fadeOut();
+                    }
+                }
+            } else {
+                jQuery("#edicao_campeonato_oitavas, #edicao_campeonato_quartas, #edicao_campeonato_semifinal, #edicao_campeonato_final").addClass("ignore").closest(".form-group").fadeOut();
+            }
+    }
+
+    function tipoChange() {
+        if (jQuery("#edicao_campeonato_tipo").val()=="T") {
+            jQuery("#edicao_campeonato_quantidadeEquipes").spinner( "destroy" );
+            jQuery("#edicao_campeonato_quantidadeEquipes").select2({
+                minimumResultsForSearch: -1,
+                data: [ { id: "", text: 'Selecione' }, { id: 4, text: '4' }, { id: 8, text: '8' }, { id: 16, text: '15' }, ]
+            }).removeClass("form-control");;
+            jQuery('.select2-container').css("width", "100%");
+            jQuery("#edicao_campeonato_quantidadeChaves, #edicao_campeonato_quantidadeClassificadosChave, #edicao_campeonato_faseDeGrupos").addClass("ignore").closest(".form-group").fadeOut();
+        } else {
+            jQuery("#edicao_campeonato_quantidadeEquipes").select2("destroy");
+            jQuery("#edicao_campeonato_quantidadeEquipes").keyup(function(){
+                var valor = jQuery(this).val();
+                jQuery(this).val(valor.replace(/[^\d]/gi, ""));
+            }).spinner({ min:1 });
+            if (jQuery("#edicao_campeonato_tipo").val()=="C") {
+                jQuery("#edicao_campeonato_quantidadeChaves, #edicao_campeonato_quantidadeClassificadosChave, #edicao_campeonato_faseDeGrupos").removeClass("ignore").closest(".form-group").fadeIn();
+            } else if (jQuery("#edicao_campeonato_tipo").val()=="P") {
+                jQuery("#edicao_campeonato_quantidadeChaves, #edicao_campeonato_quantidadeClassificadosChave, #edicao_campeonato_faseDeGrupos").addClass("ignore").closest(".form-group").fadeOut();
+            } else {
+                jQuery("#edicao_campeonato_quantidadeChaves, #edicao_campeonato_quantidadeClassificadosChave, #edicao_campeonato_faseDeGrupos").addClass("ignore").closest(".form-group").fadeOut();
+            }
+        }
+        equipesChange();
+    }
+    
+    function quantidadeChavesChange() {
+        jQuery(".locked").show();
+        jQuery.post('{{ path('campeonato_numero_classificados') }}', {
+            'numeroEquipes':    jQuery( "#edicao_campeonato_quantidadeEquipes" ).val(),
+            'numeroChaves':     jQuery( "#edicao_campeonato_quantidadeChaves" ).val()
+        }, function(data) {
+            jQuery("#edicao_campeonato_quantidadeClassificadosChave").select2("destroy");
+            jQuery("#edicao_campeonato_quantidadeClassificadosChave").html("");
+            data.forEach(function (value) {
+                jQuery("#edicao_campeonato_quantidadeClassificadosChave").append(new Option(value.text, value.id));
+            });
+            jQuery("#edicao_campeonato_quantidadeClassificadosChave").select2({minimumResultsForSearch: -1,});
+            jQuery('.select2-container').css("width", "100%");
+            jQuery(".locked").hide();
+        }, "json").fail(defaultError);
+        
+    }
+
+
+    function defaultError(xhr, textStatus, errorThrown) {
+            jQuery(".locked").fadeOut();
+            bootbox.alert("Erro ao processar informação");
+    }
+
+</script>

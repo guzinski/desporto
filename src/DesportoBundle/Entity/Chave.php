@@ -9,8 +9,8 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Description of Chave
- *
- * @author Luciano
+ * @ORM\Table(name="chave")
+ * @ORM\Entity
  */
 class Chave extends BaseEntity
 {
@@ -23,11 +23,10 @@ class Chave extends BaseEntity
      *   @ORM\JoinColumn(name="edicao_campeonato", referencedColumnName="id")
      * })
      */
-    private $usuario;
-    
+    private $edicaoCampeonato;
     
     /**
-     * @ORM\ManyToMany(targetEntity="Equipe", inverserBy="chaves")
+     * @ORM\ManyToMany(targetEntity="Equipe", inversedBy="chaves")
      * @ORM\JoinTable(name="chave_equipe",
      *      joinColumns={@ORM\JoinColumn(name="chave", referencedColumnName="id")},
      *      inverseJoinColumns={@ORM\JoinColumn(name="equipe", referencedColumnName="id", unique=true)}
@@ -50,13 +49,7 @@ class Chave extends BaseEntity
     
     public function getLabel()
     {
-        return $this->getNumero();
-    }
-
-
-    public function getUsuario()
-    {
-        return $this->usuario;
+        return (string) $this->getNumero();
     }
 
     public function getEquipes()
@@ -67,12 +60,6 @@ class Chave extends BaseEntity
     public function getNumero()
     {
         return $this->numero;
-    }
-
-    public function setUsuario(EdicaoCampeonato $usuario)
-    {
-        $this->usuario = $usuario;
-        return $this;
     }
 
     public function setEquipes($equipes)
@@ -86,6 +73,18 @@ class Chave extends BaseEntity
         $this->numero = $numero;
         return $this;
     }
+
+    public function getEdicaoCampeonato()
+    {
+        return $this->edicaoCampeonato;
+    }
+
+    public function setEdicaoCampeonato(EdicaoCampeonato $edicaoCampeonato)
+    {
+        $this->edicaoCampeonato = $edicaoCampeonato;
+        return $this;
+    }
+
 
 
     

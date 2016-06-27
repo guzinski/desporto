@@ -1,4 +1,13 @@
 
+{% block choice_widget_expanded %}
+{% spaceless %}
+    <div>
+    {% for child in form %}
+        {{ form_widget(child) }}
+    {% endfor %}
+    </div>
+{% endspaceless %}
+{% endblock choice_widget_expanded %}
 
 
 {% block radio_widget %}
@@ -9,6 +18,7 @@
     </div>
 {% endspaceless %}
 {% endblock radio_widget %}
+
 
 {% block checkbox_widget %}
 {% spaceless %}

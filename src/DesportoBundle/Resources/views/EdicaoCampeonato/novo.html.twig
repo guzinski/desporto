@@ -13,114 +13,7 @@
     <script src="{{ asset('bundles/desporto/js/bootbox.min.js') }}"></script>
     <script src="{{ asset('bundles/desporto/js/bootstrap-wizard.min.js') }}"></script>
     <script src="{{ asset('bundles/desporto/js/select2.min.js') }}"></script>
-    <script type="text/javascript" >
-    jQuery(document).ready(function(){
-        //Select
-        jQuery("select").select2({
-            minimumResultsForSearch: -1
-        });
-        jQuery('.select2-container').removeClass("form-control").css("width", "100%")
-        
-        //Inputs numéricos
-        jQuery("input[type='number']").keyup(function(){
-            var valor = jQuery(this).val();
-            jQuery(this).val(valor.replace(/[^\d]/gi, ""));
-        }).spinner({ min:1 });
-
-        //Regras de campeonatos com chaves
-        jQuery("#edicao_campeonato_quantidadeChaves, #edicao_campeonato_quantidadeClassificadosChave").parent().parent().hide();
-
-        jQuery("#edicao_campeonato_tipo").change(function(){
-            if (jQuery(this).val()=="C") {
-                jQuery("#edicao_campeonato_quantidadeChaves, #edicao_campeonato_quantidadeClassificadosChave").removeClass("ignore").parent().parent().show();
-            } else {
-                jQuery("#edicao_campeonato_quantidadeChaves, #edicao_campeonato_quantidadeClassificadosChave").addClass("ignore").parent().parent().hide();
-            }
-        });
-
-        jQuery("#progressWizard").validate({
-            rules: {
-                'edicao_campeonato[quantidadeEquipes]' : {min: 4, max: 64, digits: true},
-                'edicao_campeonato[quantidadeMinimaJogadores]' : {min: 5, max: function() {return jQuery('#edicao_campeonato_quantidadeMaximaJogadores').val() ==  "" ? 32 : jQuery('#edicao_campeonato_quantidadeMaximaJogadores').val() }, digits: true},
-                'edicao_campeonato[quantidadeMaximaJogadores]' : {min: function() {jQuery('#edicao_campeonato_quantidadeMinimaJogadores').val() ==  "" ? 5 : jQuery('#edicao_campeonato_quantidadeMinimaJogadores').val()}, max: 32, digits: true},
-            },
-            highlight: function(element) {
-                jQuery(element).closest('.form-group').removeClass('has-success').addClass('has-error');
-            },
-            success: function(element) {
-                jQuery(element).closest('.form-group').removeClass('has-error');
-            },
-            errorPlacement: function(error, element) {
-                jQuery(element).closest('.form-group').append(error);
-            },
-            ignore: ".ignore",
-            validClass: "",
-            submitHandler: function(form) {
-                jQuery('button').hide();
-                jQuery('#loading').fadeIn(200);
-                form.submit();
-           }
-        });
-
-
-
-        jQuery('#progressWizard').bootstrapWizard({
-            onNext: function(tab, navigation, index) {
-                if (!jQuery("#progressWizard").valid()) {
-                    return false;
-                }
-            },
-            onTabShow: function(tab, navigation, index) {
-                tab.prevAll().addClass('done');
-                tab.nextAll().removeClass('done');
-                tab.removeClass('done');
-                var $total = navigation.find('li').length;
-                var $current = index + 1;
-                
-                if($current >= $total) {
-                    $('#progressWizard').find('.wizard .next').addClass('hide');
-                    $('#progressWizard').find('.wizard .finish').removeClass('hide');
-                } else {
-                    $('#progressWizard').find('.wizard .next').removeClass('hide');
-                    $('#progressWizard').find('.wizard .finish').addClass('hide');
-                }
-                var $percent = ($current/$total) * 100;
-                $('#progressWizard').find('.progress-bar').css('width', $percent+'%');
-                
-                
-                if (index === 1) {
-                    
-                    var totalEquipes = jQuery("#edicao_campeonato_quantidadeEquipes").val();
-                    var html = '{% include 'DesportoBundle::EdicaoCampeonato/inputEqiope.html.twig' %}';
-                    jQuery("#tab2-2 .row").html("");
-                    for (var i=0; i<totalEquipes; i++) {
-                        jQuery("#tab2-2 .row").append(html.replace(/__num__/g, i+1));
-                    }
-                    jQuery(".completeEquipe").autocomplete({
-                        source: "{{ path('equipe_complete') }}",
-                        select: function(event, ui) {
-                            jQuery(this).val(ui.item.label)
-                            jQuery(this).next().val(ui.item.label)
-                        }
-
-                    });
-                    
-                }
-                
-                
-                
-                
-            }
-        });
-        
-
-        
-        
-        
-    })
-
-        
-    </script>
+    {% include 'DesportoBundle::EdicaoCampeonato/novo.js.twig' %}
 {% endblock %}
 
 {% block mainpanel %}
@@ -147,7 +40,7 @@
             <p class="mb20">Informe os dados da edição do campeonato.</p>
 
             <!-- PROGRESS WIZARD -->
-            <form method="post" action="teste" id="progressWizard" class="panel-wizard">
+            <form method="post" action="" id="progressWizard" class="panel-wizard form-bordered">
                 <ul class="nav nav-justified nav-wizard">
                     <li><a href="#tab1-2" data-toggle="tab"><strong>Passo 1:</strong> Informações da competição</a></li>
                     <li><a href="#tab2-2" data-toggle="tab"><strong>Passo 2:</strong> Seleção das equipes</a></li>
@@ -171,56 +64,27 @@
                             {{ form_row(form.quantidadeMaximaJogadores) }}
                             {{ form_row(form.quantidadeChaves) }}
                             {{ form_row(form.quantidadeClassificadosChave) }}
+                            {{ form_row(form.faseDeGrupos) }}
+                            {{ form_row(form.oitavas) }}
+                            {{ form_row(form.quartas) }}
+                            {{ form_row(form.semifinal) }}
+                            {{ form_row(form.final) }}
                             
                             {{ form_row(form.desempate1) }}
                             {{ form_row(form.desempate2) }}
                             {{ form_row(form.desempate3) }}
+                            {{ form_row(form._token) }}
                         </div>
 
                     </div><!-- tab-pane -->
 
                     <div class="tab-pane" id="tab2-2">
-                        <div class="row">
+                        <div data-chave="{{ form_row(form.chaves.vars.prototype)|e }}" class="row">
                             
                         </div>
                     </div><!-- tab-pane -->
 
                     <div class="tab-pane" id="tab3-2">
-                        <div class="form-group">
-                            <label class="col-sm-4">Card No</label>
-                            <div class="col-sm-8">
-                                <input type="text" name="cardno" class="form-control" />
-                            </div>
-                        </div><!-- form-group -->
-
-                        <div class="form-group">
-                            <label class="col-sm-4">Expiration</label>
-                            <div class="col-sm-4">
-                                <select class="width100p" data-placeholder="Month">
-                                    <option value="">Choose One</option>
-                                    <option value="">January</option>
-                                    <option value="">February</option>
-                                    <option value="">March</option>
-                                    <option value="">...</option>
-                                </select>
-                            </div>
-                            <div class="col-sm-4">
-                                <select class="width100p" data-placeholder="Year">
-                                    <option value="">Choose One</option>
-                                    <option value="">2013</option>
-                                    <option value="">2014</option>
-                                    <option value="">2015</option>
-                                    <option value="">...</option>
-                                </select>
-                            </div>
-                        </div><!-- form-group -->
-
-                        <div class="form-group">
-                            <label class="col-sm-4">CSV</label>
-                            <div class="col-sm-4">
-                                <input type="text" name="csv" class="form-control" />
-                            </div>
-                        </div><!-- form-group -->
                     </div><!-- tab-pane -->
                 </div><!-- tab-content -->
 
@@ -236,3 +100,4 @@
     </div><!-- row -->
 </div><!-- contentpanel -->
 {% endblock %}
+

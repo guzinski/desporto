@@ -5,7 +5,6 @@ namespace DesportoBundle\Form;
 use DesportoBundle\Doctrine\Type\EnumSexoType;
 use DesportoBundle\Entity\Campeonato;
 use DesportoBundle\Entity\EdicaoCampeonato;
-use DesportoBundle\Entity\Equipe;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -43,13 +42,12 @@ class EdicaoCampeonatoType extends AbstractType
             'choices' => array('Feminino' => EnumSexoType::FEMININO, 'Masculino' => EnumSexoType::MASCULINO),
             'placeholder' => "Selecione"
         ));
-        $builder->add("quantidadeEquipes");
+        $builder->add("quantidadeEquipes", NumberType::class);
         $builder->add("quantidadeMinimaJogadores");
         $builder->add("quantidadeMaximaJogadores");
         $builder->add("tipo", ChoiceType::class, array(
             'choices' => array('Torneio' => EdicaoCampeonato::TORNEIO, 'Chave' => EdicaoCampeonato::CHAVE, 'Pontos Corridos'=> EdicaoCampeonato::PONTOS_CORRIDOS),
             'placeholder' => "Selecione"
-            
         ));
         $desempate = array(
                 'Disciplina' => EdicaoCampeonato::DISCIPLINA, 
@@ -68,13 +66,46 @@ class EdicaoCampeonatoType extends AbstractType
             'choices' => $desempate,
             'placeholder' => "Selecione"
         ));
-        $builder->add("quantidadeChaves", NumberType::class, array('label'=>'Número de chaves'));
-        $builder->add("quantidadeClassificadosChave", NumberType::class, array('label'=>'Classificados por Chave'));
+        $builder->add("faseDeGrupos", ChoiceType::class, array(
+            'choices' => ['Turno'=> "T", "Returno"=>"R"],
+            'placeholder' => "Selecione",
+        ));
+        $builder->add("oitavas", ChoiceType::class, array(
+            'choices' => ['Somente ida'=> "S", "Ida e volta"=>"I"],
+            'placeholder' => "Selecione",
+        ));
+        $builder->add("quartas", ChoiceType::class, array(
+            'choices' => ['Somente ida'=> "S", "Ida e volta"=>"I"],
+            'placeholder' => "Selecione",
+        ));
+        $builder->add("semifinal", ChoiceType::class, array(
+            'choices' => ['Somente ida'=> "S", "Ida e volta"=>"I"],
+            'placeholder' => "Selecione",
+        ));
+        $builder->add("final", ChoiceType::class, array(
+            'choices' => ['Somente ida'=> "S", "Ida e volta"=>"I"],
+            'placeholder' => "Selecione",
+        ));
+        $builder->add("quantidadeChaves", ChoiceType::class, array(
+            'label'=>'Número de chaves',
+            'placeholder'=>"Selecione",
+            'choices' => ['1'=>'1','2'=>'2','7'=>'4','8'=>'8','16'=>'16']
+        ));
+        $builder->add("quantidadeClassificadosChave", ChoiceType::class, array(
+            'label'=>'Classificados por Chave',
+            'placeholder'=>"Selecione",
+            'choices' => ['1'=>'1','2'=>'2','7'=>'4','8'=>'8','16'=>'16']
+        ));
        
         //Passo 2
         $builder->add($builder->create("equipes", CollectionType::class, array(
                 'label'         => false,
                 'data_class'    => null
+        ))->addModelTransformer(new EquipeTransformer($this->manager)));
+        $builder->add($builder->create("chaves", CollectionType::class, array(
+                'entry_type'    => ChaveType::class,
+                'allow_add'     => true,
+                'label'         => false,
         ))->addModelTransformer(new EquipeTransformer($this->manager)));
 
         

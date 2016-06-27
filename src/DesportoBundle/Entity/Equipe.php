@@ -4,6 +4,7 @@ namespace DesportoBundle\Entity;
 
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -106,12 +107,18 @@ class Equipe extends BaseEntity
      * @ORM\ManyToMany(targetEntity="EdicaoCampeonato", mappedBy="equipes")
      **/
     private $edicoesCampeonatos;
-
+    
+    /**
+     * @var Collection
+     * @ORM\ManyToMany(targetEntity="Chave", mappedBy="equipes")
+     **/
+    private $chaves;
 
     public function __construct()
     {
         parent::__construct();
         $this->setArquivos(new ArrayCollection());
+        $this->setChaves(new ArrayCollection());
     }
 
     
@@ -234,9 +241,26 @@ class Equipe extends BaseEntity
         return $this;
     }
 
+    public function getEdicoesCampeonatos()
+    {
+        return $this->edicoesCampeonatos;
+    }
 
+    public function getChaves()
+    {
+        return $this->chaves;
+    }
 
+    public function setEdicoesCampeonatos(Collection $edicoesCampeonatos)
+    {
+        $this->edicoesCampeonatos = $edicoesCampeonatos;
+        return $this;
+    }
 
+    public function setChaves(Collection $chaves)
+    {
+        $this->chaves = $chaves;
+        return $this;
+    }
 
-    
 }

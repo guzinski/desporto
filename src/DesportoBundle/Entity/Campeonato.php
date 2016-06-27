@@ -41,6 +41,14 @@ class Campeonato
      */
     private $modalidade;
 
+    
+    /**
+     * @var Collection
+     * @ORM\OneToMany(targetEntity="EdicaoCampeonato", mappedBy="campeonato")
+     **/
+    private $edicoesCampeonato;
+
+    
     public function __construct($nome = null, Modalidade $modalidade = null)
     {
         if (!is_null($nome)) {
@@ -84,9 +92,16 @@ class Campeonato
         return $this->getNome();
     }
     
-    public function getCampeonato()
+    public function getEdicoesCampeonato()
     {
+        return $this->edicoesCampeonato;
+    }
+
+    public function setEdicoesCampeonato(Collection $edicoesCampeonato)
+    {
+        $this->edicoesCampeonato = $edicoesCampeonato;
         return $this;
     }
+
 
 }

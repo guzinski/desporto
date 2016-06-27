@@ -28,3 +28,8 @@ services:
         arguments: ["@doctrine.orm.entity_manager"]
         tags:
             - { name: form.type }
+    desporto.form.chave:
+        class: DesportoBundle\Form\ChaveType
+        arguments: ["@doctrine.orm.entity_manager"]
+        tags:
+            - { name: form.type }
