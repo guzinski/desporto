@@ -101,10 +101,20 @@
                         console.log("Entrou");
                         var totalEquipes = jQuery("#edicao_campeonato_quantidadeEquipes").val();
                         var html = '{% include 'DesportoBundle::EdicaoCampeonato/inputEqiope.html.twig' %}';
-                        jQuery("#tab2-2 .row").html("");
-                        for (var i=0; i<totalEquipes; i++) {
-                            jQuery("#tab2-2 .row").append(html.replace(/__num__/g, i+1));
+                        var tab2Html = "<div class='row'>";
+                        for (var i=1; i<=totalEquipes; i++) {
+                            if (i%2==0) {
+                                tab2Html += html.replace(/__num__/g, i);
+                                tab2Html += "</div>";
+                            } else {
+                                tab2Html += "<div class='row'>";
+                                tab2Html += html.replace(/__num__/g, i);
+                                if (i==totalEquipes) {
+                                    tab2Html += "</div>";
+                                }
+                            }                                
                         }
+                        jQuery("#tab2-2").html(tab2Html);
                     } else {
                         console.log("Não");
                     }

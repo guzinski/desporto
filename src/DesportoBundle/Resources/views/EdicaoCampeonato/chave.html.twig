@@ -1,24 +1,25 @@
 {% for i in 0..numChaves %}
 
-<div class="panel panel-default">
-    <div class="panel-heading">
-        <h4 class="panel-title">Chave {{ loop.index }}</h4>
-        <p>Insira os times da chave.</p>
-    </div>
-    <div class="panel-body">
-        {% for j in 0..numEquipesChave %}
-        <div class="form-group  ">
-            <label class="col-sm-4 col-md-3 col-lg-2 control-label"> Equipe {{ loop.index }} </label>
-            <div class="col-sm-8 col-md-9 col-lg-5">
-                <input type="text" class="form-control completeEquipe"  />
-                <input required="required" class="equipeHidden" type="hidden" name="edicao_campeonato[chaves][{{ i }}][equipes][{{ j }}]" />
-            </div>
-            <input value="{{ loop.index }}" type="hidden" id="edicao_campeonato_chaves{{ i }}numero" name="edicao_campeonato[chaves][{{ i }}][numero]" />    
-        </div>      
-        {% endfor %}
+<div class="col-lg-6 col-sm-12">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h4 class="panel-title">Chave {{ loop.index }}</h4>
+            <p>Insira os times da chave.</p>
+        </div>
+        <div class="panel-body nopadding">
+            {% for j in 0..numEquipesChave %}
+            <div class="form-group  ">
+                <label class="col-sm-4 control-label"> Equipe {{ loop.index }} </label>
+                <div class="col-sm-8">
+                    <input type="text" class="form-control completeEquipe"  />
+                    <input required="required" class="equipeHidden" type="hidden" name="edicao_campeonato[chaves][{{ i }}][equipes][{{ j }}]" />
+                </div>
+                <input value="{{ loop.index }}" type="hidden" id="edicao_campeonato_chaves{{ i }}numero" name="edicao_campeonato[chaves][{{ i }}][numero]" />    
+            </div>      
+            {% endfor %}
+        </div>
     </div>
 </div>
-    
     
     
     
