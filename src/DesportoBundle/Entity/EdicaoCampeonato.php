@@ -20,7 +20,7 @@ class EdicaoCampeonato extends BaseEntity
     
     const TORNEIO = "T";
     const CHAVE = "C";
-    const PONTOS_CORRIDOS = "p";
+    const PONTOS_CORRIDOS = "P";
     
     
     const VITORIA = "V";
@@ -50,7 +50,7 @@ class EdicaoCampeonato extends BaseEntity
     private $modalidade;
     
     /**
-     *  @ORM\Column(type="string", columnDefinition="ENUM('T', 'C', 'p')", nullable=false)
+     *  @ORM\Column(type="string", columnDefinition="ENUM('T', 'C', 'P')", nullable=false)
      */
     private $tipo;
 
@@ -83,7 +83,7 @@ class EdicaoCampeonato extends BaseEntity
      * número de chaves do campeonato
      * @var int
      * 
-     * @ORM\Column(name="quantidade_chaves", type="integer", nullable=false)
+     * @ORM\Column(name="quantidade_chaves", type="integer", nullable=true)
      */
     private $quantidadeChaves;
     
@@ -142,7 +142,7 @@ class EdicaoCampeonato extends BaseEntity
 
     /**
      * @var Collection
-     * @ORM\OneToMany(targetEntity="Chave", mappedBy="edicaoCampeonato")
+     * @ORM\OneToMany(targetEntity="Chave", cascade={"all"}, mappedBy="edicaoCampeonato")
      **/
     private $chaves;
     
@@ -156,6 +156,7 @@ class EdicaoCampeonato extends BaseEntity
     
     public function __construct()
     {
+        $this->setDataCadastro(new \DateTime("now"));
         $this->chaves = new ArrayCollection();
     }
 
@@ -234,7 +235,7 @@ class EdicaoCampeonato extends BaseEntity
 
     public function setTipo($tipo)
     {
-        if (!in_array($tipo, array(self::TORNEIO, self::CHAVE))) {
+        if (!in_array($tipo, array(self::TORNEIO, self::CHAVE, self::PONTOS_CORRIDOS))) {
             throw new InvalidArgumentException("Tipo Inválido");
         }
 

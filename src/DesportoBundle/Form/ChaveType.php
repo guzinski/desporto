@@ -31,7 +31,8 @@ class ChaveType extends AbstractType
         $builder->add($builder->create("numero", HiddenType::class));
         $builder->add($builder->create("equipes", CollectionType::class, array(
                 'label'         => false,
-                'data_class'    => null
+                'data_class'    => null,
+                'allow_add'     => true,
         ))->addModelTransformer(new EquipeTransformer($this->manager)));
     }
 

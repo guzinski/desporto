@@ -11,6 +11,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -33,6 +34,7 @@ class EdicaoCampeonatoType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         //Passo 1
+        $builder->add("edicao", TextType::class, ["label"=>"Edição (Ano/Número)"]);
         $builder->add("campeonato", EntityType::class, array(
             'class' => Campeonato::class,
             'placeholder' => "Selecione"
@@ -100,13 +102,14 @@ class EdicaoCampeonatoType extends AbstractType
         //Passo 2
         $builder->add($builder->create("equipes", CollectionType::class, array(
                 'label'         => false,
-                'data_class'    => null
+                'data_class'    => null,
+                'allow_add' => true,
         ))->addModelTransformer(new EquipeTransformer($this->manager)));
         $builder->add($builder->create("chaves", CollectionType::class, array(
                 'entry_type'    => ChaveType::class,
                 'allow_add'     => true,
                 'label'         => false,
-        ))->addModelTransformer(new EquipeTransformer($this->manager)));
+        )));
 
         
     }

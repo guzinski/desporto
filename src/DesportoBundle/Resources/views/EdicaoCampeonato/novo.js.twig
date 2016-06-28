@@ -98,20 +98,23 @@
                           }).fail( defaultError);
                         jQuery(".locked").hide();
                     } else if (tipo=="P") {
+                        console.log("Entrou");
                         var totalEquipes = jQuery("#edicao_campeonato_quantidadeEquipes").val();
                         var html = '{% include 'DesportoBundle::EdicaoCampeonato/inputEqiope.html.twig' %}';
                         jQuery("#tab2-2 .row").html("");
                         for (var i=0; i<totalEquipes; i++) {
                             jQuery("#tab2-2 .row").append(html.replace(/__num__/g, i+1));
                         }
+                    } else {
+                        console.log("Não");
                     }
+                    
                     jQuery(".completeEquipe").autocomplete({
                         source: "{{ path('equipe_complete') }}",
                         select: function(event, ui) {
                             jQuery(this).val(ui.item.label)
                             jQuery(this).next().val(ui.item.label)
                         }
-
                     });
 
                 }

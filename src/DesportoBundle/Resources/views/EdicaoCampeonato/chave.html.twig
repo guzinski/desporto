@@ -13,9 +13,16 @@
                 <input type="text" class="form-control completeEquipe"  />
                 <input required="required" class="equipeHidden" type="hidden" name="edicao_campeonato[chaves][{{ i }}][equipes][{{ j }}]" />
             </div>
+            <input value="{{ loop.index }}" type="hidden" id="edicao_campeonato_chaves{{ i }}numero" name="edicao_campeonato[chaves][{{ i }}][numero]" />    
         </div>      
         {% endfor %}
     </div>
 </div>
+    
+    
+    
+    
+
+    
     
 {% endfor %}
