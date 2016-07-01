@@ -92,7 +92,7 @@
                                 'numeroEquipes': jQuery( "#edicao_campeonato_quantidadeEquipes" ).val()
                             },
                             success: function(data) {
-                                jQuery("#tab2-2 .row").html(data);
+                                jQuery("#tab2-2").html(data);
                             },
                             async:false
                           }).fail( defaultError);
