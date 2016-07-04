@@ -106,8 +106,9 @@ class EdicaoCampeonatoController extends Controller
     /**
      * @Route("/html/chaves", name="campeonato_html_chaves")
      * Retorna o HTMl para o form de Chaves
+     * @Template()
      * @param Request $request
-     * @return RedirectResponse
+     * @return array
      */
     public function htmlChavesAction(Request $request)
     {
@@ -120,12 +121,31 @@ class EdicaoCampeonatoController extends Controller
         
         $numEquipesChave = $numEquipes/$numChaves;
         
-        return $this->render("DesportoBundle::EdicaoCampeonato/chave.html.twig", 
-            [   
+        return [   
                 'numChaves'=>($numChaves-1),
                 'numEquipesChave'=>($numEquipesChave-1)
-            ]
-        );
+            ];
+    }
+    
+    /**
+     * @Route("/html/torneio", name="campeonato_html_torneio")
+     * Retorna o HTMl para o form de Fases Classificatórias
+     * @Template()
+     * @param Request $request
+     * @return array
+     */
+    public function htmlTorneioAction(Request $request)
+    {
+//        $numChaves     = $request->get("numeroChaves");
+//        $numEquipes    = $request->get("numeroEquipes");
+//        
+//        if (is_null($numChaves) || is_null($numEquipes)) {
+//            throw new InvalidArgumentException;
+//        }
+//        
+//        $numEquipesChave = $numEquipes/$numChaves;
+        
+        return [];
     }
     
     

@@ -3739,3 +3739,31 @@ form input.ui-autocomplete-loading[type="text"] {
     background: #fff url("../images/loading.gif") no-repeat scroll 98% center;
 }
 
+.table > thead > tr > td.par,
+.table > tbody > tr > td.par,
+.table > tfoot > tr > td.par,
+.table > thead > tr > th.par,
+.table > tbody > tr > th.par,
+.table > tfoot > tr > th.par,
+.table > thead > tr.par > td,
+.table > tbody > tr.par > td,
+.table > tfoot > tr.par > td,
+.table > thead > tr.par > th,
+.table > tbody > tr.par > th,
+.table > tfoot > tr.par > th {
+  background-color: #ededed;
+}
+.table > thead > tr > td.impar,
+.table > tbody > tr > td.impar,
+.table > tfoot > tr > td.impar,
+.table > thead > tr > th.impar,
+.table > tbody > tr > th.impar,
+.table > tfoot > tr > th.impar,
+.table > thead > tr.impar > td,
+.table > tbody > tr.impar > td,
+.table > tfoot > tr.impar > td,
+.table > thead > tr.impar > th,
+.table > tbody > tr.impar > th,
+.table > tfoot > tr.impar > th {
+  background-color: #f7f7f7;
+}

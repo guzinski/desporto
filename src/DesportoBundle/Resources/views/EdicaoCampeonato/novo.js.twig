@@ -115,8 +115,21 @@
                             }                                
                         }
                         jQuery("#tab2-2").html(tab2Html);
-                    } else {
-                        console.log("Não");
+                    } else if (tipo=="T") {
+                        jQuery(".locked").show();
+                        jQuery.ajax({
+                            type: 'POST',
+                            url: '{{ path('campeonato_html_torneio') }}',
+                            data: {
+                                'numeroChaves': jQuery( "#edicao_campeonato_quantidadeChaves" ).val(),
+                                'numeroEquipes': jQuery( "#edicao_campeonato_quantidadeEquipes" ).val()
+                            },
+                            success: function(data) {
+                                jQuery("#tab2-2").html(data);
+                            },
+                            async:false
+                          }).fail( defaultError);
+                        jQuery(".locked").hide();
                     }
                     
                     jQuery(".completeEquipe").autocomplete({
@@ -126,8 +139,10 @@
                             jQuery(this).next().val(ui.item.label)
                         }
                     });
-
+                } else if (index === 0) {
+                    jQuery("#tab2-2").html("");
                 }
+                
 
             }
         });
