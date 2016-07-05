@@ -92,6 +92,9 @@ class EdicaoCampeonatoController extends Controller
         
         $result[] = ['id'=>"", 'text'=>"Selecione"];
         for ($i=1; $i<$numEquipesChave; $i++) {
+            if ($i*$numChaves==1) {
+                continue;
+            }
             if ($i*$numChaves>16) {
                 break;
             }
@@ -136,16 +139,23 @@ class EdicaoCampeonatoController extends Controller
      */
     public function htmlTorneioAction(Request $request)
     {
-//        $numChaves     = $request->get("numeroChaves");
-//        $numEquipes    = $request->get("numeroEquipes");
-//        
-//        if (is_null($numChaves) || is_null($numEquipes)) {
-//            throw new InvalidArgumentException;
-//        }
-//        
-//        $numEquipesChave = $numEquipes/$numChaves;
+        $numEquipes    = $request->get("numeroEquipes");
         
-        return [];
+        if (is_null($numEquipes) || (log($numEquipes, 2)-(int)log($numEquipes, 2) != 0)) {
+            throw new InvalidArgumentException;
+        }
+        
+        if ($numEquipes == 2) {
+            $label = "Final";
+        } elseif ($numEquipes == 4) {
+            $label = "Semifinal";
+        } elseif ($numEquipes == 8) {
+            $label = "Quartas de Final";
+        } elseif ($numEquipes == 16) {
+            $label = "Oitavas de Final";
+        }
+                
+        return ['total'=>$numEquipes/2, 'label'=>$label];
     }
     
     
