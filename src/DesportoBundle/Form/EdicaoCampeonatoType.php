@@ -110,6 +110,11 @@ class EdicaoCampeonatoType extends AbstractType
                 'allow_add'     => true,
                 'label'         => false,
         )));
+        $builder->add($builder->create("fasesClassificatorias", CollectionType::class, array(
+                'entry_type'    => ChaveType::class,
+                'allow_add'     => true,
+                'label'         => false,
+        )));
 
         
     }

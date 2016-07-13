@@ -41,6 +41,16 @@ class FaseClassificatoria
     private $jogoUnico = FALSE;
 
     /**
+     * @var EdicaoCampeonato
+     *
+     * @ORM\ManyToOne(targetEntity="EdicaoCampeonato", inversedBy="fasesClassificatorias")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="edica_campeonato", referencedColumnName="id")
+     * })
+     */
+    private $edicaoCampeonato;
+    
+    /**
      * @var FaseClassificatoria
      *
      * @ORM\ManyToOne(targetEntity="FaseClassificatoria", inversedBy="fasesPai")
@@ -55,6 +65,13 @@ class FaseClassificatoria
      * @ORM\OneToMany(targetEntity="FaseClassificatoria", mappedBy="faseFilha")
      **/
     private $fasesPai;
+    
+    /**
+     * @var Collection
+     * @ORM\OneToMany(targetEntity="Jogo", mappedBy="faseClassificatoria")
+     **/
+    private $jogos;
+
 
 
     public function getId()
@@ -107,7 +124,18 @@ class FaseClassificatoria
         return $this;
     }
 
-    
+    public function getEdicaoCampeonato()
+    {
+        return $this->edicaoCampeonato;
+    }
+
+    public function setEdicaoCampeonato(EdicaoCampeonato $edicaoCampeonato)
+    {
+        $this->edicaoCampeonato = $edicaoCampeonato;
+        return $this;
+    }
+
+
 
     
 

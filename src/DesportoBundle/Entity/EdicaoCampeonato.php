@@ -146,7 +146,18 @@ class EdicaoCampeonato extends BaseEntity
      **/
     private $chaves;
     
+    /**
+     * @var Collection
+     * @ORM\OneToMany(targetEntity="Rodada", mappedBy="edicaoCampeonato")
+     **/
+    private $rodadas;
     
+    /**
+     * @var Collection
+     * @ORM\OneToMany(targetEntity="FaseClassificatoria", mappedBy="edicaoCampeonato")
+     **/
+    private $fasesClassificatorias;
+
     private $faseDeGrupos;
     private $oitavas;
     private $quartas;
@@ -157,7 +168,9 @@ class EdicaoCampeonato extends BaseEntity
     public function __construct()
     {
         $this->setDataCadastro(new \DateTime("now"));
-        $this->chaves = new ArrayCollection();
+        $this->setChaves(new ArrayCollection());
+        $this->setFasesClassificatorias(new ArrayCollection());
+        $this->setRodadas(new ArrayCollection());
     }
 
 
@@ -410,6 +423,30 @@ class EdicaoCampeonato extends BaseEntity
         $this->chaves = $chaves;
         return $this;
     }
+    
+    public function getRodadas()
+    {
+        return $this->rodadas;
+    }
+
+    public function getFasesClassificatorias()
+    {
+        return $this->fasesClassificatorias;
+    }
+
+    public function setRodadas(Collection $rodadas)
+    {
+        $this->rodadas = $rodadas;
+        return $this;
+    }
+
+    public function setFasesClassificatorias(Collection $fasesClassificatorias)
+    {
+        $this->fasesClassificatorias = $fasesClassificatorias;
+        return $this;
+    }
+
+
 
 
     
