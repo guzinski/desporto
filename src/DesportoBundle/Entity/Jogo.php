@@ -11,7 +11,6 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Jogo
 {
-    
     /**
      * @var integer
      *
@@ -21,7 +20,6 @@ class Jogo
      */
     private $id;
 
-    
     /**
      * @var Equipe
      *
@@ -42,7 +40,6 @@ class Jogo
      */
     private $equipeVisitante;
     
-          
     /**
      * @var Rodada
      *
@@ -62,8 +59,59 @@ class Jogo
      * })
      */
     private $faseClassificatoria;
-
     
+    /**
+     * @var Chave
+     *
+     * @ORM\ManyToOne(targetEntity="Chave", inversedBy="jogos")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="chave", referencedColumnName="id")
+     * })
+     */
+    private $chave;
+    
+    /**
+     * @var EdicaoCampeonato
+     *
+     * @ORM\ManyToOne(targetEntity="EdicaoCampeonato", inversedBy="jogos")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="edicao_campeonato", referencedColumnName="id")
+     * })
+     */
+    private $edicaoCampeonato;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(type="date", nullable=true)
+     */
+    private $data;
+    
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(type="time", nullable=true)
+     */
+    private $horario;
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $local;
+
+    /**
+     * @var Collection
+     * @ORM\OneToMany(targetEntity="Gol", mappedBy="jogo")
+     **/
+    private $gols;
+    
+    /**
+     * @var Collection
+     * @ORM\OneToMany(targetEntity="Cartao", mappedBy="jogo")
+     **/
+    private $cartoes;
     
     
     

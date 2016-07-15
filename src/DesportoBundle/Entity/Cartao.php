@@ -5,12 +5,15 @@ namespace DesportoBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Description of Gol
- * @ORM\Table(name="gol")
+ * Description of Cartao
+ * @ORM\Table(name="cartao")
  * @ORM\Entity
  */
-class Gol
+class Cartao
 {
+    const VERMELHO = "V";
+    const AMARELO = "A";
+    
     /**
      * @var integer
      *
@@ -19,31 +22,28 @@ class Gol
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     private $id;
-
+    
     /**
-     * @var Equipe
-     *
-     * @ORM\ManyToOne(targetEntity="Equipe", inversedBy="jogos")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="equipe", referencedColumnName="id")
-     * })
+     *  @ORM\Column(type="string", columnDefinition="ENUM('A', 'V')", nullable=false)
      */
-    private $equipe;
+    private $cor;
+
     
     /**
      * @var Profissional
      *
-     * @ORM\ManyToOne(targetEntity="Profissional", inversedBy="gols")
+     * @ORM\ManyToOne(targetEntity="Profissional", inversedBy="cartoes")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="profissional", referencedColumnName="id")
      * })
      */
     private $profissional;
+
     
     /**
      * @var Jogo
      *
-     * @ORM\ManyToOne(targetEntity="Jogo", inversedBy="gols")
+     * @ORM\ManyToOne(targetEntity="Jogo", inversedBy="cartoes")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="jogo", referencedColumnName="id")
      * })
