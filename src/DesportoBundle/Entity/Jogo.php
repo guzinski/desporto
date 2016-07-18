@@ -49,17 +49,7 @@ class Jogo
      * })
      */
     private $rodada;
-    
-    /**
-     * @var FaseClassificatoria
-     *
-     * @ORM\ManyToOne(targetEntity="FaseClassificatoria", inversedBy="jogos")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="fase_classificatoria", referencedColumnName="id")
-     * })
-     */
-    private $faseClassificatoria;
-    
+        
     /**
      * @var Chave
      *

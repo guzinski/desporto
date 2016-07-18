@@ -113,12 +113,20 @@ class Equipe extends BaseEntity
      * @ORM\ManyToMany(targetEntity="Chave", mappedBy="equipes")
      **/
     private $chaves;
+    
+    /**
+     * @var Collection
+     * @ORM\ManyToMany(targetEntity="FaseClassificatoria", mappedBy="fasesClassificatorias")
+     **/
+    private $fasesClassificatorias;
 
     public function __construct()
     {
         parent::__construct();
         $this->setArquivos(new ArrayCollection());
         $this->setChaves(new ArrayCollection());
+        $this->setFasesClassificatorias(new ArrayCollection());
+        $this->setEdicoesCampeonatos(new ArrayCollection());
     }
 
     
@@ -262,5 +270,18 @@ class Equipe extends BaseEntity
         $this->chaves = $chaves;
         return $this;
     }
+    
+    public function getFasesClassificatorias()
+    {
+        return $this->fasesClassificatorias;
+    }
+
+    public function setFasesClassificatorias(Collection $fasesClassificatorias)
+    {
+        $this->fasesClassificatorias = $fasesClassificatorias;
+        return $this;
+    }
+
+
 
 }

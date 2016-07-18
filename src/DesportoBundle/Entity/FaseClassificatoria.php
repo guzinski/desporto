@@ -31,7 +31,7 @@ class FaseClassificatoria
     private $id;
     
     /**
-     *  @ORM\Column(type="string", columnDefinition="ENUM('O', 'Q', 'S', 'F')", nullable=false)
+     *  @ORM\Column(type="string", columnDefinition="ENUM('OITAVAS', 'QUARTAS', 'SEMIFINAL', 'FINAL')", nullable=false)
      */
     private $tipo;
 
@@ -45,7 +45,7 @@ class FaseClassificatoria
      *
      * @ORM\ManyToOne(targetEntity="EdicaoCampeonato", inversedBy="fasesClassificatorias")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="edica_campeonato", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="edica_campeonato", referencedColumnName="id", nullable=false)
      * })
      */
     private $edicaoCampeonato;
@@ -67,11 +67,25 @@ class FaseClassificatoria
     private $fasesPai;
     
     /**
+     * @var Jogo
+     * @ORM\OneToOne(targetEntity="Jogo")
+     * @ORM\JoinColumn(name="primeiro_jogo", referencedColumnName="id", nullable=false)
+     */
+    private $primeiroJogo;
+    
+    /**
+     * @var Jogo
+     * @ORM\OneToOne(targetEntity="Jogo")
+     * @ORM\JoinColumn(name="segundo_jogo", referencedColumnName="id")
+     */
+    private $segundoJogo;
+    
+    /**
      * @var Collection
-     * @ORM\OneToMany(targetEntity="Jogo", mappedBy="faseClassificatoria")
-     **/
-    private $jogos;
-
+     * @ORM\ManyToMany(targetEntity="Equipe", inversedBy="fasesClassificatorias")
+     * @ORM\JoinTable(name="fase_classificatoria_equipe")
+     */
+    private $equipes;
 
 
     public function getId()
@@ -135,6 +149,28 @@ class FaseClassificatoria
         return $this;
     }
 
+    public function setPrimeiroJogo($primeiroJogo)
+    {
+        $this->primeiroJogo = $primeiroJogo;
+        return $this;
+    }
+
+    public function setSegundoJogo($segundoJogo)
+    {
+        $this->segundoJogo = $segundoJogo;
+        return $this;
+    }
+
+    public function getEquipes()
+    {
+        return $this->equipes;
+    }
+
+    public function setEquipes(Collection $equipes)
+    {
+        $this->equipes = $equipes;
+        return $this;
+    }
 
 
     

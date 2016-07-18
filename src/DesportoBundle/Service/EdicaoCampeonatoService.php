@@ -39,7 +39,8 @@ class EdicaoCampeonatoService
      */
     public function salvarTorneio(EdicaoCampeonato $campeonato)
     {
-        
+        var_dump($campeonato);
+        die();
     }
     
     /**

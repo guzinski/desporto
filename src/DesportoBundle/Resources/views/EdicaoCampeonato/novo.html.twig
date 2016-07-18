@@ -55,6 +55,7 @@
                     <div class="tab-pane" id="tab1-2">
                         
                         <div class="row">
+                            {{ form_errors(form) }}
                             {{ form_row(form.campeonato) }}
                             {{ form_row(form.edicao) }}
                             {{ form_row(form.modalidade) }}
@@ -85,7 +86,7 @@
                 <ul class="list-unstyled wizard">
                     <li class="pull-left previous"><button type="button" class="btn btn-default">Voltar</button></li>
                     <li class="pull-right next"><button type="button" class="btn btn-primary">Próximo</button></li>
-                    <li class="pull-right finish hide"><button type="submit" class="btn btn-primary">salvar</button></li>
+                    <li class="pull-right finish hide"><button class="btn btn-primary">salvar</button></li>
                 </ul>
 
             </form><!-- panel-wizard -->

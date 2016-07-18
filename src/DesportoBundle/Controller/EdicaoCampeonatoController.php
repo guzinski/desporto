@@ -34,7 +34,10 @@ class EdicaoCampeonatoController extends Controller
         $form = $this->createForm(EdicaoCampeonatoType::class, $campeonato);
         $form->handleRequest($request);
         if ($form->isValid()) {
+            $campService = $this->get("edicao_campeonato");
             $campeonato->setUsuarioCadastro($this->getUser());
+            
+            $campService->salvarTorneio($campeonato);
             
             $em->persist($campeonato);
             $em->flush();
@@ -147,15 +150,19 @@ class EdicaoCampeonatoController extends Controller
         
         if ($numEquipes == 2) {
             $label = "Final";
+            $tipo = \DesportoBundle\Entity\FaseClassificatoria::FINAL_;
         } elseif ($numEquipes == 4) {
             $label = "Semifinal";
+            $tipo = \DesportoBundle\Entity\FaseClassificatoria::SEMIFINAL;
         } elseif ($numEquipes == 8) {
             $label = "Quartas de Final";
+            $tipo = \DesportoBundle\Entity\FaseClassificatoria::QUARTAS;
         } elseif ($numEquipes == 16) {
             $label = "Oitavas de Final";
+            $tipo = \DesportoBundle\Entity\FaseClassificatoria::OITAVAS;
         }
                 
-        return ['total'=>$numEquipes/2, 'label'=>$label];
+        return ['total'=>$numEquipes/2, 'label'=>$label, 'tipo'=>$tipo];
     }
     
     

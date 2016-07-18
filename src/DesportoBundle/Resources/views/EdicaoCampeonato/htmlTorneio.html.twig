@@ -5,12 +5,11 @@
         <p>Selecione as equipes.</p>
     </div><!-- panel-heading -->
     <div class="panel-body">
-        
         <div class="row">
                 <div class="col-lg-5" >
                     <div class="form-group">
-                        <input type="text" class="form-control completeEquipe" name="edicao_campeonato[equipes][{{ i }}]" />
-                        <input required="required" class="equipeHidden" type="hidden" name="edicao_campeonato[equipes][{{ i }}]]" />
+                        <input type="text" class="form-control completeEquipe" />
+                        <input required="required" class="equipeHidden" type="hidden" name="edicao_campeonato[fasesClassificatorias][{{ i }}][equipes][0]" />
                     </div>                        
                 </div>
                 <div class="col-sm-2 ">
@@ -18,8 +17,8 @@
                 </div>
                 <div class="col-lg-5" >
                     <div class="form-group">
-                        <input type="text" class="form-control completeEquipe" name="edicao_campeonato[equipes][{{ i }}]]" />
-                        <input required="required" class="equipeHidden" type="hidden" name="edicao_campeonato[equipes][{{ i }}]]" />
+                        <input type="text" class="form-control completeEquipe" />
+                        <input required="required" class="equipeHidden" type="hidden" name="edicao_campeonato[fasesClassificatorias][{{ i }}][equipes][1]" />
                     </div>                        
                 </div>
 
