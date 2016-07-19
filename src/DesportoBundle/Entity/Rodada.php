@@ -52,6 +52,40 @@ class Rodada
     {
         $this->jogos = new ArrayCollection();
     }
+    
+    public function getEdicaoCampeonato()
+    {
+        return $this->edicaoCampeonato;
+    }
+
+    public function getNumero()
+    {
+        return $this->numero;
+    }
+
+    public function getJogos()
+    {
+        return $this->jogos;
+    }
+
+    public function setEdicaoCampeonato(EdicaoCampeonato $edicaoCampeonato)
+    {
+        $this->edicaoCampeonato = $edicaoCampeonato;
+        return $this;
+    }
+
+    public function setNumero($numero)
+    {
+        $this->numero = $numero;
+        return $this;
+    }
+
+    public function setJogos(Collection $jogos)
+    {
+        $this->jogos = $jogos;
+        return $this;
+    }
+
 
     
 }

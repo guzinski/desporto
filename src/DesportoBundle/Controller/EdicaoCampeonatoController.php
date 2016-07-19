@@ -37,12 +37,13 @@ class EdicaoCampeonatoController extends Controller
             $campService = $this->get("edicao_campeonato");
             $campeonato->setUsuarioCadastro($this->getUser());
             
-            $campService->salvarTorneio($campeonato);
-            
-            $em->persist($campeonato);
-            $em->flush();
-            
-//            $this->get("equipe")->salvarEquipe($campeonato, $arquivos);                        
+            if ($campeonato->getTipo()==EdicaoCampeonato::CHAVE) {
+                $campService->salvarChaves($campeonato);
+            } elseif ($campeonato->getTipo()==EdicaoCampeonato::PONTOS_CORRIDOS) {
+                $campService->salvarPontosCorridos($campeonato);
+            } elseif ($campeonato->getTipo()==EdicaoCampeonato::TORNEIO) {
+                $campService->salvarTorneio($campeonato);
+            }
             return new RedirectResponse($this->generateUrl('equipe_index'));
         }
         return ['form'=>$form->createView()];

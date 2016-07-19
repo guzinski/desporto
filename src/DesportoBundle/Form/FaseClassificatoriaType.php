@@ -3,9 +3,9 @@
 namespace DesportoBundle\Form;
 
 use DesportoBundle\Entity\FaseClassificatoria;
+use Doctrine\ORM\EntityManager;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
-use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -27,6 +27,7 @@ class FaseClassificatoriaType extends AbstractType
     
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $builder->add("tipo");
         $builder->add($builder->create("equipes", CollectionType::class, array(
                 'label'         => false,
                 'data_class'    => null,
