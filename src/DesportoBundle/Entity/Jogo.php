@@ -102,8 +102,130 @@ class Jogo
      * @ORM\OneToMany(targetEntity="Cartao", mappedBy="jogo")
      **/
     private $cartoes;
+
+    public function __construct(Equipe $equipeMandante, Equipe $equipeVisitante)
+    {
+        $this->equipeMandante = $equipeMandante;
+        $this->equipeVisitante = $equipeVisitante;
+    }
+
     
-    
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    public function getEquipeMandante()
+    {
+        return $this->equipeMandante;
+    }
+
+    public function getEquipeVisitante()
+    {
+        return $this->equipeVisitante;
+    }
+
+    public function getRodada()
+    {
+        return $this->rodada;
+    }
+
+    public function getChave()
+    {
+        return $this->chave;
+    }
+
+    public function getEdicaoCampeonato()
+    {
+        return $this->edicaoCampeonato;
+    }
+
+    public function getData()
+    {
+        return $this->data;
+    }
+
+    public function getHorario()
+    {
+        return $this->horario;
+    }
+
+    public function getLocal()
+    {
+        return $this->local;
+    }
+
+    public function getGols()
+    {
+        return $this->gols;
+    }
+
+    public function getCartoes()
+    {
+        return $this->cartoes;
+    }
+
+    public function setEquipeMandante(Equipe $equipeMandante)
+    {
+        $this->equipeMandante = $equipeMandante;
+        return $this;
+    }
+
+    public function setEquipeVisitante(Equipe $equipeVisitante)
+    {
+        $this->equipeVisitante = $equipeVisitante;
+        return $this;
+    }
+
+    public function setRodada(Rodada $rodada)
+    {
+        $this->rodada = $rodada;
+        return $this;
+    }
+
+    public function setChave(Chave $chave)
+    {
+        $this->chave = $chave;
+        return $this;
+    }
+
+    public function setEdicaoCampeonato(EdicaoCampeonato $edicaoCampeonato)
+    {
+        $this->edicaoCampeonato = $edicaoCampeonato;
+        return $this;
+    }
+
+    public function setData(\DateTime $data)
+    {
+        $this->data = $data;
+        return $this;
+    }
+
+    public function setHorario(\DateTime $horario)
+    {
+        $this->horario = $horario;
+        return $this;
+    }
+
+    public function setLocal($local)
+    {
+        $this->local = $local;
+        return $this;
+    }
+
+    public function setGols(Collection $gols)
+    {
+        $this->gols = $gols;
+        return $this;
+    }
+
+    public function setCartoes(Collection $cartoes)
+    {
+        $this->cartoes = $cartoes;
+        return $this;
+    }
+
+
     
     
 }

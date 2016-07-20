@@ -112,10 +112,11 @@ class EdicaoCampeonato extends BaseEntity
     private $desempate3;
     
     /**
-     * @ORM\ManyToMany(targetEntity="Equipe", inversedBy="edicoesCampeonatos")
+     * @var Collection Description
+     * @ORM\ManyToMany(targetEntity="Equipe", inversedBy="edicoesCampeonatos", cascade={"persist"})
      * @ORM\JoinTable(name="edicao_campeonato_equipe",
      *      joinColumns={@ORM\JoinColumn(name="edicao_campeonato", referencedColumnName="id")},
-     *      inverseJoinColumns={@ORM\JoinColumn(name="equipe", referencedColumnName="id", unique=true)}
+     *      inverseJoinColumns={@ORM\JoinColumn(name="equipe", referencedColumnName="id", unique=false)}
      * )
      */
     private $equipes;
@@ -148,13 +149,13 @@ class EdicaoCampeonato extends BaseEntity
     
     /**
      * @var Collection
-     * @ORM\OneToMany(targetEntity="Rodada", mappedBy="edicaoCampeonato")
+     * @ORM\OneToMany(targetEntity="Rodada", cascade={"persist"}, mappedBy="edicaoCampeonato")
      **/
     private $rodadas;
     
     /**
      * @var Collection
-     * @ORM\OneToMany(targetEntity="FaseClassificatoria", mappedBy="edicaoCampeonato")
+     * @ORM\OneToMany(targetEntity="FaseClassificatoria", cascade={"persist"}, mappedBy="edicaoCampeonato")
      **/
     private $fasesClassificatorias;
 
@@ -219,6 +220,7 @@ class EdicaoCampeonato extends BaseEntity
         return $this->desempate3;
     }
 
+    
     public function getEquipes()
     {
         return $this->equipes;

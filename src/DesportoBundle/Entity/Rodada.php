@@ -43,16 +43,17 @@ class Rodada
 
     /**
      * @var Collection
-     * @ORM\OneToMany(targetEntity="Jogo", mappedBy="rodada")
+     * @ORM\OneToMany(targetEntity="Jogo", mappedBy="rodada", cascade={"persist"})
      **/
     private $jogos;
 
-    
-    public function __construct()
+    public function __construct(EdicaoCampeonato $edicaoCampeonato, $numero)
     {
+        $this->edicaoCampeonato = $edicaoCampeonato;
+        $this->numero = $numero;
         $this->jogos = new ArrayCollection();
     }
-    
+
     public function getEdicaoCampeonato()
     {
         return $this->edicaoCampeonato;
