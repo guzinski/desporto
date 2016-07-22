@@ -12,8 +12,18 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="chave")
  * @ORM\Entity
  */
-class Chave extends BaseEntity
+class Chave
 {
+    
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="integer", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    protected $id;
+
     
     /**
      * @var EdicaoCampeonato
@@ -26,6 +36,7 @@ class Chave extends BaseEntity
     private $edicaoCampeonato;
     
     /**
+     * @var Collection
      * @ORM\ManyToMany(targetEntity="Equipe", inversedBy="chaves")
      * @ORM\JoinTable(name="chave_equipe",
      *      joinColumns={@ORM\JoinColumn(name="chave", referencedColumnName="id")},
@@ -41,6 +52,17 @@ class Chave extends BaseEntity
      * @ORM\Column(type="integer", nullable=false)
      */
     private $numero;
+    
+    /**
+     * @var Collection
+     * @ORM\OneToMany(targetEntity="Jogo", cascade={"all"}, mappedBy="chave")
+     **/
+    private $jogos;
+
+    public function __construct()
+    {
+        $this->jogos = new ArrayCollection();
+    }
     
     public function getId()
     {
@@ -84,6 +106,19 @@ class Chave extends BaseEntity
         $this->edicaoCampeonato = $edicaoCampeonato;
         return $this;
     }
+    
+    public function getJogos()
+    {
+        return $this->jogos;
+    }
+
+    public function setJogos(Collection $jogos)
+    {
+        $this->jogos = $jogos;
+        return $this;
+    }
+
+
 
 
 
