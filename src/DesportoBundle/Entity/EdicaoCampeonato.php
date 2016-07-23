@@ -159,6 +159,7 @@ class EdicaoCampeonato extends BaseEntity
      **/
     private $fasesClassificatorias;
 
+    private $pontosCorridos;
     private $faseDeGrupos;
     private $oitavas;
     private $quartas;
@@ -447,6 +448,19 @@ class EdicaoCampeonato extends BaseEntity
         $this->fasesClassificatorias = $fasesClassificatorias;
         return $this;
     }
+    
+    public function getPontosCorridos()
+    {
+        return $this->pontosCorridos;
+    }
+
+    public function setPontosCorridos($pontosCorridos)
+    {
+        $this->pontosCorridos = $pontosCorridos;
+        return $this;
+    }
+
+
 
 
 

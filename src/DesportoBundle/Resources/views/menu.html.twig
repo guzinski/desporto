@@ -18,6 +18,7 @@
         {% if is_granted('ROLE_CAMPEONATO') %}
         <li class="parent {% if 'campeonato' in app.request.get('_route')  %} active{% endif %}"><a href=""><i class="fa fa-users"></i> <span>Campeonatos</span></a>
             <ul class="children" >
+                <li {% if app.request.get('_route') == 'campeonato_novo' %} class="active"{% endif %}><a href="{{ path('campeonato_novo') }}">Novo</a></li>
                 <li><a href="#">Em Andamento</a></li>
                 <li><a href="#">Finalizados</a></li>
             </ul>

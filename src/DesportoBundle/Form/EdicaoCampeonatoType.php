@@ -72,6 +72,10 @@ class EdicaoCampeonatoType extends AbstractType
             'choices' => ['Turno'=> "T", "Returno"=>"R"],
             'placeholder' => "Selecione",
         ));
+        $builder->add("pontosCorridos", ChoiceType::class, array(
+            'choices' => ['Turno'=> "T", "Returno"=>"R"],
+            'placeholder' => "Selecione",
+        ));
         $builder->add("oitavas", ChoiceType::class, array(
             'choices' => ['Somente ida'=> "S", "Ida e volta"=>"I"],
             'placeholder' => "Selecione",

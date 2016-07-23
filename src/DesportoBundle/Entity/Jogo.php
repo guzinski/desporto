@@ -2,6 +2,8 @@
 
 namespace DesportoBundle\Entity;
 
+use DateTime;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -71,14 +73,14 @@ class Jogo
     private $edicaoCampeonato;
 
     /**
-     * @var \DateTime
+     * @var DateTime
      *
      * @ORM\Column(type="date", nullable=true)
      */
     private $data;
     
     /**
-     * @var \DateTime
+     * @var DateTime
      *
      * @ORM\Column(type="time", nullable=true)
      */
@@ -195,13 +197,13 @@ class Jogo
         return $this;
     }
 
-    public function setData(\DateTime $data)
+    public function setData(DateTime $data)
     {
         $this->data = $data;
         return $this;
     }
 
-    public function setHorario(\DateTime $horario)
+    public function setHorario(DateTime $horario)
     {
         $this->horario = $horario;
         return $this;

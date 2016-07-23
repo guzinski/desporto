@@ -49,7 +49,7 @@
             validClass: "",
             submitHandler: function(form) {
                 jQuery('button').hide();
-                jQuery('#loading').fadeIn(200);
+                jQuery(".locked").fadeIn();
                 form.submit();
            }
         });
@@ -202,6 +202,11 @@
     }
 
     function tipoChange() {
+        if (jQuery("#edicao_campeonato_tipo").val()=="P") {
+            jQuery("#edicao_campeonato_pontosCorridos").removeClass("ignore").closest(".form-group").fadeIn();
+        } else {
+            jQuery("#edicao_campeonato_pontosCorridos").addClass("ignore").closest(".form-group").fadeOut();
+        }
         if (jQuery("#edicao_campeonato_tipo").val()=="T") {
             jQuery("#edicao_campeonato_quantidadeEquipes").spinner( "destroy" );
             jQuery("#edicao_campeonato_quantidadeEquipes").select2({

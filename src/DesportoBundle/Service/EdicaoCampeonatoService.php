@@ -5,6 +5,7 @@ namespace DesportoBundle\Service;
 use DesportoBundle\Entity\Chave;
 use DesportoBundle\Entity\EdicaoCampeonato;
 use DesportoBundle\Entity\Equipe;
+use DesportoBundle\Entity\FaseClassificatoria;
 use DesportoBundle\Entity\Jogo;
 use DesportoBundle\Entity\Rodada;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -45,10 +46,11 @@ class EdicaoCampeonatoService
     public function salvarPontosCorridos(EdicaoCampeonato $campeonato)
     {
         $this->edicaoCampeonato = $campeonato;
-        $rodadas = $this->gerarRodadas($campeonato->getEquipes());
-        $campeonato->setRodadas(new ArrayCollection($rodadas));
-        $this->em->persist($campeonato);
-        $this->em->flush();
+        $campeonato->setRodadas(new ArrayCollection($this->gerarRodadas($campeonato->getEquipes())));
+        if ($campeonato->getPontosCorridos() == "R") {
+            $this->gerarReturno();
+        }
+        $this->salvar();
     }
     
     /**
@@ -56,8 +58,9 @@ class EdicaoCampeonatoService
      */
     public function salvarTorneio(EdicaoCampeonato $campeonato)
     {
-        var_dump($campeonato);
-        die();
+        $this->edicaoCampeonato = $campeonato;
+        $this->gerarJogosTorneio();
+        $this->salvar();
     }
     
     /**
@@ -74,11 +77,83 @@ class EdicaoCampeonatoService
             }
         }
         $campeonato->setRodadas(new ArrayCollection($this->gerarRodadasChaves($campeonato->getChaves())));
-        $this->em->persist($campeonato);
-        $this->em->flush();
+        if ($this->edicaoCampeonato->getFaseDeGrupos() == "R") {
+            $this->gerarReturno();
+        }
+        $this->salvar();
         
     }
     
+    /**
+     * Persiste o Campeonato
+     */
+    private function salvar()
+    {
+        $this->em->persist($this->edicaoCampeonato);
+        $this->em->flush();
+    }
+
+    /**
+     * Gera os primerios jogos do torneio
+     */
+    private function gerarJogosTorneio()
+    {
+        foreach ($this->edicaoCampeonato->getFasesClassificatorias() as $fase) {
+            /* @var $fase FaseClassificatoria */
+            $equipes = $fase->getEquipes()->toArray();
+            
+            $jogo = new Jogo($equipes[0], $equipes[1]);
+            $jogo->setEdicaoCampeonato($this->edicaoCampeonato);
+            $fase->setPrimeiroJogo($jogo);
+            if (
+                ($fase->getTipo() == FaseClassificatoria::OITAVAS && $this->edicaoCampeonato->getOitavas()=="I") ||
+                ($fase->getTipo() == FaseClassificatoria::QUARTAS && $this->edicaoCampeonato->getQuartas()=="I") ||
+                ($fase->getTipo() == FaseClassificatoria::SEMIFINAL && $this->edicaoCampeonato->getSemiFinal()=="I") ||
+                ($fase->getTipo() == FaseClassificatoria::FINAL_ && $this->edicaoCampeonato->getFinal()=="I") 
+                ) {
+                $segundoJogo = new Jogo($jogo->getEquipeVisitante(), $jogo->getEquipeMandante());
+                $segundoJogo->setEdicaoCampeonato($this->edicaoCampeonato);
+                $fase->setPrimeiroJogo($segundoJogo);
+            }
+        }
+    }
+    
+    /**
+     * Gera o returno a partir das roas existentes no campeonato
+     */
+    private function gerarReturno()
+    {
+        $rodadas = $this->edicaoCampeonato->getRodadas()->toArray();
+        $numeroRodada = $this->edicaoCampeonato->getRodadas()->count();
+        
+        foreach ($rodadas as $rodada) {
+            /* @var $rodada Rodada */
+            $rodadaAlternada = new Rodada($this->edicaoCampeonato, $numeroRodada++);
+            
+            foreach ($rodada->getJogos() as $jogo) {
+                /* @var $jogo Jogo */
+                //Inverte o mandante do jogo
+                $jogoReturno = new Jogo($jogo->getEquipeVisitante(), $jogo->getEquipeMandante());
+
+                if ($jogo->getChave() != null) {
+                    $jogoReturno->setChave($jogo->getChave());
+                }
+
+                $jogoReturno->setRodada($rodadaAlternada)
+                        ->setEdicaoCampeonato($this->edicaoCampeonato);
+                $rodadaAlternada->getJogos()->add($jogoReturno);
+            }
+            
+            $this->edicaoCampeonato->getRodadas()->add($rodadaAlternada);
+        }
+    }
+
+    /**
+     * Gera as Rodadas Da Chave
+     * 
+     * @param Collection $chaves
+     * @return array
+     */
     private function gerarRodadasChaves(Collection $chaves) 
     {
         $rodadas = array();
@@ -134,7 +209,6 @@ class EdicaoCampeonatoService
         return $rodadas;        
     }
 
-
     
     /**
      * 
@@ -182,42 +256,10 @@ class EdicaoCampeonatoService
         
         return $rodadas;
     }
-
+    
+    
     /**
-     * @deprecated since version number
      * 
-     * @param Equipe $equipeMandante
-     * @param Equipe $equipeVisitante
-     * @param type $rodadas
-     * @return Rodada
-     */
-    private function inseriJogoRodadas (Equipe $equipeMandante, Equipe $equipeVisitante, $rodadas) 
-    {
-        $rodadaExiste = FALSE;
-        foreach ($rodadas as $rodada) {
-            if (!$this->verificaEquipeJogaRodada($equipeMandante, $equipeVisitante, $rodada)) {
-                $jogo = new Jogo($equipeMandante, $equipeVisitante);
-                $jogo->setRodada($rodada)
-                        ->setEdicaoCampeonato($this->edicaoCampeonato);
-                $rodada->getJogos()->add($jogo);
-                $rodadaExiste = TRUE;
-                break;
-            }
-        }
-                
-        if(!$rodadaExiste) {
-            $rodada = new Rodada($this->edicaoCampeonato, count($rodadas)+1);
-            $jogo = new Jogo($equipeMandante, $equipeVisitante);
-            $jogo->setRodada($rodada)
-                    ->setEdicaoCampeonato($this->edicaoCampeonato);
-            $rodada->getJogos()->add($jogo);
-            $rodadas[] = $rodada;
-        }
-        return $rodadas;
-    }
-
-    /**
-     * @deprecated since version number
      * @param array $lista
      * @return array
      * @throws Exception
@@ -245,45 +287,53 @@ class EdicaoCampeonatoService
         
         return $novaLista;;
     }
+
     
-    
-    
-    
-    /**
-     * 
-     * @param Equipe $equipeMandante
-     * @param Equipe $equipeVisitante
-     * @param array $rodadas
-     * @return boolean
-     */
-    private function verificaJogoExistente (Equipe $equipeMandante, Equipe $equipeVisitante, $rodadas)
-    {
-        foreach ($rodadas as $rodada) {
-            /* @var $rodada Rodada */
-            foreach ($rodada->getJogos() as $jogo) {
-                /* @var $jogo Jogo */
-                if ($jogo->getEquipeMandante()===$equipeMandante || $jogo->getEquipeVisitante()===$equipeMandante) {
-                    if ($jogo->getEquipeMandante()===$equipeVisitante || $jogo->getEquipeVisitante()===$equipeVisitante) {
-                        return true;
-                    }
-                }
-            }
-        }
-        return false;
-    }
-    
-    private function verificaEquipeJogaRodada (Equipe $equipeMandante, Equipe $equipeVisitante, Rodada $rodada)
-    {
-        foreach ($rodada->getJogos() as $jogo) {
-            /* @var $jogo Jogo */
-            if ($jogo->getEquipeMandante()===$equipeMandante || $jogo->getEquipeVisitante()===$equipeMandante) {
-                return true;
-            }
-            if ($jogo->getEquipeMandante()===$equipeVisitante || $jogo->getEquipeVisitante()===$equipeVisitante) {
-                return true;
-            }
-        }
-        return false;
-    }
+//    /**
+//     * @deprecated since version number
+//     * 
+//     * @param Equipe $equipeMandante
+//     * @param Equipe $equipeVisitante
+//     * @param array $rodadas
+//     * @return boolean
+//     */
+//    private function verificaJogoExistente (Equipe $equipeMandante, Equipe $equipeVisitante, $rodadas)
+//    {
+//        foreach ($rodadas as $rodada) {
+//            /* @var $rodada Rodada */
+//            foreach ($rodada->getJogos() as $jogo) {
+//                /* @var $jogo Jogo */
+//                if ($jogo->getEquipeMandante()===$equipeMandante || $jogo->getEquipeVisitante()===$equipeMandante) {
+//                    if ($jogo->getEquipeMandante()===$equipeVisitante || $jogo->getEquipeVisitante()===$equipeVisitante) {
+//                        return true;
+//                    }
+//                }
+//            }
+//        }
+//        return false;
+//    }
+//    
+//    
+//    /**
+//     * @deprecated since version number
+//     * 
+//     * @param Equipe $equipeMandante
+//     * @param Equipe $equipeVisitante
+//     * @param Rodada $rodada
+//     * @return boolean
+//     */
+//    private function verificaEquipeJogaRodada (Equipe $equipeMandante, Equipe $equipeVisitante, Rodada $rodada)
+//    {
+//        foreach ($rodada->getJogos() as $jogo) {
+//            /* @var $jogo Jogo */
+//            if ($jogo->getEquipeMandante()===$equipeMandante || $jogo->getEquipeVisitante()===$equipeMandante) {
+//                return true;
+//            }
+//            if ($jogo->getEquipeMandante()===$equipeVisitante || $jogo->getEquipeVisitante()===$equipeVisitante) {
+//                return true;
+//            }
+//        }
+//        return false;
+//    }
     
 }

@@ -44,38 +44,34 @@ class FaseClassificatoria
      * @var EdicaoCampeonato
      *
      * @ORM\ManyToOne(targetEntity="EdicaoCampeonato", inversedBy="fasesClassificatorias")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="edica_campeonato", referencedColumnName="id", nullable=false)
-     * })
+     * @ORM\JoinColumn(name="edicao_campeonato", referencedColumnName="id", nullable=false)
      */
     private $edicaoCampeonato;
     
     /**
      * @var FaseClassificatoria
      *
-     * @ORM\ManyToOne(targetEntity="FaseClassificatoria", inversedBy="fasesPai")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="fase_filha", referencedColumnName="id")
-     * })
+     * @ORM\ManyToOne(targetEntity="FaseClassificatoria", cascade={"persist"}, inversedBy="fasesPai")
+     * @ORM\JoinColumn(name="fase_filha", referencedColumnName="id")
      */
     private $faseFilha;
             
     /**
      * @var Collection
-     * @ORM\OneToMany(targetEntity="FaseClassificatoria", mappedBy="faseFilha")
+     * @ORM\OneToMany(targetEntity="FaseClassificatoria", cascade={"persist"}, mappedBy="faseFilha")
      **/
     private $fasesPai;
     
     /**
      * @var Jogo
-     * @ORM\OneToOne(targetEntity="Jogo")
+     * @ORM\OneToOne(targetEntity="Jogo", cascade={"persist"})
      * @ORM\JoinColumn(name="primeiro_jogo", referencedColumnName="id", nullable=false)
      */
     private $primeiroJogo;
     
     /**
      * @var Jogo
-     * @ORM\OneToOne(targetEntity="Jogo")
+     * @ORM\OneToOne(targetEntity="Jogo", cascade={"persist"})
      * @ORM\JoinColumn(name="segundo_jogo", referencedColumnName="id")
      */
     private $segundoJogo;

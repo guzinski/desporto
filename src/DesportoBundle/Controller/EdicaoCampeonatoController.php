@@ -3,7 +3,9 @@
 
 namespace DesportoBundle\Controller;
 
+use DesportoBundle\Entity\Campeonato;
 use DesportoBundle\Entity\EdicaoCampeonato;
+use DesportoBundle\Entity\FaseClassificatoria;
 use DesportoBundle\Form\EdicaoCampeonatoType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -44,9 +46,19 @@ class EdicaoCampeonatoController extends Controller
             } elseif ($campeonato->getTipo()==EdicaoCampeonato::TORNEIO) {
                 $campService->salvarTorneio($campeonato);
             }
-            return new RedirectResponse($this->generateUrl('equipe_index'));
+            return new RedirectResponse($this->generateUrl('campeonato_detalhe', array('campeonato'=>$campeonato->getId())));
         }
         return ['form'=>$form->createView()];
+    }
+    
+    /**
+     * @Route("/detalhe/{campeonato}", name="campeonato_detalhe")
+     * @Template()
+     * @param Campeonato $campeonato
+     */
+    public function detalheAction(EdicaoCampeonato $campeonato)
+    {
+        return array("campeonato"=>$campeonato);
     }
 
     /**
@@ -151,16 +163,16 @@ class EdicaoCampeonatoController extends Controller
         
         if ($numEquipes == 2) {
             $label = "Final";
-            $tipo = \DesportoBundle\Entity\FaseClassificatoria::FINAL_;
+            $tipo = FaseClassificatoria::FINAL_;
         } elseif ($numEquipes == 4) {
             $label = "Semifinal";
-            $tipo = \DesportoBundle\Entity\FaseClassificatoria::SEMIFINAL;
+            $tipo = FaseClassificatoria::SEMIFINAL;
         } elseif ($numEquipes == 8) {
             $label = "Quartas de Final";
-            $tipo = \DesportoBundle\Entity\FaseClassificatoria::QUARTAS;
+            $tipo = FaseClassificatoria::QUARTAS;
         } elseif ($numEquipes == 16) {
             $label = "Oitavas de Final";
-            $tipo = \DesportoBundle\Entity\FaseClassificatoria::OITAVAS;
+            $tipo = FaseClassificatoria::OITAVAS;
         }
                 
         return ['total'=>$numEquipes/2, 'label'=>$label, 'tipo'=>$tipo];
