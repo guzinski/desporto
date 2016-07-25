@@ -27,34 +27,41 @@ class EdicaoCampeonato extends BaseEntity
     const SALDO_GOLS = "S";
     const DISCIPLINA = "D";
     
+    
+    const AGUARDANDO_CONVOCACAO = "AC";
+    const EM_ANDAMENTO = "EA";
+    const ENCERRADO = "E";
+    
     /**
      * @var string
      *
      * @ORM\Column(type="string", length=20, nullable=false)
      */
-    private $edicao;    
+    private $edicao;
     
     /**
      * @var Campeonato
      *
      * @ORM\ManyToOne(targetEntity="Campeonato", inversedBy="edicoesCampeonato")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="campeonato", referencedColumnName="id")
-     * })
+     * @ORM\JoinColumn(name="campeonato", referencedColumnName="id")
      */
     private $campeonato;
 
     /**
-     *  @ORM\Column(type="sexotype", nullable=false)
+     * @ORM\Column(type="sexotype", nullable=false)
      */
     private $modalidade;
     
     /**
-     *  @ORM\Column(type="string", columnDefinition="ENUM('T', 'C', 'P')", nullable=false)
+     * @ORM\Column(type="string", columnDefinition="ENUM('T', 'C', 'P')", nullable=false)
      */
     private $tipo;
-
     
+    /**
+     * @ORM\Column(type="string", columnDefinition="ENUM('AC', 'EA', 'E')", nullable=false)
+     */
+    private $status = self::AGUARDANDO_CONVOCACAO;
+
     /**
      * @var int
      * 
@@ -460,6 +467,16 @@ class EdicaoCampeonato extends BaseEntity
         return $this;
     }
 
+    public function getStatus()
+    {
+        return $this->status;
+    }
+
+    public function setStatus($status)
+    {
+        $this->status = $status;
+        return $this;
+    }
 
 
 

@@ -5,6 +5,7 @@ namespace DesportoBundle\Controller;
 
 use DesportoBundle\Entity\Campeonato;
 use DesportoBundle\Entity\EdicaoCampeonato;
+use DesportoBundle\Entity\Equipe;
 use DesportoBundle\Entity\FaseClassificatoria;
 use DesportoBundle\Form\EdicaoCampeonatoType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -38,7 +39,7 @@ class EdicaoCampeonatoController extends Controller
         if ($form->isValid()) {
             $campService = $this->get("edicao_campeonato");
             $campeonato->setUsuarioCadastro($this->getUser());
-            
+
             if ($campeonato->getTipo()==EdicaoCampeonato::CHAVE) {
                 $campService->salvarChaves($campeonato);
             } elseif ($campeonato->getTipo()==EdicaoCampeonato::PONTOS_CORRIDOS) {
@@ -60,6 +61,22 @@ class EdicaoCampeonatoController extends Controller
     {
         return array("campeonato"=>$campeonato);
     }
+
+    /**
+     * @Route("/convocacao/{campeonato}/{equipe}", name="campeonato_convocacao")
+     * @Template()
+     * @param EdicaoCampeonato $campeonato
+     * @param Equipe $equipe
+     * @return array
+     */
+    public function convocacaoAction(EdicaoCampeonato $campeonato, Equipe $equipe)
+    {
+        return array("campeonato"=>$campeonato);
+    }
+    
+    
+    
+    
 
     /**
      * @Route("/numero/chaves", name="campeonato_numero_chaves")
