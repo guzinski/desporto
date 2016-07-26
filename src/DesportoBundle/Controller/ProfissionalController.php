@@ -4,6 +4,7 @@ namespace DesportoBundle\Controller;
 
 use DesportoBundle\Entity\Profissional;
 use DesportoBundle\Form\ProfissionalType;
+use DesportoBundle\Repository\ProfissionalRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -136,6 +137,39 @@ class ProfissionalController extends Controller
         } else {
             throw new NotFoundHttpException;
         }
+    }
+    
+    /**
+     * @Route("/find", name="profissional_find")
+     * @param Request $request
+     */
+    public function find(Request $request)
+    {
+        $busca = $request->get("q");
+        $pagina = $request->get("page");
+        
+        $repProfissional = $this->getDoctrine()
+                            ->getRepository(Profissional::class);
+        /* @var $repProfissional ProfissionalRepository */
+        
+        $profissionais = $repProfissional->getProfissionais($busca, 30, ($pagina-1)*30);
+        
+        $items = array();
+        foreach ($profissionais as $profissional) {
+            /* @var $profissional Profissional */
+            $items[] = [
+                'id'=>$profissional->getId(),
+                'full_name'=>$profissional->getNome()
+            ];
+        }
+        
+        
+        $return['total_count'] = $repProfissional->count($busca);
+        $return['items'] = $items;
+        $return['incomplete_results'] = false;
+        
+        return new Response(json_encode($return, 0, 2048));
+
     }
 
     

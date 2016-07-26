@@ -8,7 +8,12 @@
 
 namespace DesportoBundle\Form;
 
+use DesportoBundle\Entity\Campeonato;
+use DesportoBundle\Entity\EdicaoCampeonatoEquipeProfissional;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * Description of EscalacaoEquipeType
@@ -16,17 +21,19 @@ use Symfony\Component\Form\AbstractType;
  */
 class EscalacaoEquipeType extends AbstractType
 {
-    public function buildForm(\Symfony\Component\Form\FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add("campeonato", EntityType::class, array(
+        $builder->add("profissional", EntityType::class, array(
             'class' => Campeonato::class,
             'placeholder' => "Selecione"
         ));
     }
 
-    public function configureOptions(\Symfony\Component\OptionsResolver\OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
-        parent::configureOptions($resolver);
+        $resolver->setDefaults(array(
+            'data_class' => EdicaoCampeonatoEquipeProfissional::class,
+        ));
     }
 
     

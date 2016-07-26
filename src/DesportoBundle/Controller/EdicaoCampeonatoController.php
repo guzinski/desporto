@@ -8,6 +8,7 @@ use DesportoBundle\Entity\EdicaoCampeonato;
 use DesportoBundle\Entity\Equipe;
 use DesportoBundle\Entity\FaseClassificatoria;
 use DesportoBundle\Form\EdicaoCampeonatoType;
+use DesportoBundle\Service\EdicaoCampeonatoService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -38,7 +39,9 @@ class EdicaoCampeonatoController extends Controller
         $form->handleRequest($request);
         if ($form->isValid()) {
             $campService = $this->get("edicao_campeonato");
+            /* @var $campService EdicaoCampeonatoService */
             $campeonato->setUsuarioCadastro($this->getUser());
+            $campeonato->setStatus(EdicaoCampeonato::AGUARDANDO_CONVOCACAO);
 
             if ($campeonato->getTipo()==EdicaoCampeonato::CHAVE) {
                 $campService->salvarChaves($campeonato);
@@ -59,6 +62,10 @@ class EdicaoCampeonatoController extends Controller
      */
     public function detalheAction(EdicaoCampeonato $campeonato)
     {
+        var_dump($campeonato->getStatus());
+        if ($campeonato->getStatus()==EdicaoCampeonato::AGUARDANDO_CONVOCACAO) {
+            return $this->redirectToRoute("campeonato_convocacao", array("campeonato"=>$campeonato->getId()));
+        }
         return array("campeonato"=>$campeonato);
     }
 
@@ -69,7 +76,7 @@ class EdicaoCampeonatoController extends Controller
      * @param Equipe $equipe
      * @return array
      */
-    public function convocacaoAction(EdicaoCampeonato $campeonato, Equipe $equipe)
+    public function convocacaoAction(EdicaoCampeonato $campeonato, Equipe $equipe = null)
     {
         return array("campeonato"=>$campeonato);
     }
