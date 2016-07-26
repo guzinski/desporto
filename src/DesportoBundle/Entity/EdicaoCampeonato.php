@@ -120,7 +120,7 @@ class EdicaoCampeonato extends BaseEntity
     
     /**
      * @var Collection Description
-     * @ORM\ManyToMany(targetEntity="Equipe", inversedBy="edicoesCampeonatos", cascade={"persist"})
+     * @ORM\ManyToMany(targetEntity="Equipe", inversedBy="edicoesCampeonatos")
      * @ORM\JoinTable(name="edicao_campeonato_equipe",
      *      joinColumns={@ORM\JoinColumn(name="edicao_campeonato", referencedColumnName="id")},
      *      inverseJoinColumns={@ORM\JoinColumn(name="equipe", referencedColumnName="id", unique=false)}

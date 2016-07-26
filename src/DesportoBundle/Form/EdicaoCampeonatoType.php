@@ -5,6 +5,7 @@ namespace DesportoBundle\Form;
 use DesportoBundle\Doctrine\Type\EnumSexoType;
 use DesportoBundle\Entity\Campeonato;
 use DesportoBundle\Entity\EdicaoCampeonato;
+use DesportoBundle\Entity\Equipe;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;

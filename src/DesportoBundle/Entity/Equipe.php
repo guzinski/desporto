@@ -132,7 +132,7 @@ class Equipe extends BaseEntity
     
     public function getLabel()
     {
-        return $this->nome;
+        return $this->nome." ".$this->id;
     }
 
     

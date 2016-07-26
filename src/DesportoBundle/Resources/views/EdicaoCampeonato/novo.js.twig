@@ -132,12 +132,31 @@
                         jQuery(".locked").hide();
                     }
                     
-                    jQuery(".completeEquipe").autocomplete({
-                        source: "{{ path('equipe_complete') }}",
-                        select: function(event, ui) {
-                            jQuery(this).val(ui.item.label)
-                            jQuery(this).next().val(ui.item.label)
-                        }
+                    jQuery(".completeEquipe").select2({
+                        placeholder: "Procurar equipe",
+                        minimumInputLength: 1,
+                        ajax: {
+                            url: "{{ path('equipe_find') }}",
+                            //url: "https://api.github.com/search/repositories",
+                            dataType: 'json',
+                            quietMillis: 250,
+                            data: function (term, page) { // page is the one-based page number tracked by Select2
+                                return {
+                                    q: term, //search term
+                                    page: page // page number
+                                };
+                            },
+                            results: function (data, page) {
+                                var more = (page * 30) < data.total_count; // whether or not there are more results available
+
+                                // notice we return the value of more so Select2 knows if more results can be loaded
+                                return { results: data.items, more: more };
+                            }
+                        },
+                        formatResult: repoFormatResult, // omitted for brevity, see the source of this page
+                        formatSelection: repoFormatSelection, // omitted for brevity, see the source of this page
+                        dropdownCssClass: "bigdrop", // apply css that makes the dropdown taller
+                        escapeMarkup: function (m) { return m; } // we do not want to escape markup since we are displaying html in results            });
                     });
                 } else if (index === 0) {
                     jQuery("#tab2-2").html("");
@@ -149,7 +168,19 @@
 
     })
     
-    
+    function repoFormatResult(repo) {
+       var markup = '<div class="row">' +
+                        '<div class="col-sm-12">' + repo.full_name + '</div>' +
+                    '</div>';
+
+       return markup;
+    }
+
+    function repoFormatSelection(repo) {
+       return repo.full_name;
+    }
+
+
     function equipesChange() {
         jQuery(".locked").show();
         jQuery.post('{{ path('campeonato_numero_chaves') }}', {

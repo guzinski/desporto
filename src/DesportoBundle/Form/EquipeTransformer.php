@@ -28,16 +28,22 @@ class EquipeTransformer implements DataTransformerInterface
         $this->em = $em;
     }
     
-    public function reverseTransform($value)
+    public function reverseTransform($data)
     {
         $collection = new ArrayCollection();
         
-        foreach ($value as $nome) {
+        foreach ($data as $value) {
+            if (is_numeric($value)) {
+                $parameters = array('id' => $value, 'dataExclusao' => null);
+            } else {
+                $parameters = array('nome' => $value, 'dataExclusao' => null);
+            }
             $equipe = $this->em
-                    ->getRepository(Equipe::class)
-                    ->findOneBy(array('nome' => $nome, 'dataExclusao' => null));
+                ->getRepository(Equipe::class)
+                ->findOneBy($parameters);
+
             if (empty($equipe)) {
-                $equipe = new Equipe($nome);
+                $equipe = new Equipe($value);
             }
             $collection->add($equipe);
         }

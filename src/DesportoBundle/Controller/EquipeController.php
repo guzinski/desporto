@@ -4,12 +4,15 @@ namespace DesportoBundle\Controller;
 
 use DesportoBundle\Entity\Equipe;
 use DesportoBundle\Form\EquipeType;
+use DesportoBundle\Repository\EquipeRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Asset\Exception\InvalidArgumentException;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
  * Description of EquipeController
@@ -69,28 +72,32 @@ class EquipeController extends Controller
     }
     
     /**
-     * @Route("/complete", name="equipe_complete")
+     * @Route("/complete", name="equipe_find")
      */
     public function completeAction(Request $request)
     {
-        $busca          = $request->get("term");
+        $busca = $request->get("q");
+        $pagina = $request->get("page");
         if (empty($busca)) {
-            throw new \Symfony\Component\Asset\Exception\InvalidArgumentException;
+            throw new InvalidArgumentException;
         }
          
         $repEquipe = $this->getDoctrine()
                             ->getRepository(Equipe::class);
-        $equipes = $repEquipe->getEquipes($busca);
+        /*@var $repEquipe EquipeRepository */
+        $equipes = $repEquipe->getEquipes($busca, 30, ($pagina-1)*30);
         
         $dados = array();
         foreach ($equipes as $equipe) {
             $dados[] = [
-                'label' => $equipe->getNome(),
-                'value' => $equipe->getNome(),
+                'id' => $equipe->getId(),
+                'full_name' => $equipe->getNome(),
             ];
         }
+        $return['items'] = $dados; 
+        $return['total_count'] = $repEquipe->count($busca);
         
-        return new Response(json_encode($dados));
+        return new Response(json_encode($return));
     }
     
     /**
