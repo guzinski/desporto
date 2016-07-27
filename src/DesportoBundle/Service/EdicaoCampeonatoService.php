@@ -105,6 +105,7 @@ class EdicaoCampeonatoService
             $jogo = new Jogo($equipes[0], $equipes[1]);
             $jogo->setEdicaoCampeonato($this->edicaoCampeonato);
             $fase->setPrimeiroJogo($jogo);
+            $fase->setEdicaoCampeonato($this->edicaoCampeonato);
             if (
                 ($fase->getTipo() == FaseClassificatoria::OITAVAS && $this->edicaoCampeonato->getOitavas()=="I") ||
                 ($fase->getTipo() == FaseClassificatoria::QUARTAS && $this->edicaoCampeonato->getQuartas()=="I") ||

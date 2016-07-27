@@ -9,8 +9,9 @@
             <input value="{{ tipo }}" type="hidden" name="edicao_campeonato[fasesClassificatorias][{{ i }}][tipo]" />
                 <div class="col-lg-5" >
                     <div class="form-group">
-                        <input type="text" class="form-control completeEquipe" />
-                        <input required="required" class="equipeHidden" type="hidden" name="edicao_campeonato[fasesClassificatorias][{{ i }}][equipes][0]" />
+                        <div class="row">
+                            <input required="required" type="hidden" class=" completeEquipe col-sm-12" id="edicao_campeonato_fasesClassificatorias_{{ i }}_equipes_0" name="edicao_campeonato[fasesClassificatorias][{{ i }}][equipes][0]" />                        
+                        </div>
                     </div>                        
                 </div>
                 <div class="col-sm-2 ">
@@ -18,9 +19,10 @@
                 </div>
                 <div class="col-lg-5" >
                     <div class="form-group">
-                        <input type="text" class="form-control completeEquipe" />
-                        <input required="required" class="equipeHidden" type="hidden" name="edicao_campeonato[fasesClassificatorias][{{ i }}][equipes][1]" />
-                    </div>                        
+                        <div class="row">
+                            <input required="required" type="hidden" class=" completeEquipe col-sm-12" id="edicao_campeonato_fasesClassificatorias_{{ i }}_equipes_1" name="edicao_campeonato[fasesClassificatorias][{{ i }}][equipes][1]" />
+                        </div>
+                    </div>
                 </div>
 
         </div>

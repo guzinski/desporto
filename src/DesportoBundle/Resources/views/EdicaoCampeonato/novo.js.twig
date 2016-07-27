@@ -1,4 +1,8 @@
 <script type="text/javascript" >
+    
+
+    
+    
     jQuery(document).ready(function(){
         //Select
         jQuery("select, #edicao_campeonato_quantidadeChaves, #edicao_campeonato_quantidadeClassificadosChave").select2({
@@ -131,6 +135,13 @@
                           }).fail( defaultError);
                         jQuery(".locked").hide();
                     }
+                    
+                    ///Adiciona a aregra d validação
+                    jQuery(".completeEquipe").each(function(index, element) {
+                        jQuery(element).rules("add", {
+                            notEqualToGroup: ['.completeEquipe']
+                        });
+                    });
                     
                     jQuery(".completeEquipe").select2({
                         placeholder: "Procurar equipe",

@@ -23,6 +23,14 @@
 
         
         jQuery(document).ready(function(){
+            
+            jQuery("#equipe").select2({
+                minimumResultsForSearch: -1,
+            }).removeClass("form-control");
+
+            jQuery('.select2-container').css("width", "100%");
+
+            
             jQuery("#e6").select2({
                 placeholder: "Search for a repository",
                 minimumInputLength: 1,
@@ -70,29 +78,36 @@
         </div><!-- media -->
     </div><!-- pageheader -->
      <div class="contentpanel">
-         
-         <div class="row">
-             
-             <div class="panel panel-default">
-                 <div class="panel-heading">
-                     <h4 class="panel-title">Content Slider</h4>
-                     <p>Teste de mensagem</p>
-                 </div>
-                 <div class="panel-body nopadding">
-                     <form class="form-bordered">
-                            <div class="form-group">
-                                 <div class="col-sm-12">
-                                     <input type="hidden" value="3620194" style="width: 600px" id="e6" class="bigdrop" tabindex="-1" title="">
+                         <div class="row">
+                             <div class="col-sm-12 col-md-12 col-lg-12">
+                                 <h5 class="lg-title mb5">Basic Styling</h5>
+                                 <p class="">For basic styling add the base class <code>.table</code> to any table.</p>
+                                 <div class="table-responsive">
+                                    <table class="table ">
+                                        <thead>
+                                            <tr>
+                                               <th>Equipe</th>
+                                               <th>Diretor</th>
+                                               <th>Treinador</th>
+                                               <th>Jogadores isncritos</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for equipe in campeonato.equipes %}
+                                                <tr>
+                                                    <td>{{ equipe.nome }}</td>
+                                                    <td>Cadastrar</td>
+                                                    <td>Cadastrar/td>
+                                                    <td>20</td>
+                                                </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
                                  </div>
-                             </div>                     
 
-                     </form>
-                 </div><!-- panel-body -->
-             </div>
+                             </div>
+                         </div>
 
-
-         </div>
-            
             
      </div><!-- contentpanel -->
 {% endblock %}

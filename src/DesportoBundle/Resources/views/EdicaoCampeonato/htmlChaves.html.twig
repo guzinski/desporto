@@ -1,5 +1,4 @@
 {% for i in 0..numChaves %}
-
 <div class="col-lg-6 col-sm-12">
     <div class="panel panel-default">
         <div class="panel-heading">
@@ -9,12 +8,10 @@
         <div class="panel-body nopadding">
             {% for j in 0..numEquipesChave %}
             <div class="form-group  ">
-                <label class="col-sm-4 control-label"> Equipe {{ loop.index }} </label>
-                <div class="col-sm-8">
-                    <input type="text" class="form-control completeEquipe"  />
-                    <input required="required" class="equipeHidden" type="hidden" name="edicao_campeonato[chaves][{{ i }}][equipes][{{ j }}]" />
+                <label class="control-label"> Equipe {{ loop.index }} </label>
+                <div class="row">
+                    <input required="required" type="hidden" class=" completeEquipe col-sm-12" id="edicao_campeonato_chaves_{{ i }}_equipes_{{ j }}" name="edicao_campeonato[chaves][{{ i }}][equipes][{{ j }}]" />
                 </div>
-                
             </div>      
             {% endfor %}
             <input value="{{ loop.index }}" type="hidden" id="edicao_campeonato_chaves{{ i }}numero" name="edicao_campeonato[chaves][{{ i }}][numero]" />    

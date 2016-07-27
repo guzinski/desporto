@@ -12,7 +12,7 @@
  */
 
 (function() {
-	
+    	
 	function stripHtml(value) {
 		// remove html tags and space chars
 		return value.replace(/<.[^<>]*?>/g, ' ').replace(/&nbsp;|&#160;/gi, ' ')
@@ -32,6 +32,32 @@
 	}, jQuery.validator.format("Please enter between {0} and {1} words."));
 
 })();
+
+
+jQuery.validator.addMethod("notEqualToGroup", function (value, element, options) {
+    // get all the elements passed here with the same class
+    var elems = jQuery(element).parents('form').find(options[0]);
+    // the value of the current element
+    var valueToCompare = value;
+    // count
+    var matchesFound = 0;
+    // loop each element and compare its value with the current value
+    // and increase the count every time we find one
+    jQuery.each(elems, function () {
+        thisVal = $(this).val();
+        if (thisVal == valueToCompare) {
+            matchesFound++;
+        }
+    });
+    // count should be either 0 or 1 max
+    if (this.optional(element) || matchesFound <= 1) {
+        //elems.removeClass('error');
+        return true;
+    } else {
+        //elems.addClass('error');
+    }
+}, "Equipes Repetidas.")
+
 
 jQuery.validator.addMethod("letterswithbasicpunc", function(value, element) {
 	return this.optional(element) || /^[a-z-.,()'\"\s]+$/i.test(value);
