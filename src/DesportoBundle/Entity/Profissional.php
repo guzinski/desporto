@@ -88,6 +88,12 @@ class Profissional extends BaseEntity
      */
     private $arquivos;
 
+    /**
+     * @var Collection
+     * @ORM\OneToMany(targetEntity="EdicaoCampeonatoEquipeProfissional", mappedBy="profissional")
+     **/
+    private $campeoantosEquipes;
+
     
     /**
      * @var \DateTime
@@ -121,6 +127,7 @@ class Profissional extends BaseEntity
     {
         parent::__construct();
         $this->setArquivos(new ArrayCollection());
+        $this->setCampeoantosEquipes(new ArrayCollection());
     }
 
     public function getNome()
@@ -262,6 +269,18 @@ class Profissional extends BaseEntity
         }
         
         $this->sexo = $sexo;
+        return $this;
+    }
+
+
+    public function getCampeoantosEquipes()
+    {
+        return $this->campeoantosEquipes;
+    }
+
+    public function setCampeoantosEquipes(Collection $campeoantosEquipes)
+    {
+        $this->campeoantosEquipes = $campeoantosEquipes;
         return $this;
     }
 

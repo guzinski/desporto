@@ -202,6 +202,24 @@ class EdicaoCampeonatoController extends Controller
         return ['total'=>$numEquipes/2, 'label'=>$label, 'tipo'=>$tipo];
     }
     
+
+    /**
+     * @Route("/inscrever/jogadores", name="campeonato_inscrever_jogadores")
+     * @Template()
+     * @param Request $request
+     */
+    public function inscreverJogadoresAction(Request $request)
+    {
+        $idequipe = $request->get("equipe");
+        $idCampeonato = $request->get("campeonato");
+        
+        if (empty($idequipe) || empty($idCampeonato)) {
+            throw new \InvalidArgumentException;
+        }
+        $jogadores = $this->getDoctrine()->getRepository(\DesportoBundle\Entity\Profissional::class)->getJogadoresInscritos($idequipe, $idCampeonato);
+        
+        return array("jogadores"=>$jogadores);
+    }
     
     
 }

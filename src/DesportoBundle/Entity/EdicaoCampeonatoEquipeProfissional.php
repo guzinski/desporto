@@ -10,7 +10,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 /**
  * Description of EdicaoCampeonatoEquipeProfissional
  * @ORM\Table(name="edicao_campeonato_equipe_profissional", uniqueConstraints={
- *     @ORM\UniqueConstraint(name="search_idx", columns={"edicao_campeonato", "equipe", "profissional", "tipo"})})
+ *     @ORM\UniqueConstraint(name="profissional_campeonato_equipe", columns={"edicao_campeonato", "equipe", "profissional", "tipo"})})
  * @ORM\Entity
  * @UniqueEntity({"edicaoCampeonato", "equipe", "profissional", "tipo"})
  */

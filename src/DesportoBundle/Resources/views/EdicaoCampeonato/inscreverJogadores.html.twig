@@ -1,0 +1,16 @@
+<div class="table-responsive">
+    <table class="table ">
+        <thead>
+            <tr>
+                <th>Nome</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for jogador in jogadores %}
+                <tr>
+                    <td><h4>{{ jogador.nome }}</h4></td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>

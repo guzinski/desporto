@@ -21,6 +21,33 @@
            return repo.full_name;
         }
 
+        function inscrever(idEquipe, idCampeonato) {
+            
+            jQuery(".locked").fadeIn();
+            jQuery.post("{{ path("campeonato_inscrever_jogadores") }}", {equipe: idEquipe, campeonato: idCampeonato}, function(html) {
+                jQuery(".locked").fadeOut();
+                bootbox.dialog({
+                    title: "Inscrever jogadores",
+                    message: html,
+                    buttons: {
+                        close: {
+                            label: "Cancelar",
+                            className: "btn-default",
+                        },
+                        success: {
+                            label: "Gerar",
+                            className: "btn-success",
+                            callback: function () {
+                            }
+                        },
+                    }
+                });                
+            });
+
+            
+                    
+            
+        }
         
         jQuery(document).ready(function(){
             
@@ -89,16 +116,18 @@
                                                <th>Equipe</th>
                                                <th>Diretor</th>
                                                <th>Treinador</th>
-                                               <th>Jogadores isncritos</th>
+                                               <th>isncritos</th>
+                                               <th></th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             {% for equipe in campeonato.equipes %}
                                                 <tr>
-                                                    <td>{{ equipe.nome }}</td>
+                                                    <td><h4>{{ equipe.nome }}</h4></td>
                                                     <td>Cadastrar</td>
-                                                    <td>Cadastrar/td>
+                                                    <td>Cadastrar</td>
                                                     <td>20</td>
+                                                    <td><button onclick="inscrever({{ equipe.id }}, {{ campeonato.id }});" class="btn btn-default">Inscrever jogadores</button></td>
                                                 </tr>
                                             {% endfor %}
                                         </tbody>

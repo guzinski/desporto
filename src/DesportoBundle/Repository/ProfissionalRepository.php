@@ -2,8 +2,9 @@
 
 namespace DesportoBundle\Repository;
 
+use DesportoBundle\Entity\EdicaoCampeonatoEquipeProfissional;
 use Doctrine\ORM\EntityRepository;
-use Symfony\Component\HttpFoundation\Request;
+use InvalidArgumentException;
 
 
 /**
@@ -62,7 +63,6 @@ class ProfissionalRepository extends EntityRepository
         return $query->getQuery()->getSingleScalarResult();
     }
     
-    
     /**
      * @param string $param
      * @return array
@@ -77,6 +77,27 @@ class ProfissionalRepository extends EntityRepository
             }
         }
         return array();;
+    }
+    
+    
+    public function getJogadoresInscritos($idEquipe, $idCampeonato)
+    {
+        if (empty($idEquipe) || empty($idCampeonato) || !is_numeric($idEquipe) || !is_numeric($idCampeonato)) {
+            throw new InvalidArgumentException;
+        }
+        
+        $query = $this->createQueryBuilder("J");
+        
+        return $query->select("J")
+                ->join("J.campeoantosEquipes", "CE")
+                ->andWhere($query->expr()->eq("CE.edicaoCampeonato", ":campeonato"))
+                ->andWhere($query->expr()->eq("CE.equipe", ":equipe"))
+                ->andWhere($query->expr()->eq("CE.tipo", ":tipo"))
+                ->setParameter("campeonato", $idCampeonato)
+                ->setParameter("equipe", $idEquipe)
+                ->setParameter("tipo", EdicaoCampeonatoEquipeProfissional::JOGADOR)
+                ->getQuery()
+                ->getResult();        
     }
         
 
