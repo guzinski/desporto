@@ -1,10 +1,22 @@
+<div class="row">
+    
+    <div class="col-sm-9">
+        <input data-placeholder="Procurar jogador"  id="jogador" />
+        <input value="{{ equipeId }}" type="hidden" name="equipe"  id="equipe" />
+    </div>
+    <div class="col-sm-3">
+        <button id="adicionarJogador" class="btn btn-primary">Adicionar</button>
+    </div>
+</div>
+<hr />
 <div class="table-responsive">
-    <table class="table ">
+    <table class="table" id="jogadores">
         <thead>
             <tr>
-                <th>Nome</th>
+                <th colspan="2">Jogadores inscritos</th>
             </tr>
         </thead>
+        
         <tbody>
             {% for jogador in jogadores %}
                 <tr>

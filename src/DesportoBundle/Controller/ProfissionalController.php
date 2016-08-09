@@ -140,36 +140,36 @@ class ProfissionalController extends Controller
     }
     
     /**
-     * @Route("/find", name="profissional_find")
+     * @Route("/find/jogadores/disponiveis", name="profissional_find_jogadores_disponiveis")
      * @param Request $request
      */
-    public function find(Request $request)
+    public function findJogadoresAction(Request $request)
     {
-        $busca = $request->get("q");
-        $pagina = $request->get("page");
-        
-        $repProfissional = $this->getDoctrine()
-                            ->getRepository(Profissional::class);
-        /* @var $repProfissional ProfissionalRepository */
-        
-        $profissionais = $repProfissional->getProfissionais($busca, 30, ($pagina-1)*30);
-        
+//        $this
+//                ->getDoctrine()
+//                ->getConnection()
+//                ->getConfiguration()
+//                ->setSQLLogger(new \Doctrine\DBAL\Logging\EchoSQLLogger());
+
+        $profissionais = $this->getDoctrine()->getRepository(Profissional::class)->getJogadoresDisponíveis($request->get("campeonato"), $request->get("equipe"), $request->get("busca"));
+
         $items = array();
         foreach ($profissionais as $profissional) {
             /* @var $profissional Profissional */
             $items[] = [
-                'id'=>$profissional->getId(),
-                'full_name'=>$profissional->getNome()
+                'id' => $profissional->getId(),
+                'nome' => $profissional->getNome(),
+                'text' => $profissional->getNome(),
+                'cpf' => $profissional->getCpf()
             ];
         }
-        
-        
-        $return['total_count'] = $repProfissional->count($busca);
+
+
+        $return['total_count'] = count($profissionais);
         $return['items'] = $items;
         $return['incomplete_results'] = false;
-        
-        return new Response(json_encode($return, 0, 2048));
 
+        return new Response(json_encode($return, 0, 2048));
     }
 
     

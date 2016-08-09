@@ -210,15 +210,15 @@ class EdicaoCampeonatoController extends Controller
      */
     public function inscreverJogadoresAction(Request $request)
     {
-        $idequipe = $request->get("equipe");
+        $idEquipe = $request->get("equipe");
         $idCampeonato = $request->get("campeonato");
         
-        if (empty($idequipe) || empty($idCampeonato)) {
+        if (empty($idEquipe) || empty($idCampeonato)) {
             throw new \InvalidArgumentException;
         }
-        $jogadores = $this->getDoctrine()->getRepository(\DesportoBundle\Entity\Profissional::class)->getJogadoresInscritos($idequipe, $idCampeonato);
+        $jogadores = $this->getDoctrine()->getRepository(\DesportoBundle\Entity\Profissional::class)->getJogadoresInscritos($idEquipe, $idCampeonato);
         
-        return array("jogadores"=>$jogadores);
+        return array("jogadores"=>$jogadores, "equipeId"=>$idEquipe);
     }
     
     

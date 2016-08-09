@@ -15,7 +15,6 @@ use InvalidArgumentException;
 class ProfissionalRepository extends EntityRepository
 {
     
-    
     /**
      * 
      * @param string $busca
@@ -79,7 +78,13 @@ class ProfissionalRepository extends EntityRepository
         return array();;
     }
     
-    
+    /**
+     * 
+     * @param int $idEquipe
+     * @param int $idCampeonato
+     * @return array
+     * @throws InvalidArgumentException
+     */
     public function getJogadoresInscritos($idEquipe, $idCampeonato)
     {
         if (empty($idEquipe) || empty($idCampeonato) || !is_numeric($idEquipe) || !is_numeric($idCampeonato)) {
@@ -98,6 +103,54 @@ class ProfissionalRepository extends EntityRepository
                 ->setParameter("tipo", EdicaoCampeonatoEquipeProfissional::JOGADOR)
                 ->getQuery()
                 ->getResult();        
+    }
+    
+    /**
+     * 
+     * @param int $idCampeonato
+     * @param int $idEquipe
+     * @param string $busca
+     * @return array
+     * @throws InvalidArgumentException
+     */
+    public function getJogadoresDisponíveis($idCampeonato, $idEquipe, $busca = null)
+    {
+        if (empty($idCampeonato) || !is_numeric($idCampeonato)) {
+            throw new InvalidArgumentException;
+        }
+        
+        $query = $this->createQueryBuilder("J");
+        
+        if (!empty($busca)) {
+            $query->andWhere(
+                    $query->expr()->orX(
+                            $query->expr()->like("J.nome", ":busca"), $query->expr()->like("J.cpf", ":busca")
+                    )
+            );
+        }
+        return $query->select("J")
+                ->leftJoin("J.campeoantosEquipes", "CE")
+                ->andWhere(
+                    $query->expr()->orX(
+                            $query->expr()->orX(
+                                $query->expr()->neq("CE.edicaoCampeonato", ":campeonato"),
+                                $query->expr()->isNull("CE.edicaoCampeonato")
+                            ),
+                            $query->expr()->andX(
+                                    $query->expr()->eq("CE.edicaoCampeonato", ":campeonato"),
+                                    $query->expr()->eq("CE.equipe", ":equipe"),
+                                    $query->expr()->neq("CE.tipo", ":tipo")
+                                )
+                            )
+                    )
+                ->setParameter("campeonato", $idCampeonato)
+                ->setParameter("equipe", $idEquipe)
+                ->setParameter("tipo", EdicaoCampeonatoEquipeProfissional::JOGADOR)
+                ->setParameter("busca", "%{$busca}%")
+                ->addOrderBy("J.nome")
+                ->setMaxResults(100)
+                ->getQuery()
+                ->getResult();
     }
         
 

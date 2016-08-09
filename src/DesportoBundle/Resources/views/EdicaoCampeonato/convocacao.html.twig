@@ -9,45 +9,81 @@
     
     <script>
         
+        function defaultError(xhr, textStatus, errorThrown) {
+            jQuery(".locked").fadeOut();
+            bootbox.alert("Erro ao processar informação");
+        }
+
+        
         function repoFormatResult(repo) {
            var markup = '<div class="row">' +
-                            '<div class="col-sm-12">' + repo.full_name + '</div>' +
+                            '<div class="col-sm-12"><span class="h5">' + repo.nome + '</span> (' + repo.cpf + ')</div>' +
                         '</div>';
-
            return markup;
         }
 
         function repoFormatSelection(repo) {
            return repo.full_name;
         }
+        
+        function adicionarJogador() {
+             console.log(jQuery("#jogador").val());
+        }
 
         function inscrever(idEquipe, idCampeonato) {
             
             jQuery(".locked").fadeIn();
-            jQuery.post("{{ path("campeonato_inscrever_jogadores") }}", {equipe: idEquipe, campeonato: idCampeonato}, function(html) {
-                jQuery(".locked").fadeOut();
-                bootbox.dialog({
-                    title: "Inscrever jogadores",
-                    message: html,
-                    buttons: {
-                        close: {
-                            label: "Cancelar",
-                            className: "btn-default",
-                        },
-                        success: {
-                            label: "Gerar",
-                            className: "btn-success",
-                            callback: function () {
-                            }
-                        },
-                    }
-                });                
-            });
+            
+            jQuery.post("{{ path("campeonato_inscrever_jogadores") }}", {equipe: idEquipe, campeonato: idCampeonato})
+                    .done(function(html) {
+                        jQuery(".locked").fadeOut();
+                        bootbox.dialog({
+                            title: "Inscrever jogadores",
+                                    message: html,
+                                    buttons: {
+                                    close: {
+                                    label: "Cancelar",
+                                            className: "btn-default",
+                                    },
+                                            success: {
+                                            label: "Gerar",
+                                                    className: "btn-success",
+                                                    callback: function () {
+                                                    }
+                                            },
+                                    }
+                        });
+                        jQuery("#jogador").select2({
+                            placeholder: "Search for a repository",
+                            minimumInputLength: 1,
+                            ajax: {
+                            url: "{{ path('profissional_find_jogadores_disponiveis') }}",
+                                    //url: "https://api.github.com/search/repositories",
+                                    dataType: 'json',
+                                    quietMillis: 250,
+                                    data: function (term, page) { // page is the one-based page number tracked by Select2
+                                    return {
+                                    busca: term, //search term
+                                            campeonato:{{campeonato.id}},
+                                            equipe: jQuery("#equipe").val()
+                                    };
+                                    },
+                                    results: function (data, page) {
+                                    var more = (page * 30) < data.total_count; // whether or not there are more results available
 
-            
-                    
-            
-        }
+                                    // notice we return the value of more so Select2 knows if more results can be loaded
+                                    return { results: data.items, more: more };
+                                    }
+                            },
+                            formatResult: repoFormatResult, // omitted for brevity, see the source of this page
+                            formatSelection: repoFormatSelection, // omitted for brevity, see the source of this page
+                            dropdownCssClass: "bigdrop", // apply css that makes the dropdown taller
+                            escapeMarkup: function (m) { return m; } // we do not want to escape markup since we are displaying html in results            });
+                        });
+                        jQuery('.select2-container').css("width", "100%");
+                        jQuery("#adicionarJogador").click(adicionarJogador)
+                    }).fail(defaultError); ; ;
+            }
         
         jQuery(document).ready(function(){
             
@@ -55,35 +91,6 @@
                 minimumResultsForSearch: -1,
             }).removeClass("form-control");
 
-            jQuery('.select2-container').css("width", "100%");
-
-            
-            jQuery("#e6").select2({
-                placeholder: "Search for a repository",
-                minimumInputLength: 1,
-                ajax: {
-                    url: "{{ path('profissional_find') }}",
-                    //url: "https://api.github.com/search/repositories",
-                    dataType: 'json',
-                    quietMillis: 250,
-                    data: function (term, page) { // page is the one-based page number tracked by Select2
-                        return {
-                            q: term, //search term
-                            page: page // page number
-                        };
-                    },
-                    results: function (data, page) {
-                        var more = (page * 30) < data.total_count; // whether or not there are more results available
-
-                        // notice we return the value of more so Select2 knows if more results can be loaded
-                        return { results: data.items, more: more };
-                    }
-                },
-                formatResult: repoFormatResult, // omitted for brevity, see the source of this page
-                formatSelection: repoFormatSelection, // omitted for brevity, see the source of this page
-                dropdownCssClass: "bigdrop", // apply css that makes the dropdown taller
-                escapeMarkup: function (m) { return m; } // we do not want to escape markup since we are displaying html in results            });
-            });
         });
 
     </script>
@@ -104,39 +111,39 @@
             </div>
         </div><!-- media -->
     </div><!-- pageheader -->
-     <div class="contentpanel">
-                         <div class="row">
-                             <div class="col-sm-12 col-md-12 col-lg-12">
-                                 <h5 class="lg-title mb5">Basic Styling</h5>
-                                 <p class="">For basic styling add the base class <code>.table</code> to any table.</p>
-                                 <div class="table-responsive">
-                                    <table class="table ">
-                                        <thead>
-                                            <tr>
-                                               <th>Equipe</th>
-                                               <th>Diretor</th>
-                                               <th>Treinador</th>
-                                               <th>isncritos</th>
-                                               <th></th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            {% for equipe in campeonato.equipes %}
-                                                <tr>
-                                                    <td><h4>{{ equipe.nome }}</h4></td>
-                                                    <td>Cadastrar</td>
-                                                    <td>Cadastrar</td>
-                                                    <td>20</td>
-                                                    <td><button onclick="inscrever({{ equipe.id }}, {{ campeonato.id }});" class="btn btn-default">Inscrever jogadores</button></td>
-                                                </tr>
-                                            {% endfor %}
-                                        </tbody>
-                                    </table>
-                                 </div>
+    <div class="contentpanel">
+        <div class="row">
+            <div class="col-sm-12 col-md-12 col-lg-12">
+                <h5 class="lg-title mb5">Basic Styling</h5>
+                <p class="">For basic styling add the base class <code>.table</code> to any table.</p>
+                <div class="table-responsive">
+                    <table class="table ">
+                        <thead>
+                            <tr>
+                                <th>Equipe</th>
+                                <th>Diretor</th>
+                                <th>Treinador</th>
+                                <th>isncritos</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for equipe in campeonato.equipes %}
+                                <tr>
+                                    <td><h4>{{ equipe.nome }}</h4></td>
+                                    <td>Cadastrar</td>
+                                    <td>Cadastrar</td>
+                                    <td>20</td>
+                                    <td><button onclick="inscrever({{ equipe.id }}, {{ campeonato.id }});" class="btn btn-default">Inscrever jogadores</button></td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
 
-                             </div>
-                         </div>
+            </div>
+        </div>
 
-            
-     </div><!-- contentpanel -->
+
+    </div><!-- contentpanel -->
 {% endblock %}
