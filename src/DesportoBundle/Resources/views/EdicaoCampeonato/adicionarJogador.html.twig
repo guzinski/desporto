@@ -1,0 +1,9 @@
+<div class="row">
+    <div class="col-sm-10">
+        <span class="h5">{{ jogador.nome }}</span>
+    </div>
+    <div class="col-sm-2">
+        <button type="button" class="btn btn-default removerJogador" title="Remover Jogador"><i class="glyphicon glyphicon-trash"></i></button>
+    </div>
+    <input type="hidden" name="inscritos[]" value="{{ jogador.id }}" />
+</div>

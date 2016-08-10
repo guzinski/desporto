@@ -159,7 +159,6 @@ class ProfissionalController extends Controller
             $items[] = [
                 'id' => $profissional->getId(),
                 'nome' => $profissional->getNome(),
-                'text' => $profissional->getNome(),
                 'cpf' => $profissional->getCpf()
             ];
         }

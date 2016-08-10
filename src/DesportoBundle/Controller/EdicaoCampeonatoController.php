@@ -221,5 +221,21 @@ class EdicaoCampeonatoController extends Controller
         return array("jogadores"=>$jogadores, "equipeId"=>$idEquipe);
     }
     
+    /**
+     * @Route("/adicionar/jogador", name="campeonato_adicionar_jogador")
+     * @Template()
+     * @param Request $request
+     */
+    public function adicionarJogadorAction(Request $request) 
+    {
+        $idEquipe = $request->get("equipe");
+        $idCampeonato = $request->get("campeonato");
+        $idJogador = $request->get("jogador");
+        
+        $jogador  = $this->getDoctrine()->getEntityManager()->find(\DesportoBundle\Entity\Profissional::class, $idJogador);
+        
+        return array("jogador"=>$jogador, );
+    }
+    
     
 }

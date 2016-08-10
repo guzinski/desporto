@@ -7,7 +7,7 @@
     <script src="//cdn.datatables.net/plug-ins/725b2a2115b/integration/bootstrap/3/dataTables.bootstrap.js"></script>
     <script src="{{ asset('bundles/desporto/js/select2.min.js') }}"></script>
     
-    <script>
+    <script type="text/javascript">
         
         function defaultError(xhr, textStatus, errorThrown) {
             jQuery(".locked").fadeOut();
@@ -23,11 +23,35 @@
         }
 
         function repoFormatSelection(repo) {
-           return repo.full_name;
+           return repo.nome;
+        }
+        
+        function removerJogador(event) {
+            event.stopImmediatePropagation();
+            bootbox.confirm("Tem certeza que deseja remover este(a) jogador(a)?", function(result) {
+                if (result) {
+                    jQuery(event.currentTarget).closest('tr').remove();
+                    if (jQuery("#jogadores tbody").children().length == 1) {
+                        jQuery("#nenhum").show();
+                    }
+                }
+            }); 
         }
         
         function adicionarJogador() {
-             console.log(jQuery("#jogador").val());
+            var jogador = jQuery("#jogador").val();
+            var equipe  = jQuery("#equipe").val();
+            var campeonato = {{ campeonato.id }};
+            jQuery(".locked").fadeIn();
+            jQuery.post("{{ path("campeonato_adicionar_jogador") }}", {jogador: jogador, equipe: equipe, campeonato: campeonato})
+                    .done(function(html) {
+                        jQuery("#nenhum").hide();
+                        jQuery("#jogadores").get(0).insertRow().insertCell().innerHTML = html;
+                        jQuery('#jogador').select2("val", "");
+                        jQuery(".removerJogador").click(removerJogador);
+                        jQuery(".locked").fadeOut();
+                    })
+                    .fail(defaultError);
         }
 
         function inscrever(idEquipe, idCampeonato) {
@@ -39,19 +63,19 @@
                         jQuery(".locked").fadeOut();
                         bootbox.dialog({
                             title: "Inscrever jogadores",
-                                    message: html,
-                                    buttons: {
-                                    close: {
-                                    label: "Cancelar",
-                                            className: "btn-default",
-                                    },
-                                            success: {
-                                            label: "Gerar",
-                                                    className: "btn-success",
-                                                    callback: function () {
-                                                    }
-                                            },
-                                    }
+                            size: "large",
+                            message: html,
+                            buttons: {
+                            close: {
+                            label: "Cancelar",
+                                className: "btn-default",
+                            },
+                            success: {
+                                label: "Inscrever",
+                                className: "btn-success",
+                                callback: function () { }
+                            },
+                        }
                         });
                         jQuery("#jogador").select2({
                             placeholder: "Search for a repository",
@@ -82,14 +106,10 @@
                         });
                         jQuery('.select2-container').css("width", "100%");
                         jQuery("#adicionarJogador").click(adicionarJogador)
-                    }).fail(defaultError); ; ;
+                    }).fail(defaultError);
             }
         
         jQuery(document).ready(function(){
-            
-            jQuery("#equipe").select2({
-                minimumResultsForSearch: -1,
-            }).removeClass("form-control");
 
         });
 

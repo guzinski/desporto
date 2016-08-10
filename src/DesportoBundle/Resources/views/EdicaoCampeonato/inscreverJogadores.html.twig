@@ -1,28 +1,33 @@
-<div class="row">
-    
-    <div class="col-sm-9">
-        <input data-placeholder="Procurar jogador"  id="jogador" />
-        <input value="{{ equipeId }}" type="hidden" name="equipe"  id="equipe" />
+<form id="formJogadores">
+    <div class="row">
+        <div class="col-sm-9">
+            <input data-placeholder="Procurar jogador"  id="jogador" />
+            <input value="{{ equipeId }}" type="hidden" name="equipe"  id="equipe" />
+        </div>
+        <div class="col-sm-3">
+            <button type="button" id="adicionarJogador" class="btn btn-primary">Adicionar</button>
+        </div>
     </div>
-    <div class="col-sm-3">
-        <button id="adicionarJogador" class="btn btn-primary">Adicionar</button>
-    </div>
-</div>
-<hr />
-<div class="table-responsive">
-    <table class="table" id="jogadores">
-        <thead>
-            <tr>
-                <th colspan="2">Jogadores inscritos</th>
-            </tr>
-        </thead>
-        
-        <tbody>
-            {% for jogador in jogadores %}
+    <hr />
+    <div class="table-responsive">
+        <table class="table" id="jogadores">
+            <thead>
                 <tr>
-                    <td><h4>{{ jogador.nome }}</h4></td>
+                    <th colspan="2">Jogadores inscritos</th>
                 </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-</div>
+            </thead>
+
+            <tbody>
+                {% for jogador in jogadores %}
+                    <tr>
+                        <td><h4>{{ jogador.nome }}</h4></td>
+                    </tr>
+                {% else %}
+                    <tr id="nenhum">
+                        <td>Nenhum jogador inscrito ainda.</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</form>
