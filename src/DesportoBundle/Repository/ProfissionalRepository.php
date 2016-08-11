@@ -121,6 +121,13 @@ class ProfissionalRepository extends EntityRepository
         
         $query = $this->createQueryBuilder("J");
         
+        
+        $subQuery = $this->createQueryBuilder("J2");
+        
+        $subQuery->innerJoin("J2.campeoantosEquipes", "CE2")
+                ->andWhere($subQuery->expr()->eq("CE2.edicaoCampeonato", ":campeonato"))
+                ->andWhere($subQuery->expr()->eq("CE2.tipo", ":tipo"));
+        
         if (!empty($busca)) {
             $query->andWhere(
                     $query->expr()->orX(
@@ -143,6 +150,7 @@ class ProfissionalRepository extends EntityRepository
                                 )
                             )
                     )
+                ->andWhere($query->expr()->notIn("J.id", $subQuery->getDQL()))
                 ->setParameter("campeonato", $idCampeonato)
                 ->setParameter("equipe", $idEquipe)
                 ->setParameter("tipo", EdicaoCampeonatoEquipeProfissional::JOGADOR)
