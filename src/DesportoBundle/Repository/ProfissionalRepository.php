@@ -118,16 +118,23 @@ class ProfissionalRepository extends EntityRepository
         if (empty($idCampeonato) || !is_numeric($idCampeonato)) {
             throw new InvalidArgumentException;
         }
-        
+
         $query = $this->createQueryBuilder("J");
-        
-        
+
         $subQuery = $this->createQueryBuilder("J2");
-        
-        $subQuery->innerJoin("J2.campeoantosEquipes", "CE2")
-                ->andWhere($subQuery->expr()->eq("CE2.edicaoCampeonato", ":campeonato"))
-                ->andWhere($subQuery->expr()->eq("CE2.tipo", ":tipo"));
-        
+
+        $subQuery->innerJoin("J2.campeoantosEquipes", "CE")
+                ->orWhere(
+                        $subQuery->expr()->andX(
+                                $subQuery->expr()->eq("CE.edicaoCampeonato", ":campeonato"), $subQuery->expr()->eq("CE.tipo", ":tipo")
+                        )
+                )
+                ->orWhere(
+                        $subQuery->expr()->andX(
+                                $subQuery->expr()->eq("CE.edicaoCampeonato", ":campeonato"), $subQuery->expr()->neq("CE.equipe", ":equipe")
+                        )
+        );
+
         if (!empty($busca)) {
             $query->andWhere(
                     $query->expr()->orX(
@@ -136,29 +143,29 @@ class ProfissionalRepository extends EntityRepository
             );
         }
         return $query->select("J")
-                ->leftJoin("J.campeoantosEquipes", "CE")
-                ->andWhere(
-                    $query->expr()->orX(
-                            $query->expr()->orX(
-                                $query->expr()->neq("CE.edicaoCampeonato", ":campeonato"),
-                                $query->expr()->isNull("CE.edicaoCampeonato")
-                            ),
-                            $query->expr()->andX(
-                                    $query->expr()->eq("CE.edicaoCampeonato", ":campeonato"),
-                                    $query->expr()->eq("CE.equipe", ":equipe"),
-                                    $query->expr()->neq("CE.tipo", ":tipo")
-                                )
-                            )
-                    )
-                ->andWhere($query->expr()->notIn("J.id", $subQuery->getDQL()))
-                ->setParameter("campeonato", $idCampeonato)
-                ->setParameter("equipe", $idEquipe)
-                ->setParameter("tipo", EdicaoCampeonatoEquipeProfissional::JOGADOR)
-                ->setParameter("busca", "%{$busca}%")
-                ->addOrderBy("J.nome")
-                ->setMaxResults(100)
-                ->getQuery()
-                ->getResult();
+//                ->leftJoin("J.campeoantosEquipes", "CE")
+//                ->andWhere(
+//                    $query->expr()->orX(
+//                            $query->expr()->orX(
+//                                $query->expr()->neq("CE.edicaoCampeonato", ":campeonato"),
+//                                $query->expr()->isNull("CE.edicaoCampeonato")
+//                            ),
+//                            $query->expr()->andX(
+//                                    $query->expr()->eq("CE.edicaoCampeonato", ":campeonato"),
+//                                    $query->expr()->eq("CE.equipe", ":equipe"),
+//                                    $query->expr()->neq("CE.tipo", ":tipo")
+//                                )
+//                            )
+//                    )
+                        ->andWhere($query->expr()->notIn("J.id", $subQuery->getDQL()))
+                        ->setParameter("campeonato", $idCampeonato)
+                        ->setParameter("equipe", $idEquipe)
+                        ->setParameter("tipo", EdicaoCampeonatoEquipeProfissional::JOGADOR)
+                        ->setParameter("busca", "%{$busca}%")
+                        ->addOrderBy("J.nome")
+                        ->setMaxResults(10)
+                        ->getQuery()
+                        ->getResult();
     }
         
 
