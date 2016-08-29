@@ -57,6 +57,14 @@ class EdicaoCampeonatoEquipeProfissional
      *  @ORM\Column(type="string", columnDefinition="ENUM('J', 'T', 'D')", nullable=false)
      */
     protected $tipo;
+    
+    public function __construct(EdicaoCampeonato $edicaoCampeonato, Equipe $equipe, Profissional $profissional, $tipo)
+    {
+        $this->edicaoCampeonato = $edicaoCampeonato;
+        $this->equipe = $equipe;
+        $this->profissional = $profissional;
+        $this->tipo = $tipo;
+    }
 
     public function getId()
     {

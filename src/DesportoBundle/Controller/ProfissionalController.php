@@ -145,13 +145,16 @@ class ProfissionalController extends Controller
      */
     public function findJogadoresAction(Request $request)
     {
-//        $this
-//                ->getDoctrine()
-//                ->getConnection()
-//                ->getConfiguration()
-//                ->setSQLLogger(new \Doctrine\DBAL\Logging\EchoSQLLogger());
-
-        $profissionais = $this->getDoctrine()->getRepository(Profissional::class)->getJogadoresDisponíveis($request->get("campeonato"), $request->get("equipe"), $request->get("busca"));
+        $IdCampeonato = $request->get("campeonato");
+        $equipe = $request->get("equipe");
+        $strBusca = $request->get("busca");
+        $inscritos = $request->get('inscritos');
+        $campeonato = $this->getDoctrine()
+                ->getRepository(\DesportoBundle\Entity\EdicaoCampeonato::class)->find($IdCampeonato);
+        
+        $profissionais = $this->getDoctrine()
+                ->getRepository(Profissional::class)
+                ->getJogadoresDisponíveis($campeonato, $equipe, $strBusca, $inscritos);
 
         $items = array();
         foreach ($profissionais as $profissional) {

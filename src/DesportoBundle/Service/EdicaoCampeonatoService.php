@@ -4,14 +4,18 @@ namespace DesportoBundle\Service;
 
 use DesportoBundle\Entity\Chave;
 use DesportoBundle\Entity\EdicaoCampeonato;
+use DesportoBundle\Entity\EdicaoCampeonatoEquipeProfissional;
 use DesportoBundle\Entity\Equipe;
 use DesportoBundle\Entity\FaseClassificatoria;
 use DesportoBundle\Entity\Jogo;
+use DesportoBundle\Entity\Profissional;
 use DesportoBundle\Entity\Rodada;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\EntityManager;
 use Exception;
+use InvalidArgumentException;
+use Proxies\__CG__\DesportoBundle\Entity\Campeonato;
 
 /**
  * Description of EdicaoCampeonatoService
@@ -287,6 +291,31 @@ class EdicaoCampeonatoService
         }
         
         return $novaLista;;
+    }
+    
+    /**
+     * 
+     * @param Campeonato $campeonato
+     * @param int $equipe
+     * @param array $inscritos
+     */
+    public function inscreverJogadores(EdicaoCampeonato $campeonato, $idEquipe, $inscritos)
+    {
+        if (empty($campeonato) || empty($idEquipe) || empty($inscritos)) {
+            throw new InvalidArgumentException;
+        }
+        /* @var $equipeRepository \DesportoBundle\Repository\EquipeRepository */
+        $equipeRepository = $this->em->getRepository(Equipe::class);
+        /* @var $profissionalRepository \DesportoBundle\Repository\ProfissionalRepository */
+        $profissionalRepository = $this->em->getRepository(Profissional::class);
+        
+        $equipe = $equipeRepository->find($idEquipe);
+        foreach ($inscritos as $inscrito) {
+            $jogador = $profissionalRepository->find($inscrito);
+            $inscricao = new EdicaoCampeonatoEquipeProfissional($campeonato, $equipe, $jogador, EdicaoCampeonatoEquipeProfissional::JOGADOR);
+            $this->em->persist($inscricao);
+        }
+        $this->em->flush();
     }
 
     

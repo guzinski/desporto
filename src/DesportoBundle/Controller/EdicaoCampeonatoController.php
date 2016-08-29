@@ -204,11 +204,11 @@ class EdicaoCampeonatoController extends Controller
     
 
     /**
-     * @Route("/inscrever/jogadores", name="campeonato_inscrever_jogadores")
+     * @Route("/form/inscricao/jogadores", name="campeonato_form_inscricao_jogadores")
      * @Template()
      * @param Request $request
      */
-    public function inscreverJogadoresAction(Request $request)
+    public function formInscricaoJogadoresAction(Request $request)
     {
         $idEquipe = $request->get("equipe");
         $idCampeonato = $request->get("campeonato");
@@ -236,6 +236,22 @@ class EdicaoCampeonatoController extends Controller
         
         return array("jogador"=>$jogador, );
     }
+    
+    /**
+     * @Route("/inscrever/jogadores/{campeonato}", name="campeonato_inscrever_jogadores")
+     * @param Request $request
+     */
+    public function inscreverJogadorAction(EdicaoCampeonato $campeonato, Request $request) 
+    {
+        $equipe = $request->get("equipe");
+        $inscritos = $request->get("inscritos");
+
+        $campService = $this->get("edicao_campeonato")->inscreverJogadores($campeonato, $equipe, $inscritos); 
+        return new Response();
+    }
+    
+    
+    
     
     
 }

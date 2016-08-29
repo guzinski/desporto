@@ -9,6 +9,9 @@
     
     <script type="text/javascript">
         
+        var quantidadeMinimaJogadores = {{ campeonato.quantidadeMinimaJogadores }};
+        var quantidadeMaximaJogadores = {{ campeonato.quantidadeMaximaJogadores }};
+        
         function defaultError(xhr, textStatus, errorThrown) {
             jQuery(".locked").fadeOut();
             bootbox.alert("Erro ao processar informação");
@@ -46,9 +49,15 @@
             jQuery.post("{{ path("campeonato_adicionar_jogador") }}", {jogador: jogador, equipe: equipe, campeonato: campeonato})
                     .done(function(html) {
                         jQuery("#nenhum").hide();
-                        jQuery("#jogadores").get(0).insertRow().insertCell().innerHTML = html;
+                        var row = jQuery("#jogadores").get(0).insertRow()
+                        row.insertCell().innerHTML = jQuery("#jogadores tbody tr").length-1;
+                        row.insertCell().innerHTML = html;
                         jQuery('#jogador').select2("val", "");
                         jQuery(".removerJogador").click(removerJogador);
+                        if (jQuery("#jogadores tbody tr").length > quantidadeMaximaJogadores ) {
+                            jQuery('#adicionarJogador').hide();
+                            jQuery('#numeroMaximo').removeClass("hide");
+                        }
                         jQuery(".locked").fadeOut();
                     })
                     .fail(defaultError);
@@ -58,7 +67,7 @@
             
             jQuery(".locked").fadeIn();
             
-            jQuery.post("{{ path("campeonato_inscrever_jogadores") }}", {equipe: idEquipe, campeonato: idCampeonato})
+            jQuery.post("{{ path("campeonato_form_inscricao_jogadores") }}", {equipe: idEquipe, campeonato: idCampeonato})
                     .done(function(html) {
                         jQuery(".locked").fadeOut();
                         bootbox.dialog({
@@ -73,12 +82,25 @@
                             success: {
                                 label: "Inscrever",
                                 className: "btn-success",
-                                callback: function () { }
+                                callback: function () { 
+                                    if (jQuery("#jogadores tbody tr").length <= quantidadeMinimaJogadores) {
+                                        bootbox.alert("O campeonato exige pelo menos "+quantidadeMinimaJogadores+" Jogadores inscritos.");
+                                        return false;
+                                    } else {
+                                        jQuery(".locked").fadeIn();
+                                        jQuery.post("{{ path("campeonato_inscrever_jogadores", {"campeonato": campeonato.id} ) }}", jQuery("#formJogadores").serialize())
+                                            .done(function(html) {
+                                                jQuery(".locked").fadeOut();
+                                                bootbox.alert("Jogadores inscritos com sucesso");
+                                            })
+                                            .fail(defaultError);
+
+                                    }
+                                }
                             },
                         }
                         });
                         jQuery("#jogador").select2({
-                            placeholder: "Search for a repository",
                             minimumInputLength: 1,
                             ajax: {
                             url: "{{ path('profissional_find_jogadores_disponiveis') }}",
@@ -87,9 +109,10 @@
                                     quietMillis: 250,
                                     data: function (term, page) { // page is the one-based page number tracked by Select2
                                     return {
-                                    busca: term, //search term
-                                            campeonato:{{campeonato.id}},
-                                            equipe: jQuery("#equipe").val()
+                                        busca: term, //search term
+                                        campeonato:{{campeonato.id}},
+                                        equipe: jQuery("#equipe").val(),
+                                        inscritos: jQuery("input:hidden.inscritos").serializeArray()
                                     };
                                     },
                                     results: function (data, page) {

@@ -2,7 +2,7 @@
     
 </div>
 <form id="formJogadores">
-    <div class="row">
+    <div class="row" id="adicionarJogador">
         <div class="col-sm-9">
             <input data-placeholder="Procurar jogador"  id="jogador" />
             <input value="{{ equipeId }}" type="hidden" name="equipe"  id="equipe" />
@@ -11,11 +11,17 @@
             <button type="button" id="adicionarJogador" class="btn btn-primary">Adicionar</button>
         </div>
     </div>
+    <div class="row hide" id="numeroMaximo">
+        <div class="col-sm-12">
+            <h4 class="error">Número máximo de Jogadores atingido!</h4>
+        </div>
+    </div>
     <hr />
     <div class="table-responsive">
         <table class="table" id="jogadores">
             <thead>
                 <tr>
+                    <th>#</th>
                     <th colspan="2">Jogadores inscritos</th>
                 </tr>
             </thead>
@@ -23,11 +29,12 @@
             <tbody>
                 {% for jogador in jogadores %}
                     <tr>
-                        <td><h4>{{ jogador.nome }}</h4></td>
+                        <td>{{ loop.index }}</td>
+                        <td><h5>{{ jogador.nome }}</h5></td>
                     </tr>
                 {% else %}
                     <tr id="nenhum">
-                        <td>Nenhum jogador inscrito ainda.</td>
+                        <td colspan="2">Nenhum jogador inscrito ainda.</td>
                     </tr>
                 {% endfor %}
             </tbody>

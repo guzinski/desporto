@@ -107,15 +107,15 @@ class ProfissionalRepository extends EntityRepository
     
     /**
      * 
-     * @param int $idCampeonato
+     * @param EdicaoCampeonato $campeonato
      * @param int $idEquipe
      * @param string $busca
      * @return array
      * @throws InvalidArgumentException
      */
-    public function getJogadoresDisponíveis($idCampeonato, $idEquipe, $busca = null)
+    public function getJogadoresDisponíveis(\DesportoBundle\Entity\EdicaoCampeonato $campeonato, $idEquipe, $busca = null, $inscritos = null)
     {
-        if (empty($idCampeonato) || !is_numeric($idCampeonato)) {
+        if (empty($campeonato)) {
             throw new InvalidArgumentException;
         }
 
@@ -135,6 +135,7 @@ class ProfissionalRepository extends EntityRepository
                         )
         );
 
+        //String de busca do nome do Jogador
         if (!empty($busca)) {
             $query->andWhere(
                     $query->expr()->orX(
@@ -142,23 +143,21 @@ class ProfissionalRepository extends EntityRepository
                     )
             );
         }
+        
+        //Retira os jogadores que já estão inscritos
+        if (!empty($inscritos)) {
+            $clausule = array();
+            foreach ($inscritos as $inscrito) {
+                $clausule[] = $inscrito['value'];
+            }
+            $query->andWhere($query->expr()->notIn("J.id", $clausule));
+        }
+        
         return $query->select("J")
-//                ->leftJoin("J.campeoantosEquipes", "CE")
-//                ->andWhere(
-//                    $query->expr()->orX(
-//                            $query->expr()->orX(
-//                                $query->expr()->neq("CE.edicaoCampeonato", ":campeonato"),
-//                                $query->expr()->isNull("CE.edicaoCampeonato")
-//                            ),
-//                            $query->expr()->andX(
-//                                    $query->expr()->eq("CE.edicaoCampeonato", ":campeonato"),
-//                                    $query->expr()->eq("CE.equipe", ":equipe"),
-//                                    $query->expr()->neq("CE.tipo", ":tipo")
-//                                )
-//                            )
-//                    )
                         ->andWhere($query->expr()->notIn("J.id", $subQuery->getDQL()))
-                        ->setParameter("campeonato", $idCampeonato)
+                        ->andWhere($query->expr()->eq("J.sexo", ":sexo"))
+                        ->setParameter("campeonato", $campeonato->getId())
+                        ->setParameter("sexo", $campeonato->getModalidade())
                         ->setParameter("equipe", $idEquipe)
                         ->setParameter("tipo", EdicaoCampeonatoEquipeProfissional::JOGADOR)
                         ->setParameter("busca", "%{$busca}%")
