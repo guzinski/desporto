@@ -43,11 +43,85 @@ class EdicaoCampeonatoService
         $this->em = $em;
     }
     
+    /**
+     * 
+     * @param EdicaoCampeonato $campeonato
+     */
+    public function salvarCampeonato(EdicaoCampeonato $campeonato)
+    {
+        if ($campeonato->getTipo()==EdicaoCampeonato::CHAVE) {
+            $this->salvarChaves($campeonato);
+        } elseif ($campeonato->getTipo()==EdicaoCampeonato::PONTOS_CORRIDOS) {
+            $this->salvarPontosCorridos($campeonato);
+        } elseif ($campeonato->getTipo()==EdicaoCampeonato::TORNEIO) {
+            $this->salvarTorneio($campeonato);
+        }
+    }
+
+    /**
+     * Calcula partir do núemro de equipes, retorna as opç~eos de chaves que o cmapeonato pode ter
+     * Ex: Se tiver 16 equipes, Retorna  um array [1, 2, 4]
+     * 
+     * @param int $numeroEquipes
+     * @return array
+     * @throws InvalidArgumentException
+     */
+    public function getQuantidadesPossiveisChaves($numeroEquipes)
+    {
+        if (empty($numeroEquipes)) {
+            throw new \InvalidArgumentException;
+        }
+
+        $result = [];
+        
+        for ($i=1; $i<$numeroEquipes/2; $i++) {
+            if (log($i, 2)-(int)log($i, 2) == 0 && $numEquipes%$i == 0) {
+                $result[] = $i;
+            }
+        }
+        
+        return $result;
+    }
+    
+    /**
+     * Calcula e retorna todas as possibilidades de quantidade de equipes classificadas por chave
+     * Sendo que o mínimo de equipes classificadas no total deve ser 2 e o máximo equipes classificadas no total deve ser 16
+     * Sendo sempre que total de equipes classificadas deve ser um núemro protência de 2 Ex: 2, 4, 8, 16
+     * 
+     * @param int $numeroEquipes
+     * @param int $numeroChaves
+     * @return array
+     * @throws InvalidArgumentException
+     */
+    public function getQuantidadePossiveisClassificados($numeroEquipes, $numeroChaves)
+    {
+        if (empty($numeroChaves) || empty($numeroEquipes)) {
+            throw new \InvalidArgumentException;
+        }
+        $numEquipesChave = $numEquipes/$numChaves;
+        
+        $result = [];
+        
+        for ($i=1; $i<$numEquipesChave; $i++) {
+            if ($i*$numChaves==1) {
+                continue;
+            }
+            if ($i*$numChaves>16) {
+                break;
+            }
+            if (log($i*$numChaves, 2)-(int)log($i*$numChaves, 2) == 0 ) {
+                $result[] = $i;
+            }
+        }
+
+        return $result;
+    }
+    
     
     /**
      * @param EdicaoCampeonato $campeonato
      */
-    public function salvarPontosCorridos(EdicaoCampeonato $campeonato)
+    private function salvarPontosCorridos(EdicaoCampeonato $campeonato)
     {
         $this->edicaoCampeonato = $campeonato;
         $campeonato->setRodadas(new ArrayCollection($this->gerarRodadas($campeonato->getEquipes())));
@@ -60,7 +134,7 @@ class EdicaoCampeonatoService
     /**
      * @param EdicaoCampeonato $campeonato
      */
-    public function salvarTorneio(EdicaoCampeonato $campeonato)
+    private function salvarTorneio(EdicaoCampeonato $campeonato)
     {
         $this->edicaoCampeonato = $campeonato;
         $this->gerarJogosTorneio();
@@ -70,7 +144,7 @@ class EdicaoCampeonatoService
     /**
      * @param EdicaoCampeonato $campeonato
      */
-    public function salvarChaves(EdicaoCampeonato $campeonato)
+    private function salvarChaves(EdicaoCampeonato $campeonato)
     {
         $this->edicaoCampeonato = $campeonato;
         foreach ($campeonato->getChaves() as $chave) {

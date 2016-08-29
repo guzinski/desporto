@@ -34,22 +34,11 @@ class EdicaoCampeonatoController extends Controller
     public function novoAction(Request $request) 
     {
         $em = $this->getDoctrine()->getManager();
-        $campeonato = new EdicaoCampeonato();
+        $campeonato = new EdicaoCampeonato($this->getUser());
         $form = $this->createForm(EdicaoCampeonatoType::class, $campeonato);
         $form->handleRequest($request);
         if ($form->isValid()) {
-            $campService = $this->get("edicao_campeonato");
-            /* @var $campService EdicaoCampeonatoService */
-            $campeonato->setUsuarioCadastro($this->getUser());
-            $campeonato->setStatus(EdicaoCampeonato::AGUARDANDO_CONVOCACAO);
-
-            if ($campeonato->getTipo()==EdicaoCampeonato::CHAVE) {
-                $campService->salvarChaves($campeonato);
-            } elseif ($campeonato->getTipo()==EdicaoCampeonato::PONTOS_CORRIDOS) {
-                $campService->salvarPontosCorridos($campeonato);
-            } elseif ($campeonato->getTipo()==EdicaoCampeonato::TORNEIO) {
-                $campService->salvarTorneio($campeonato);
-            }
+            $this->getService()->salvarCampeonato($campeonato);
             return new RedirectResponse($this->generateUrl('campeonato_detalhe', array('campeonato'=>$campeonato->getId())));
         }
         return ['form'=>$form->createView()];
@@ -62,7 +51,6 @@ class EdicaoCampeonatoController extends Controller
      */
     public function detalheAction(EdicaoCampeonato $campeonato)
     {
-        var_dump($campeonato->getStatus());
         if ($campeonato->getStatus()==EdicaoCampeonato::AGUARDANDO_CONVOCACAO) {
             return $this->redirectToRoute("campeonato_convocacao", array("campeonato"=>$campeonato->getId()));
         }
@@ -70,42 +58,35 @@ class EdicaoCampeonatoController extends Controller
     }
 
     /**
-     * @Route("/convocacao/{campeonato}/{equipe}", name="campeonato_convocacao")
+     * @Route("/convocacao/{campeonato}", name="campeonato_convocacao")
      * @Template()
      * @param EdicaoCampeonato $campeonato
-     * @param Equipe $equipe
      * @return array
      */
-    public function convocacaoAction(EdicaoCampeonato $campeonato, Equipe $equipe = null)
+    public function convocacaoAction(EdicaoCampeonato $campeonato)
     {
         return array("campeonato"=>$campeonato);
     }
-    
-    
-    
-    
 
     /**
      * @Route("/numero/chaves", name="campeonato_numero_chaves")
-     * Retorna os npumeros de chaves disponíveis
+     * Retorna os números de chaves possíveis
      * @param Request $request
      * @return RedirectResponse
      */
     public function numeroChavesAction(Request $request)
     {
         $numEquipes = $request->get("numeroEquipes");
-        
         if (is_null($numEquipes)) {
             throw new InvalidArgumentException;
         }
         
-        $result = array();
+        $result = [['id'=>"", 'text'=>"Selecione"],];
         
-        $result[] = ['id'=>"", 'text'=>"Selecione"];
-        for ($i=1; $i<$numEquipes/2; $i++) {
-            if (log($i, 2)-(int)log($i, 2) == 0 && $numEquipes%$i == 0) {
-                $result[] = ['id'=>$i,'text'=>$i];
-            }
+        $quantidadesPossiveisChaves = $this->getService()->getQuantidadesPossiveisChaves($numEquipes);
+        
+        foreach ($quantidadesPossiveisChaves as $quantidadePossivelChave) {
+            $result[] = ['id'=>$quantidadePossivelChave,'text'=>$quantidadePossivelChave];
         }
         return new Response(json_encode($result));
     }
@@ -122,26 +103,17 @@ class EdicaoCampeonatoController extends Controller
         $numEquipes = $request->get("numeroEquipes");
         $numChaves  = $request->get("numeroChaves");
         
-        if (is_null($numEquipes) || is_null($numChaves)) {
+        if (empty($numEquipes) || empty($numChaves)) {
             throw new InvalidArgumentException;
         }
+
+        $quantidadesPossiveisClassificados = $this->getService()->getQuantidadePossiveisClassificados($numEquipes, $numChaves);
         
-        $numEquipesChave = $numEquipes/$numChaves;
-        
-        $result = array();
-        
-        $result[] = ['id'=>"", 'text'=>"Selecione"];
-        for ($i=1; $i<$numEquipesChave; $i++) {
-            if ($i*$numChaves==1) {
-                continue;
-            }
-            if ($i*$numChaves>16) {
-                break;
-            }
-            if (log($i*$numChaves, 2)-(int)log($i*$numChaves, 2) == 0 ) {
-                $result[] = ['id'=>$i,'text'=>$i];
-            }
+        $result = [['id'=>"", 'text'=>"Selecione"]];
+        foreach ($quantidadesPossiveisClassificados as $quantidadePossivelClassificados) {
+            $result[] = ['id'=>$quantidadePossivelClassificados,'text'=>$quantidadePossivelClassificados];
         }
+        
         return new Response(json_encode($result));
     }
     
@@ -158,13 +130,13 @@ class EdicaoCampeonatoController extends Controller
         $numChaves     = $request->get("numeroChaves");
         $numEquipes    = $request->get("numeroEquipes");
         
-        if (is_null($numChaves) || is_null($numEquipes)) {
+        if (empty($numChaves) || empty($numEquipes)) {
             throw new InvalidArgumentException;
         }
         
         $numEquipesChave = $numEquipes/$numChaves;
         
-        return [   
+        return [
                 'numChaves'=>($numChaves-1),
                 'numEquipesChave'=>($numEquipesChave-1)
             ];
@@ -250,7 +222,14 @@ class EdicaoCampeonatoController extends Controller
         return new Response();
     }
     
-    
+    /**
+     * 
+     * @return EdicaoCampeonatoService
+     */
+    public function getService()
+    {
+        return $this->get("edicao_campeonato");
+    }
     
     
     

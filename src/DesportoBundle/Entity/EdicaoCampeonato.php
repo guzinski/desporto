@@ -174,8 +174,11 @@ class EdicaoCampeonato extends BaseEntity
     private $final;
 
     
-    public function __construct()
+    public function __construct(Usuario $usuario = null)
     {
+        if (!empty($usuario)) {
+            $this->setUsuarioCadastro($usuario);
+        }
         $this->setDataCadastro(new \DateTime("now"));
         $this->setChaves(new ArrayCollection());
         $this->setFasesClassificatorias(new ArrayCollection());
