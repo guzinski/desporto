@@ -116,6 +116,46 @@ class EdicaoCampeonatoService
 
         return $result;
     }
+  
+    /** 
+     * Retorna o tipo do campeonato a partir do núemro de equipes
+     * 
+     * @param int $numeroEquipes
+     * @return array Retor4na um arrya com o label do campeoanto o e tipo
+     * @throws InvalidArgumentException
+     */
+    public function getTipoTorneioByNumeroEquipes($numeroEquipes)
+    {
+        if (is_null($numeroEquipes) || (log($numeroEquipes, 2)-(int)log($numeroEquipes, 2) != 0)) {
+            throw new InvalidArgumentException;
+        }
+        
+        if ($numeroEquipes == 2) {
+            $result = [
+              "label" =>  "Final",
+              "tipo" => FaseClassificatoria::FINAL_,
+            ];
+        } elseif ($numeroEquipes == 4) {
+            $result = [
+              "label" =>  "Semifinal",
+              "tipo" => FaseClassificatoria::SEMIFINALL,
+            ];
+        } elseif ($numeroEquipes == 8) {
+            $result = [
+              "label" =>  "Quartas de Final",
+              "tipo" => FaseClassificatoria::QUARTAS,
+            ];
+        } elseif ($numeroEquipes == 16) {
+            $result = [
+              "label" =>  "Oitavas de Final",
+              "tipo" => FaseClassificatoria::OITAVAS,
+            ];
+        } else {
+            throw new \InvalidArgumentException;
+        }
+        
+        return $result;
+    }
     
     
     /**

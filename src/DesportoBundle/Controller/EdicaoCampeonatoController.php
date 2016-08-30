@@ -156,22 +156,12 @@ class EdicaoCampeonatoController extends Controller
         if (is_null($numEquipes) || (log($numEquipes, 2)-(int)log($numEquipes, 2) != 0)) {
             throw new InvalidArgumentException;
         }
+            
+        $return = $this->getService()->getTipoTorneioByNumeroEquipes($numEquipes);
+
+        $return['total'] = $numEquipes/2;
         
-        if ($numEquipes == 2) {
-            $label = "Final";
-            $tipo = FaseClassificatoria::FINAL_;
-        } elseif ($numEquipes == 4) {
-            $label = "Semifinal";
-            $tipo = FaseClassificatoria::SEMIFINAL;
-        } elseif ($numEquipes == 8) {
-            $label = "Quartas de Final";
-            $tipo = FaseClassificatoria::QUARTAS;
-        } elseif ($numEquipes == 16) {
-            $label = "Oitavas de Final";
-            $tipo = FaseClassificatoria::OITAVAS;
-        }
-                
-        return ['total'=>$numEquipes/2, 'label'=>$label, 'tipo'=>$tipo];
+        return $return;
     }
     
 
@@ -184,13 +174,13 @@ class EdicaoCampeonatoController extends Controller
     {
         $idEquipe = $request->get("equipe");
         $idCampeonato = $request->get("campeonato");
-        
+
         if (empty($idEquipe) || empty($idCampeonato)) {
             throw new \InvalidArgumentException;
         }
         $jogadores = $this->getDoctrine()->getRepository(\DesportoBundle\Entity\Profissional::class)->getJogadoresInscritos($idEquipe, $idCampeonato);
-        
-        return array("jogadores"=>$jogadores, "equipeId"=>$idEquipe);
+
+        return array("jogadores" => $jogadores, "equipeId" => $idEquipe);
     }
     
     /**
@@ -222,11 +212,13 @@ class EdicaoCampeonatoController extends Controller
         return new Response();
     }
     
+    
+    
     /**
      * 
      * @return EdicaoCampeonatoService
      */
-    public function getService()
+    private function getService()
     {
         return $this->get("edicao_campeonato");
     }
