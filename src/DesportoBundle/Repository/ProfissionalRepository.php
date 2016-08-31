@@ -2,6 +2,7 @@
 
 namespace DesportoBundle\Repository;
 
+use DesportoBundle\Entity\EdicaoCampeonato;
 use DesportoBundle\Entity\EdicaoCampeonatoEquipeProfissional;
 use Doctrine\ORM\EntityRepository;
 use InvalidArgumentException;
@@ -81,13 +82,13 @@ class ProfissionalRepository extends EntityRepository
     /**
      * 
      * @param int $idEquipe
-     * @param int $idCampeonato
+     * @param int $campeonato
      * @return array
      * @throws InvalidArgumentException
      */
-    public function getJogadoresInscritos($idEquipe, $idCampeonato)
+    public function getJogadoresInscritos(EdicaoCampeonato $campeonato, $idEquipe)
     {
-        if (empty($idEquipe) || empty($idCampeonato) || !is_numeric($idEquipe) || !is_numeric($idCampeonato)) {
+        if (is_null($campeonato) || empty($idEquipe) || !is_numeric($idEquipe)) {
             throw new InvalidArgumentException;
         }
         
@@ -98,7 +99,7 @@ class ProfissionalRepository extends EntityRepository
                 ->andWhere($query->expr()->eq("CE.edicaoCampeonato", ":campeonato"))
                 ->andWhere($query->expr()->eq("CE.equipe", ":equipe"))
                 ->andWhere($query->expr()->eq("CE.tipo", ":tipo"))
-                ->setParameter("campeonato", $idCampeonato)
+                ->setParameter("campeonato", $campeonato->getId())
                 ->setParameter("equipe", $idEquipe)
                 ->setParameter("tipo", EdicaoCampeonatoEquipeProfissional::JOGADOR)
                 ->getQuery()
@@ -113,7 +114,7 @@ class ProfissionalRepository extends EntityRepository
      * @return array
      * @throws InvalidArgumentException
      */
-    public function getJogadoresDisponíveis(\DesportoBundle\Entity\EdicaoCampeonato $campeonato, $idEquipe, $busca = null, $inscritos = null)
+    public function getJogadoresDisponíveis(EdicaoCampeonato $campeonato, $idEquipe, $busca = null, $inscritos = null)
     {
         if (empty($campeonato)) {
             throw new InvalidArgumentException;

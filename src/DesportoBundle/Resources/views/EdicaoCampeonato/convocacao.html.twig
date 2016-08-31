@@ -63,11 +63,11 @@
                     .fail(defaultError);
         }
 
-        function inscrever(idEquipe, idCampeonato) {
+        function inscreverJogador(idEquipe) {
             
             jQuery(".locked").fadeIn();
             
-            jQuery.post("{{ path("campeonato_form_inscricao_jogadores") }}", {equipe: idEquipe, campeonato: idCampeonato})
+            jQuery.post("{{ path("campeonato_form_inscricao_jogadores", {campeonato:  campeonato.id }) }}", {equipe: idEquipe})
                     .done(function(html) {
                         jQuery(".locked").fadeOut();
                         bootbox.dialog({
@@ -174,10 +174,10 @@
                             {% for equipe in campeonato.equipes %}
                                 <tr>
                                     <td><h4>{{ equipe.nome }}</h4></td>
-                                    <td>Cadastrar</td>
-                                    <td>Cadastrar</td>
+                                    <td><button onclick="inscrever({{ equipe.id }}, {{ campeonato.id }});" class="btn btn-default">Inscrever Diretor</button></td>
+                                    <td><button onclick="inscrever({{ equipe.id }}, {{ campeonato.id }});" class="btn btn-default">Inscrever Técnico</button></td>
                                     <td>20</td>
-                                    <td><button onclick="inscrever({{ equipe.id }}, {{ campeonato.id }});" class="btn btn-default">Inscrever jogadores</button></td>
+                                    <td><button onclick="inscreverJogador({{ equipe.id }});" class="btn btn-default">Inscrever jogadores</button></td>
                                 </tr>
                             {% endfor %}
                         </tbody>

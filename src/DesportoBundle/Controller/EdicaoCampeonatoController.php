@@ -166,19 +166,21 @@ class EdicaoCampeonatoController extends Controller
     
 
     /**
-     * @Route("/form/inscricao/jogadores", name="campeonato_form_inscricao_jogadores")
+     * @Route("/form/inscricao/jogadores/{campeonato}", name="campeonato_form_inscricao_jogadores")
      * @Template()
      * @param Request $request
      */
-    public function formInscricaoJogadoresAction(Request $request)
+    public function formInscricaoJogadoresAction(EdicaoCampeonato $campeonato, Request $request)
     {
         $idEquipe = $request->get("equipe");
-        $idCampeonato = $request->get("campeonato");
 
-        if (empty($idEquipe) || empty($idCampeonato)) {
+        if (empty($idEquipe) || is_null($campeonato)) {
             throw new \InvalidArgumentException;
         }
-        $jogadores = $this->getDoctrine()->getRepository(\DesportoBundle\Entity\Profissional::class)->getJogadoresInscritos($idEquipe, $idCampeonato);
+        
+        $jogadores = $this->getDoctrine()
+                ->getRepository(\DesportoBundle\Entity\Profissional::class)
+                ->getJogadoresInscritos($campeonato, $idEquipe);
 
         return array("jogadores" => $jogadores, "equipeId" => $idEquipe);
     }
