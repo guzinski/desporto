@@ -214,8 +214,6 @@ class EdicaoCampeonatoController extends Controller
         return new Response();
     }
     
-    
-    
     /**
      * 
      * @return EdicaoCampeonatoService
@@ -224,7 +222,5 @@ class EdicaoCampeonatoController extends Controller
     {
         return $this->get("edicao_campeonato");
     }
-    
-    
     
 }

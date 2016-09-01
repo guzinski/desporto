@@ -114,6 +114,13 @@ class Equipe extends BaseEntity
      **/
     private $chaves;
     
+    
+    /**
+     * @var Collection
+     * @ORM\OneToMany(targetEntity="EdicaoCampeonatoEquipeProfissional", mappedBy="equipe")
+     **/
+    private $campeonatosProfissionais;
+    
     /**
      * @var Collection
      * @ORM\ManyToMany(targetEntity="FaseClassificatoria", mappedBy="fasesClassificatorias")
@@ -127,6 +134,7 @@ class Equipe extends BaseEntity
         $this->setChaves(new ArrayCollection());
         $this->setFasesClassificatorias(new ArrayCollection());
         $this->setEdicoesCampeonatos(new ArrayCollection());
+        $this->setCampeonatosProfissionais(new ArrayCollection());
     }
 
     
@@ -281,6 +289,78 @@ class Equipe extends BaseEntity
         $this->fasesClassificatorias = $fasesClassificatorias;
         return $this;
     }
+    
+    
+    public function getCampeonatosProfissionais()
+    {
+        return $this->campeonatosProfissionais;
+    }
+
+    public function setCampeonatosProfissionais(Collection $campeonatosProfissionais)
+    {
+        $this->campeonatosProfissionais = $campeonatosProfissionais;
+        return $this;
+    }
+    
+    /**
+     * 
+     * @param \DesportoBundle\Entity\EdicaoCampeonato $campoenato
+     * @return Profissional
+     */
+    public function getDiretor(EdicaoCampeonato $campoenato)
+    {
+        $query = \Doctrine\Common\Collections\Criteria::create();
+        
+        $query->andWhere($query->expr()->eq("edicaoCampeonato", $campoenato))
+                ->andWhere($query->expr()->eq("tipo", EdicaoCampeonatoEquipeProfissional::DIRETOR));
+        
+        $collection = $this->campeonatosProfissionais->matching($query);
+        if (!$collection->isEmpty()) {
+            foreach ($collection as $row) {
+                /** @var $row EdicaoCampeonatoEquipeProfissional  */
+                return $row->getProfissional();
+            }
+        }
+        return null;
+    }
+    
+    /**
+     * 
+     * @param \DesportoBundle\Entity\EdicaoCampeonato $campoenato
+     * @return Profissional
+     */
+    public function getTreinador(EdicaoCampeonato $campoenato)
+    {
+        $query = \Doctrine\Common\Collections\Criteria::create();
+        
+        $query->andWhere($query->expr()->eq("edicaoCampeonato", $campoenato))
+                ->andWhere($query->expr()->eq("tipo", EdicaoCampeonatoEquipeProfissional::TREINADOR));
+        
+        $collection = $this->campeonatosProfissionais->matching($query);
+        if (!$collection->isEmpty()) {
+            foreach ($collection as $row) {
+                /** @var $row EdicaoCampeonatoEquipeProfissional  */
+                return $row->getProfissional();
+            }
+        }
+        return null;
+    }
+
+    /**
+     * 
+     * @param \DesportoBundle\Entity\EdicaoCampeonato $campoenato
+     * @return ArrayCollection
+     */
+    public function getJogadores(EdicaoCampeonato $campoenato)
+    {
+        $query = \Doctrine\Common\Collections\Criteria::create();
+        
+        $query->andWhere($query->expr()->eq("edicaoCampeonato", $campoenato))
+                ->andWhere($query->expr()->eq("tipo", EdicaoCampeonatoEquipeProfissional::JOGADOR));
+        
+        return $this->campeonatosProfissionais->matching($query);
+    }
+
 
 
 
