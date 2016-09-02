@@ -2,9 +2,9 @@
 
 namespace DesportoBundle\Controller;
 
+use DesportoBundle\Entity\EdicaoCampeonato;
 use DesportoBundle\Entity\Profissional;
 use DesportoBundle\Form\ProfissionalType;
-use DesportoBundle\Repository\ProfissionalRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -140,22 +140,57 @@ class ProfissionalController extends Controller
     }
     
     /**
-     * @Route("/find/jogadores/disponiveis", name="profissional_find_jogadores_disponiveis")
+     * @Route("/find/jogadores/disponiveis/{campeonato}", name="profissional_find_jogadores_disponiveis")
      * @param Request $request
      */
-    public function findJogadoresAction(Request $request)
+    public function findJogadoresAction(EdicaoCampeonato $campeonato, Request $request)
     {
-        $IdCampeonato = $request->get("campeonato");
         $equipe = $request->get("equipe");
         $strBusca = $request->get("busca");
         $inscritos = $request->get('inscritos');
-        $campeonato = $this->getDoctrine()
-                ->getRepository(\DesportoBundle\Entity\EdicaoCampeonato::class)->find($IdCampeonato);
         
         $profissionais = $this->getDoctrine()
                 ->getRepository(Profissional::class)
                 ->getJogadoresDisponíveis($campeonato, $equipe, $strBusca, $inscritos);
 
+        return new Response(json_encode($this->preparaResultFindProfissionais($profissionais)));
+    }
+    
+    /**
+     * @Route("/find/diretores/disponiveis/{campeonato}", name="profissional_find_diretores_disponiveis")
+     * @param Request $request
+     */
+    public function findDiretoresDisponiveisAction(EdicaoCampeonato $campeonato, Request $request)
+    {
+        $equipe = $request->get("equipe");
+        $strBusca = $request->get("busca");
+        
+        $profissionais = $this->getDoctrine()
+                ->getRepository(Profissional::class)
+                ->getDiretoresDisponíveis($campeonato, $equipe, $strBusca);
+
+        return new Response(json_encode($this->preparaResultFindProfissionais($profissionais)));
+    }
+    
+    /**
+     * @Route("/find/treinadores/disponiveis/{campeonato}", name="profissional_find_treinadores_disponiveis")
+     * @param Request $request
+     */
+    public function findTreinadoresDisponíveisAction(EdicaoCampeonato $campeonato, Request $request)
+    {
+        $equipe = $request->get("equipe");
+        $strBusca = $request->get("busca");
+        
+        $profissionais = $this->getDoctrine()
+                ->getRepository(Profissional::class)
+                ->getTreinadoresDisponíveis($campeonato, $equipe, $strBusca);
+
+        return new Response(json_encode($this->preparaResultFindProfissionais($profissionais)));
+    }
+    
+    
+    private function preparaResultFindProfissionais($profissionais)
+    {
         $items = array();
         foreach ($profissionais as $profissional) {
             /* @var $profissional Profissional */
@@ -166,12 +201,11 @@ class ProfissionalController extends Controller
             ];
         }
 
-
         $return['total_count'] = count($profissionais);
         $return['items'] = $items;
         $return['incomplete_results'] = false;
 
-        return new Response(json_encode($return, 0, 2048));
+        return $return;
     }
 
     
