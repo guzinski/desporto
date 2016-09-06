@@ -186,6 +186,22 @@ class EdicaoCampeonatoController extends Controller
     }
     
     /**
+     * @Route("/form/inscricao/profissional/{campeonato}", name="campeonato_form_inscricao_profissional")
+     * @Template()
+     * @param Request $request
+     */
+    public function formInscricaoProfissionalAction(EdicaoCampeonato $campeonato, Request $request)
+    {
+        $idEquipe = $request->get("equipe");
+
+        if (empty($idEquipe) || is_null($campeonato)) {
+            throw new \InvalidArgumentException;
+        }
+
+        return array("equipeId" => $idEquipe);
+    }
+    
+    /**
      * @Route("/adicionar/jogador", name="campeonato_adicionar_jogador")
      * @Template()
      * @param Request $request
@@ -214,8 +230,6 @@ class EdicaoCampeonatoController extends Controller
         return new Response();
     }
     
-    
-    
     /**
      * 
      * @return EdicaoCampeonatoService
@@ -224,7 +238,5 @@ class EdicaoCampeonatoController extends Controller
     {
         return $this->get("edicao_campeonato");
     }
-    
-    
     
 }

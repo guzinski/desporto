@@ -40,7 +40,7 @@ class EdicaoCampeonatoEquipeProfissional
     /**
      * @var Equipe
      *
-     * @ORM\ManyToOne(targetEntity="Equipe", inversedBy="profissionais")
+     * @ORM\ManyToOne(targetEntity="Equipe", inversedBy="campeonatosProfissionais")
      * @ORM\JoinColumn(name="equipe", referencedColumnName="id", nullable=false)
      */
     protected $equipe;
@@ -114,8 +114,5 @@ class EdicaoCampeonatoEquipeProfissional
         $this->tipo = $tipo;
         return $this;
     }
-
-
-    
     
 }

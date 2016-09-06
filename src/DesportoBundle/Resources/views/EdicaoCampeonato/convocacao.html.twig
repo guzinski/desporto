@@ -63,74 +63,189 @@
                     .fail(defaultError);
         }
 
-        function inscreverJogador(idEquipe) {
+
+        function inscreverDiretor(idEquipe) {
+            jQuery(".locked").fadeIn();
             
+            jQuery.post("{{ path("campeonato_form_inscricao_profissional", {campeonato:  campeonato.id }) }}", {equipe: idEquipe})
+                .done(callBackInscreverDiretor).fail(defaultError);
+        }
+        
+        function inscreverTreinador(idEquipe) {
+            jQuery(".locked").fadeIn();
+            
+            jQuery.post("{{ path("campeonato_form_inscricao_profissional", {campeonato:  campeonato.id }) }}", {equipe: idEquipe})
+                .done(callBackInscreverTreinador).fail(defaultError);
+        }
+
+        function inscreverJogador(idEquipe) {
             jQuery(".locked").fadeIn();
             
             jQuery.post("{{ path("campeonato_form_inscricao_jogadores", {campeonato:  campeonato.id }) }}", {equipe: idEquipe})
-                    .done(function(html) {
-                        jQuery(".locked").fadeOut();
-                        bootbox.dialog({
-                            title: "Inscrever jogadores",
-                            size: "large",
-                            message: html,
-                            buttons: {
-                            close: {
-                            label: "Cancelar",
-                                className: "btn-default",
-                            },
-                            success: {
-                                label: "Inscrever",
-                                className: "btn-success",
-                                callback: function () { 
-                                    if (jQuery("#jogadores tbody tr").length <= quantidadeMinimaJogadores) {
-                                        bootbox.alert("O campeonato exige pelo menos "+quantidadeMinimaJogadores+" Jogadores inscritos.");
-                                        return false;
-                                    } else {
-                                        jQuery(".locked").fadeIn();
-                                        jQuery.post("{{ path("campeonato_inscrever_jogadores", {"campeonato": campeonato.id} ) }}", jQuery("#formJogadores").serialize())
-                                            .done(function(html) {
-                                                jQuery(".locked").fadeOut();
-                                                bootbox.alert("Jogadores inscritos com sucesso");
-                                            })
-                                            .fail(defaultError);
-
-                                    }
-                                }
-                            },
+                .done(callBackInscreverJogador).fail(defaultError);
+        }
+        
+        
+        function callBackInscreverJogador(html) {
+            jQuery(".locked").fadeOut();
+            bootbox.dialog({
+                title: "Inscrever jogadores",
+                size: "large",
+                message: html,
+                buttons: {
+                    close: {
+                        label: "Cancelar",
+                        className: "btn-default",
+                    },
+                    success: {
+                        label: "Inscrever",
+                        className: "btn-success",
+                        callback: function () {
+                            if (jQuery("#jogadores tbody tr").length <= quantidadeMinimaJogadores) {
+                                bootbox.alert("O campeonato exige pelo menos " + quantidadeMinimaJogadores + " Jogadores inscritos.");
+                                return false;
+                            } else {
+                                jQuery(".locked").fadeIn();
+                                jQuery.post("{{ path("campeonato_inscrever_jogadores", {"campeonato": campeonato.id} ) }}", jQuery("#formJogadores").serialize())
+                                        .done(function(html) {
+                                            jQuery(".locked").fadeOut();
+                                            bootbox.alert("Jogadores inscritos com sucesso");
+                                            location.href = "";
+                                        })
+                                        .fail(defaultError);
+                            }
                         }
-                        });
-                        jQuery("#jogador").select2({
-                            minimumInputLength: 1,
-                            ajax: {
-                            url: "{{ path('profissional_find_jogadores_disponiveis') }}",
-                                    //url: "https://api.github.com/search/repositories",
-                                    dataType: 'json',
-                                    quietMillis: 250,
-                                    data: function (term, page) { // page is the one-based page number tracked by Select2
-                                    return {
-                                        busca: term, //search term
-                                        campeonato:{{campeonato.id}},
-                                        equipe: jQuery("#equipe").val(),
-                                        inscritos: jQuery("input:hidden.inscritos").serializeArray()
-                                    };
-                                    },
-                                    results: function (data, page) {
-                                    var more = (page * 30) < data.total_count; // whether or not there are more results available
+                    },
+                }
+            });
+            jQuery("#jogador").select2({
+                minimumInputLength: 1,
+                ajax: {
+                url: "{{ path('profissional_find_jogadores_disponiveis', {campeonato: campeonato.id}) }}",
+                dataType: 'json',
+                quietMillis: 250,
+                data: function (term, page) { // page is the one-based page number tracked by Select2
+                    return {
+                        busca: term, //search term
+                                campeonato:{{campeonato.id}},
+                                equipe: jQuery("#equipe").val(),
+                                inscritos: jQuery("input:hidden.inscritos").serializeArray()
+                        };
+                    },
+                    results: function (data, page) {
+                        var more = (page * 30) < data.total_count; // whether or not there are more results available
 
-                                    // notice we return the value of more so Select2 knows if more results can be loaded
-                                    return { results: data.items, more: more };
-                                    }
-                            },
-                            formatResult: repoFormatResult, // omitted for brevity, see the source of this page
-                            formatSelection: repoFormatSelection, // omitted for brevity, see the source of this page
-                            dropdownCssClass: "bigdrop", // apply css that makes the dropdown taller
-                            escapeMarkup: function (m) { return m; } // we do not want to escape markup since we are displaying html in results            });
-                        });
-                        jQuery('.select2-container').css("width", "100%");
-                        jQuery("#adicionarJogador").click(adicionarJogador)
-                    }).fail(defaultError);
-            }
+                        // notice we return the value of more so Select2 knows if more results can be loaded
+                        return { results: data.items, more: more };
+                    }
+                },
+                formatResult: repoFormatResult, // omitted for brevity, see the source of this page
+                formatSelection: repoFormatSelection, // omitted for brevity, see the source of this page
+                dropdownCssClass: "bigdrop", // apply css that makes the dropdown taller
+                escapeMarkup: function (m) { return m; } // we do not want to escape markup since we are displaying html in results            });
+            });
+            jQuery('.select2-container').css("width", "100%");
+            jQuery("#adicionarJogador").click(adicionarJogador)
+        }
+        
+        function callBackInscreverDiretor(html) {
+            jQuery(".locked").fadeOut();
+            bootbox.dialog({
+                title: "Inscrever Diretor",
+                size: "large",
+                message: html,
+                buttons: {
+                    close: {
+                        label: "Cancelar",
+                        className: "btn-default",
+                    },
+                    success: {
+                        label: "Inscrever",
+                        className: "btn-success",
+                        callback: function () {
+                        }
+                    },
+                }
+            });
+            jQuery("#diretor").select2({
+                minimumInputLength: 1,
+                ajax: {
+                    url: "{{ path('profissional_find_diretores_disponiveis', {campeonato: campeonato.id}) }}",
+                    dataType: 'json',
+                    quietMillis: 250,
+                    data: function (term, page) { // page is the one-based page number tracked by Select2
+                    return {
+                        busca: term, //search term
+                                campeonato:{{campeonato.id}},
+                                equipe: jQuery("#equipe").val(),
+                                inscritos: jQuery("input:hidden.inscritos").serializeArray()
+                        };
+                    },
+                    results: function (data, page) {
+                        var more = (page * 30) < data.total_count; // whether or not there are more results available
+
+                        // notice we return the value of more so Select2 knows if more results can be loaded
+                        return { results: data.items, more: more };
+                    }
+                },
+                formatResult: repoFormatResult, // omitted for brevity, see the source of this page
+                formatSelection: repoFormatSelection, // omitted for brevity, see the source of this page
+                dropdownCssClass: "bigdrop", // apply css that makes the dropdown taller
+                escapeMarkup: function (m) { return m; } // we do not want to escape markup since we are displaying html in results            });
+            });
+            jQuery('.select2-container').css("width", "100%");
+            jQuery("#adicionarJogador").click(adicionarJogador)
+        }
+        
+        function callBackInscreverTreinador(html) {
+            jQuery(".locked").fadeOut();
+            bootbox.dialog({
+                title: "Inscrever Diretor",
+                size: "large",
+                message: html,
+                buttons: {
+                    close: {
+                        label: "Cancelar",
+                        className: "btn-default",
+                    },
+                    success: {
+                        label: "Inscrever",
+                        className: "btn-success",
+                        callback: function () {
+                        }
+                    },
+                }
+            });
+            jQuery("#diretor").select2({
+                minimumInputLength: 1,
+                ajax: {
+                    url: "{{ path('profissional_find_treinadores_disponiveis', {campeonato: campeonato.id}) }}",
+                    dataType: 'json',
+                    quietMillis: 250,
+                    data: function (term, page) { // page is the one-based page number tracked by Select2
+                    return {
+                        busca: term, //search term
+                                campeonato:{{campeonato.id}},
+                                equipe: jQuery("#equipe").val(),
+                                inscritos: jQuery("input:hidden.inscritos").serializeArray()
+                        };
+                    },
+                    results: function (data, page) {
+                        var more = (page * 30) < data.total_count; // whether or not there are more results available
+
+                        // notice we return the value of more so Select2 knows if more results can be loaded
+                        return { results: data.items, more: more };
+                    }
+                },
+                formatResult: repoFormatResult, // omitted for brevity, see the source of this page
+                formatSelection: repoFormatSelection, // omitted for brevity, see the source of this page
+                dropdownCssClass: "bigdrop", // apply css that makes the dropdown taller
+                escapeMarkup: function (m) { return m; } // we do not want to escape markup since we are displaying html in results            });
+            });
+            jQuery('.select2-container').css("width", "100%");
+            jQuery("#adicionarJogador").click(adicionarJogador)
+        }
+
         
         jQuery(document).ready(function(){
 
@@ -173,11 +288,23 @@
                         <tbody>
                             {% for equipe in campeonato.equipes %}
                                 <tr>
-                                    <td><h4>{{ equipe.nome }}</h4></td>
-                                    <td><button onclick="inscrever({{ equipe.id }}, {{ campeonato.id }});" class="btn btn-default">Inscrever Diretor</button></td>
-                                    <td><button onclick="inscrever({{ equipe.id }}, {{ campeonato.id }});" class="btn btn-default">Inscrever Técnico</button></td>
-                                    <td>20</td>
-                                    <td><button onclick="inscreverJogador({{ equipe.id }});" class="btn btn-default">Inscrever jogadores</button></td>
+                                    <td><h5>{{ equipe.nome }}</h5></td>
+                                    {% if equipe.getDiretor(campeonato) is null %}
+                                    <td><button onclick="inscreverDiretor({{ equipe.id }});" class="btn btn-default btn-sm">Inscrever Diretor</button></td>
+                                    {% else %}
+                                    <td>{{ equipe.getDiretor(campeonato).nome }}</td>
+                                    {% endif %}
+                                    {% if equipe.getTreinador(campeonato) is null %}
+                                    <td><button onclick="inscreverTreinador({{ equipe.id }});" class="btn btn-default btn-sm">Inscrever Treinador</button></td>
+                                    {% else %}
+                                    <td>{{ equipe.getTreinador(campeonato).nome }}</td>
+                                    {% endif %}
+                                    <td>{{ equipe.getJogadores(campeonato).count }}</td>
+                                    {% if equipe.getJogadores(campeonato).count >= campeonato.quantidadeMaximaJogadores %}
+                                    <td><strong>Máximo de Jogadores isncritos</strong></td>
+                                    {% else %}
+                                    <td><button onclick="inscreverJogador({{ equipe.id }});" class="btn btn-default btn-sm">Inscrever jogadores</button></td>
+                                    {% endif %}
                                 </tr>
                             {% endfor %}
                         </tbody>

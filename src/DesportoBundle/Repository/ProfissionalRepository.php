@@ -111,12 +111,52 @@ class ProfissionalRepository extends EntityRepository
      * @param EdicaoCampeonato $campeonato
      * @param int $idEquipe
      * @param string $busca
+     * @param array $inscritos
      * @return array
-     * @throws InvalidArgumentException
      */
     public function getJogadoresDisponíveis(EdicaoCampeonato $campeonato, $idEquipe, $busca = null, $inscritos = null)
     {
-        if (empty($campeonato)) {
+        return $this->getProfissionaisDisponideis($campeonato, EdicaoCampeonatoEquipeProfissional::JOGADOR, $idEquipe, $busca, $inscritos, $campeonato->getModalidade());
+    }
+    
+    /**
+     * 
+     * @param EdicaoCampeonato $campeonato
+     * @param int $idEquipe
+     * @param string $busca
+     * @return array
+     */
+    public function getDiretoresDisponíveis(EdicaoCampeonato $campeonato, $idEquipe, $busca = null)
+    {
+        return $this->getProfissionaisDisponideis($campeonato, EdicaoCampeonatoEquipeProfissional::DIRETOR, $idEquipe, $busca);
+    }
+    
+    /**
+     * 
+     * @param EdicaoCampeonato $campeonato
+     * @param int $idEquipe
+     * @param string $busca
+     * @return array
+     */
+    public function getTreinadoresDisponíveis(EdicaoCampeonato $campeonato, $idEquipe, $busca = null)
+    {
+        return $this->getProfissionaisDisponideis($campeonato, EdicaoCampeonatoEquipeProfissional::TREINADOR, $idEquipe, $busca);
+    }
+
+    /**
+     * 
+     * @param EdicaoCampeonato $campeonato
+     * @param string $tipo
+     * @param int $idEquipe
+     * @param string $busca
+     * @param array $inscritos
+     * @param string $sexo
+     * @return array
+     * @throws InvalidArgumentException
+     */
+    private function getProfissionaisDisponideis(EdicaoCampeonato $campeonato, $tipo, $idEquipe, $busca = null, $inscritos = null, $sexo = null)
+    {
+        if (empty($campeonato) || empty($tipo) || empty($idEquipe)) {
             throw new InvalidArgumentException;
         }
 
@@ -154,21 +194,24 @@ class ProfissionalRepository extends EntityRepository
             $query->andWhere($query->expr()->notIn("J.id", $clausule));
         }
         
+        if (!is_null($sexo)) {
+            $query->andWhere($query->expr()->eq("J.sexo", ":sexo"))
+                    ->setParameter("sexo", $sexo);
+        }
+        
         return $query->select("J")
                         ->andWhere($query->expr()->notIn("J.id", $subQuery->getDQL()))
-                        ->andWhere($query->expr()->eq("J.sexo", ":sexo"))
+                        
                         ->setParameter("campeonato", $campeonato->getId())
-                        ->setParameter("sexo", $campeonato->getModalidade())
+                        
                         ->setParameter("equipe", $idEquipe)
-                        ->setParameter("tipo", EdicaoCampeonatoEquipeProfissional::JOGADOR)
+                        ->setParameter("tipo", $tipo)
                         ->setParameter("busca", "%{$busca}%")
                         ->addOrderBy("J.nome")
                         ->setMaxResults(10)
                         ->getQuery()
                         ->getResult();
     }
-        
-
 
     
 }
