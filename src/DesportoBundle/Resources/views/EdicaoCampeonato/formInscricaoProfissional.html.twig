@@ -1,8 +1,10 @@
+<h4>Equipe: {{ equipe.nome }}</h4>
 <form id="formJogadores">
     <div class="row">
         <div class="col-sm-12">
-            <input data-placeholder="Procurar profissional" id="profissional" />
-            <input value="{{ equipeId }}" type="hidden" name="equipe"  id="equipe" />
+            <input data-placeholder="Procurar profissional" id="profissional" name="profissional" />
+            <input value="{{ equipe.id }}" type="hidden" name="equipe"  id="equipe" />
+            <input value="{{ tipo }}" type="hidden" name="tipo"  id="tipo" />
         </div>
     </div>
 </form>

@@ -178,11 +178,14 @@ class EdicaoCampeonatoController extends Controller
             throw new \InvalidArgumentException;
         }
         
+        $equipe = $this->getDoctrine()
+                ->getRepository(\DesportoBundle\Entity\Equipe::class)->findOneBy(['id'=> $idEquipe]);
+        
         $jogadores = $this->getDoctrine()
                 ->getRepository(\DesportoBundle\Entity\Profissional::class)
                 ->getJogadoresInscritos($campeonato, $idEquipe);
 
-        return array("jogadores" => $jogadores, "equipeId" => $idEquipe);
+        return array("jogadores" => $jogadores, "equipe" => $equipe);
     }
     
     /**
@@ -193,12 +196,16 @@ class EdicaoCampeonatoController extends Controller
     public function formInscricaoProfissionalAction(EdicaoCampeonato $campeonato, Request $request)
     {
         $idEquipe = $request->get("equipe");
+        $tipo = $request->get("tipo");
 
-        if (empty($idEquipe) || is_null($campeonato)) {
+        if (empty($idEquipe) || is_null($campeonato) || empty($tipo)) {
             throw new \InvalidArgumentException;
         }
+        
+        $equipe = $this->getDoctrine()
+                ->getRepository(\DesportoBundle\Entity\Equipe::class)->findOneBy(['id'=> $idEquipe]);
 
-        return array("equipeId" => $idEquipe);
+        return array("equipe" => $equipe, 'tipo'=>$tipo);
     }
     
     /**
@@ -226,7 +233,21 @@ class EdicaoCampeonatoController extends Controller
         $equipe = $request->get("equipe");
         $inscritos = $request->get("inscritos");
 
-        $campService = $this->get("edicao_campeonato")->inscreverJogadores($campeonato, $equipe, $inscritos); 
+        $this->getService()->inscreverJogadores($campeonato, $equipe, $inscritos); 
+        return new Response();
+    }
+    
+    /**
+     * @Route("/inscrever/profissional/{campeonato}", name="campeonato_inscrever_profissional")
+     * @param Request $request
+     */
+    public function inscreverProfissionalAction(EdicaoCampeonato $campeonato, Request $request) 
+    {
+        $equipe = $request->get("equipe");
+        $profissional = $request->get("profissional");
+        $tipo = $request->get("tipo");
+
+        $this->getService()->inscreverProfissional($campeonato, $equipe, $profissional, $tipo); 
         return new Response();
     }
     

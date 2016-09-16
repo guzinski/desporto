@@ -431,6 +431,34 @@ class EdicaoCampeonatoService
         }
         $this->em->flush();
     }
+    
+    /**
+     * 
+     * @param Campeonato $campeonato
+     * @param int $equipe
+     * @param array $inscritos
+     */
+    public function inscreverProfissional(EdicaoCampeonato $campeonato, $idEquipe, $profissional, $tipo)
+    {
+        if (is_null($campeonato) || empty($idEquipe) || empty($profissional) || empty($tipo)) {
+            throw new InvalidArgumentException;
+        }
+        
+        /* @var $equipeRepository \DesportoBundle\Repository\EquipeRepository */
+        $equipeRepository = $this->em->getRepository(Equipe::class);
+        
+        /* @var $profissionalRepository \DesportoBundle\Repository\ProfissionalRepository */
+        $profissionalRepository = $this->em->getRepository(Profissional::class);
+        
+        $equipe = $equipeRepository->find($idEquipe);
+        $profissional = $profissionalRepository->find($profissional);
+        
+        $inscricao = new EdicaoCampeonatoEquipeProfissional($campeonato, $equipe, $profissional, $tipo);
+        
+        $this->em->persist($inscricao);
+        
+        $this->em->flush();
+    }
 
     
 //    /**

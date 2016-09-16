@@ -1,11 +1,9 @@
-<div class="row">
-    
-</div>
+<h4>Equipe: {{ equipe.nome }}</h4>
 <form id="formJogadores">
     <div class="row" id="adicionarJogador">
         <div class="col-sm-9">
             <input data-placeholder="Procurar jogador"  id="jogador" />
-            <input value="{{ equipeId }}" type="hidden" name="equipe"  id="equipe" />
+            <input value="{{ equipe.id }}" type="hidden" name="equipe"  id="equipe" />
         </div>
         <div class="col-sm-3">
             <button type="button" id="adicionarJogador" class="btn btn-primary">Adicionar</button>

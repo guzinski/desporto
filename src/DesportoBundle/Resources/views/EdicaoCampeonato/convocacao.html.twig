@@ -66,15 +66,15 @@
 
         function inscreverDiretor(idEquipe) {
             jQuery(".locked").fadeIn();
-            
-            jQuery.post("{{ path("campeonato_form_inscricao_profissional", {campeonato:  campeonato.id }) }}", {equipe: idEquipe})
+            var tipo = "{{ constant('DesportoBundle\\Entity\\EdicaoCampeonatoEquipeProfissional::DIRETOR') }}";
+            jQuery.post("{{ path("campeonato_form_inscricao_profissional", {campeonato:  campeonato.id }) }}", {equipe: idEquipe, tipo: tipo})
                 .done(callBackInscreverDiretor).fail(defaultError);
         }
         
         function inscreverTreinador(idEquipe) {
             jQuery(".locked").fadeIn();
-            
-            jQuery.post("{{ path("campeonato_form_inscricao_profissional", {campeonato:  campeonato.id }) }}", {equipe: idEquipe})
+            var tipo = "{{ constant('DesportoBundle\\Entity\\EdicaoCampeonatoEquipeProfissional::TREINADOR') }}"
+            jQuery.post("{{ path("campeonato_form_inscricao_profissional", {campeonato:  campeonato.id }) }}", {equipe: idEquipe, tipo: tipo})
                 .done(callBackInscreverTreinador).fail(defaultError);
         }
 
@@ -163,11 +163,26 @@
                         label: "Inscrever",
                         className: "btn-success",
                         callback: function () {
+                            
+                            if (!jQuery("#profissional").val()) {
+                                bootbox.alert("Selecione o Diretor");
+                            } else {
+                                jQuery(".locked").fadeIn();
+                                jQuery.post("{{ path("campeonato_inscrever_profissional", {"campeonato": campeonato.id} ) }}", jQuery("#formJogadores").serialize())
+                                        .done(function(html) {
+                                            jQuery(".locked").fadeOut();
+                                            bootbox.alert("Diretor inscrito com sucesso");
+                                            location.href = "";
+                                        })
+                                        .fail(defaultError);
+                            }
+                            
+                            
                         }
                     },
                 }
             });
-            jQuery("#diretor").select2({
+            jQuery("#profissional").select2({
                 minimumInputLength: 1,
                 ajax: {
                     url: "{{ path('profissional_find_diretores_disponiveis', {campeonato: campeonato.id}) }}",
@@ -212,11 +227,23 @@
                         label: "Inscrever",
                         className: "btn-success",
                         callback: function () {
+                            if (!jQuery("#profissional").val()) {
+                                bootbox.alert("Selecione o Diretor");
+                            } else {
+                                jQuery(".locked").fadeIn();
+                                jQuery.post("{{ path("campeonato_inscrever_profissional", {"campeonato": campeonato.id} ) }}", jQuery("#formJogadores").serialize())
+                                        .done(function(html) {
+                                            jQuery(".locked").fadeOut();
+                                            bootbox.alert("Diretor inscrito com sucesso");
+                                            location.href = "";
+                                        })
+                                        .fail(defaultError);
+                            }
                         }
                     },
                 }
             });
-            jQuery("#diretor").select2({
+            jQuery("#profissional").select2({
                 minimumInputLength: 1,
                 ajax: {
                     url: "{{ path('profissional_find_treinadores_disponiveis', {campeonato: campeonato.id}) }}",
@@ -248,6 +275,8 @@
 
         
         jQuery(document).ready(function(){
+        
+        
 
         });
 
