@@ -12,7 +12,7 @@ use Symfony\Component\Validator\Exception\InvalidArgumentException;
 /**
  * Description of EdicaoCampeonato
  * @ORM\Table(name="edicao_campeonato")
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="DesportoBundle\Repository\EdicaoCampeonatoRepository")
  * @author Luciano
  */
 class EdicaoCampeonato extends BaseEntity

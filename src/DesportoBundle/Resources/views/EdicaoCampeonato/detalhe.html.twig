@@ -3,20 +3,20 @@
 {% block head %}
     <link href="{{ asset('bundles/desporto/css/slick/slick.css') }}" rel="stylesheet">
     <link href="{{ asset('bundles/desporto/css/slick/slick-theme.css') }}" rel="stylesheet">
-    
+
     <script src="{{ asset('bundles/desporto/js/jquery.dataTables.min.js') }}"></script>
     <script src="{{ asset('bundles/desporto/js/jquery-datatables.responsive.js') }}"></script>
     <script src="//cdn.datatables.net/plug-ins/725b2a2115b/integration/bootstrap/3/dataTables.bootstrap.js"></script>
     <script src="{{ asset('bundles/desporto/js/select2.min.js') }}"></script>
     <script src="{{ asset('bundles/desporto/js/slick.min.js') }}"></script>
     <script>
-        jQuery(document).ready(function(){
+        jQuery(document).ready(function () {
             jQuery('.slick_demo_1').slick({
                 dots: true
             });
-            
+
         });
-       
+
     </script>
     <style>
         .slick-prev::before, .slick-next::before {
@@ -40,29 +40,40 @@
             </div>
         </div><!-- media -->
     </div><!-- pageheader -->
-     <div class="contentpanel">
-            
-            <div class="row">
-                <div class="col-md-12 col-lg-8">
-                <table class="table table-bordered table-striped">
-                    <thead>
-                        <tr>
-                            <th></th>
-                            <th>Equipe</th>
-                            <th>Pontos</th>
-                            <th>Vitórias</th>
-                            <th>Empates</th>
-                            <th>Derrotas</th>
-                            <th>GP</th>
-                            <th>GC</th>
-                            <th>SG</th>
-                            <th>CA</th>
-                            <th>CV</th>
-                            <th>Aprov.</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for equipe in campeonato.equipes %}
+    <div class="contentpanel">
+
+        <div class="row">
+            <div class="pull-right">
+                <a href=""><button class="btn btn-success " type="button"><i class="fa fa-print"></i>&nbsp;&nbsp;<span class="bold">Tabela</span></button></a>
+                <a href=""><button class="btn btn-success " type="button"><i class="fa fa-calendar-o"></i>&nbsp;&nbsp;<span class="bold">Gerar Carnê</span></button></a>
+                <a href="editar-equipes.html"><button class="btn btn-success " type="button"><i class="fa fa-users"></i>&nbsp;&nbsp;<span class="bold">Editar Equipes</span></button></a>
+                <a href=""><button class="btn btn-success " type="button"><i class="fa fa-bars"></i>&nbsp;&nbsp;<span class="bold">Ficha Equipe</span></button></a>
+                <a href="campeonato-finais.html"><button class="btn btn-success " type="button"><i class="fa fa-share"></i>&nbsp;&nbsp;<span class="bold">Próxima Fase</span></button></a>
+            </div>
+        </div>
+        
+        <hr/>
+
+        <div class="row">
+            <table class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>Equipe</th>
+                        <th>Pontos</th>
+                        <th>Vitórias</th>
+                        <th>Empates</th>
+                        <th>Derrotas</th>
+                        <th>GP</th>
+                        <th>GC</th>
+                        <th>SG</th>
+                        <th>CA</th>
+                        <th>CV</th>
+                        <th>Aprov.</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for equipe in campeonato.equipes %}
                         <tr>
                             <td style="text-align: center"><strong>{{ loop.index }}</strong></td>
                             <td><a href="#">{{ equipe.apelido }}</a></td>
@@ -77,42 +88,66 @@
                             <td>0</td>
                             <td>0%</td>                                                     
                         </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-                </div>
-                <div class="col-md-12 col-lg-4">
-                    <div class="slick_demo_1">
-                        {% for rodada in campeonato.rodadas %}
-                            <div>
-                                <h3>{{ rodada.numero }}º RODADA</h3><hr>
-                                <table class="table">
-                                    <tbody>
-                                        {% for jogo in rodada.jogos %}
-                                            <tr>
-                                                <td>{{ jogo.equipeMandante.apelido }}</td>
-                                                <td>0</td>
-                                                <td>x</td>
-                                                <td>0</td>
-                                                <td>{{ jogo.equipeVisitante.apelido }}</td>
-                                            </tr>
-                                        {% endfor %}
-                                    </tbody>
-                                </table>
-                            </div>
-                        {% endfor %}
-                    </div><!-- slick_demo_1 -->
-                </div><!-- col-sm-12 -->
-            </div> <!-- row -->
-            <div class="row">
-                <div class="pull-right">
-                    <a href=""><button class="btn btn-success " type="button"><i class="fa fa-print"></i>&nbsp;&nbsp;<span class="bold">Tabela</span></button></a>
-                    <a href=""><button class="btn btn-success " type="button"><i class="fa fa-calendar-o"></i>&nbsp;&nbsp;<span class="bold">Gerar Carnê</span></button></a>
-                    <a href="editar-equipes.html"><button class="btn btn-success " type="button"><i class="fa fa-users"></i>&nbsp;&nbsp;<span class="bold">Editar Equipes</span></button></a>
-                    <a href=""><button class="btn btn-success " type="button"><i class="fa fa-bars"></i>&nbsp;&nbsp;<span class="bold">Ficha Equipe</span></button></a>
-                    <a href="campeonato-finais.html"><button class="btn btn-success " type="button"><i class="fa fa-share"></i>&nbsp;&nbsp;<span class="bold">Próxima Fase</span></button></a>
-                </div>
-            </div>
-            
-     </div><!-- contentpanel -->
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div> <!-- row -->
+        <hr/>
+            <div class="slick_demo_1">
+                {% for rodada in campeonato.rodadas %}
+                    <div>
+                        <h3>{{ rodada.numero }}º RODADA</h3><hr>
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        Data
+                                    </th>
+                                    <th>
+                                        Local
+                                    </th>
+                                    <th>
+                                        Mandante
+                                    </th>
+                                    <th class="text-center">
+                                        Placar
+                                    </th>
+                                    <th class="text-center">
+                                        X
+                                    </th>
+                                    <th class="text-center">
+                                        Placar
+                                    <th>
+                                        Visitante
+                                    </th>
+                                    <th>
+                                        Detalhe
+                                    </th>
+                                    <th>
+                                        Súmula
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for jogo in rodada.jogos %}
+                                    <tr>
+                                        <td><h5>16/09/2016 19:30</h5></td>
+                                        <td><h5>Ginásio Municipal</h5></td>
+                                        <td><h4>{{ jogo.equipeMandante.apelido }}</h4></td>
+                                        <td class="text-center"><h3>0</h3></td>
+                                        <td class="text-center"><h4>X</h4></td>
+                                        <td class="text-center"><h3>0</h3></td>
+                                        <td><h4>{{ jogo.equipeVisitante.apelido }}</h4></td>
+                                        <td><a class="btn btn-default" type="button" href="{{ path('jogo_detalhar', {jogo: jogo.id})  }}" >Detalhar</a> </td>
+                                        <td><button class="btn btn-default" ><i class="fa fa-print"></i></button></td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                {% endfor %}
+            </div><!-- slick_demo_1 -->
+
+
+    </div><!-- contentpanel -->
 {% endblock %}

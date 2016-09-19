@@ -250,6 +250,18 @@ class EdicaoCampeonatoController extends Controller
         $this->getService()->inscreverProfissional($campeonato, $equipe, $profissional, $tipo); 
         return new Response();
     }
+
+
+    
+    /**
+     * @Route("/finalizar/inscricao/{campeonato}", name="campeonato_finalizar_inscricao")
+     * @param Request $request
+     */
+    public function finalizarInscricaoAction(EdicaoCampeonato $campeonato) 
+    {
+        $retorno['finalizado'] = $this->getService()->verificafinalizacaoInscricao($campeonato);
+        return new Response(json_encode($retorno));
+    }
     
     /**
      * 
@@ -261,3 +273,5 @@ class EdicaoCampeonatoController extends Controller
     }
     
 }
+
+

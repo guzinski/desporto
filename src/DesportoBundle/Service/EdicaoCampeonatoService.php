@@ -418,14 +418,10 @@ class EdicaoCampeonatoService
         if (empty($campeonato) || empty($idEquipe) || empty($inscritos)) {
             throw new InvalidArgumentException;
         }
-        /* @var $equipeRepository \DesportoBundle\Repository\EquipeRepository */
-        $equipeRepository = $this->em->getRepository(Equipe::class);
-        /* @var $profissionalRepository \DesportoBundle\Repository\ProfissionalRepository */
-        $profissionalRepository = $this->em->getRepository(Profissional::class);
-        
-        $equipe = $equipeRepository->find($idEquipe);
+
+        $equipe = $this->getEquipeRepository()->find($idEquipe);
         foreach ($inscritos as $inscrito) {
-            $jogador = $profissionalRepository->find($inscrito);
+            $jogador = $this->getProfissionaleRepository()->find($inscrito);
             $inscricao = new EdicaoCampeonatoEquipeProfissional($campeonato, $equipe, $jogador, EdicaoCampeonatoEquipeProfissional::JOGADOR);
             $this->em->persist($inscricao);
         }
@@ -444,14 +440,8 @@ class EdicaoCampeonatoService
             throw new InvalidArgumentException;
         }
         
-        /* @var $equipeRepository \DesportoBundle\Repository\EquipeRepository */
-        $equipeRepository = $this->em->getRepository(Equipe::class);
-        
-        /* @var $profissionalRepository \DesportoBundle\Repository\ProfissionalRepository */
-        $profissionalRepository = $this->em->getRepository(Profissional::class);
-        
-        $equipe = $equipeRepository->find($idEquipe);
-        $profissional = $profissionalRepository->find($profissional);
+        $equipe = $this->getEquipeRepository()->find($idEquipe);
+        $profissional = $this->getProfissionaleRepository()->find($profissional);
         
         $inscricao = new EdicaoCampeonatoEquipeProfissional($campeonato, $equipe, $profissional, $tipo);
         
@@ -460,7 +450,62 @@ class EdicaoCampeonatoService
         $this->em->flush();
     }
 
+    /**
+     * 
+     * @param EdicaoCampeonato $campeonato
+     * @return \DesportoBundle\Repository\EquipeRepository
+     */
+    public function verificafinalizacaoInscricao(EdicaoCampeonato $campeonato)
+    {
+        foreach ($campeonato->getEquipes() as $equipe) {
+            /* @var $equipe Equipe */
+            if (!$equipe->getDiretor($campeonato)) {
+                return FALSE;
+            }
+            if (!$equipe->getTreinador($campeonato)) {
+                return FALSE;
+            }
+            if ($campeonato->getQuantidadeMinimaJogadores() > $equipe->getJogadores($campeonato)->count()) {
+                return FALSE;
+            }
+        }
+        
+        $campeonato->setStatus(EdicaoCampeonato::EM_ANDAMENTO);
+        
+        $this->em->persist($campeonato);
+        $this->em->flush();
+        
+        return TRUE;
+    }
     
+    /**
+     * 
+     * @return \DesportoBundle\Repository\EquipeRepository
+     */
+    private function getEquipeRepository()
+    {
+        return $this->em->getRepository(Equipe::class);
+    }
+    
+    /**
+     * 
+     * @return \DesportoBundle\Repository\ProfissionalRepository
+     */
+    private function getProfissionaleRepository()
+    {
+        return $this->em->getRepository(Profissional::class);
+    }
+    
+    /**
+     * 
+     * @return \DesportoBundle\Repository\EdicaoCampeonatoRepository
+     */
+    private function getEdicaoCampeonatoRepository()
+    {
+        return $this->em->getRepository(EdicaoCampeonato::class);
+    }
+
+
 //    /**
 //     * @deprecated since version number
 //     * 

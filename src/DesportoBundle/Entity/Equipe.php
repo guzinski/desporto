@@ -304,14 +304,14 @@ class Equipe extends BaseEntity
     
     /**
      * 
-     * @param \DesportoBundle\Entity\EdicaoCampeonato $campoenato
+     * @param \DesportoBundle\Entity\EdicaoCampeonato $campeonato
      * @return Profissional
      */
-    public function getDiretor(EdicaoCampeonato $campoenato)
+    public function getDiretor(EdicaoCampeonato $campeonato)
     {
         $query = \Doctrine\Common\Collections\Criteria::create();
         
-        $query->andWhere($query->expr()->eq("edicaoCampeonato", $campoenato))
+        $query->andWhere($query->expr()->eq("edicaoCampeonato", $campeonato))
                 ->andWhere($query->expr()->eq("tipo", EdicaoCampeonatoEquipeProfissional::DIRETOR));
         
         $collection = $this->campeonatosProfissionais->matching($query);
@@ -326,14 +326,14 @@ class Equipe extends BaseEntity
     
     /**
      * 
-     * @param \DesportoBundle\Entity\EdicaoCampeonato $campoenato
+     * @param \DesportoBundle\Entity\EdicaoCampeonato $campeonato
      * @return Profissional
      */
-    public function getTreinador(EdicaoCampeonato $campoenato)
+    public function getTreinador(EdicaoCampeonato $campeonato)
     {
         $query = \Doctrine\Common\Collections\Criteria::create();
         
-        $query->andWhere($query->expr()->eq("edicaoCampeonato", $campoenato))
+        $query->andWhere($query->expr()->eq("edicaoCampeonato", $campeonato))
                 ->andWhere($query->expr()->eq("tipo", EdicaoCampeonatoEquipeProfissional::TREINADOR));
         
         $collection = $this->campeonatosProfissionais->matching($query);
@@ -348,14 +348,14 @@ class Equipe extends BaseEntity
 
     /**
      * 
-     * @param \DesportoBundle\Entity\EdicaoCampeonato $campoenato
+     * @param \DesportoBundle\Entity\EdicaoCampeonato $campeonato
      * @return ArrayCollection
      */
-    public function getJogadores(EdicaoCampeonato $campoenato)
+    public function getJogadores(EdicaoCampeonato $campeonato)
     {
         $query = \Doctrine\Common\Collections\Criteria::create();
         
-        $query->andWhere($query->expr()->eq("edicaoCampeonato", $campoenato))
+        $query->andWhere($query->expr()->eq("edicaoCampeonato", $campeonato))
                 ->andWhere($query->expr()->eq("tipo", EdicaoCampeonatoEquipeProfissional::JOGADOR));
         
         return $this->campeonatosProfissionais->matching($query);

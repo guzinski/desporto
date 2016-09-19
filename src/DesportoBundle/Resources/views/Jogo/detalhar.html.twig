@@ -1,0 +1,263 @@
+{% extends "DesportoBundle::layout.html.twig" %}
+{% block title %}Desporto | Campeonato Detalhe{% endblock %}
+{% block head %}
+    <link href="{{ asset('bundles/desporto/css/slick/slick.css') }}" rel="stylesheet">
+    <link href="{{ asset('bundles/desporto/css/slick/slick-theme.css') }}" rel="stylesheet">
+
+    <script src="{{ asset('bundles/desporto/js/jquery.dataTables.min.js') }}"></script>
+    <script src="{{ asset('bundles/desporto/js/jquery-datatables.responsive.js') }}"></script>
+    <script src="//cdn.datatables.net/plug-ins/725b2a2115b/integration/bootstrap/3/dataTables.bootstrap.js"></script>
+    <script src="{{ asset('bundles/desporto/js/select2.min.js') }}"></script>
+    <script src="{{ asset('bundles/desporto/js/slick.min.js') }}"></script>
+    <script src="{{ asset('bundles/desporto/js/jquery-ui-1.10.3.min.js') }}"></script>
+    <script>
+        jQuery(document).ready(function () {
+            jQuery("input[type='number']").keyup(function(){
+                var valor = jQuery(this).val();
+                jQuery(this).val(valor.replace(/[^\d]/gi, ""));
+            }).spinner({ min:0 });
+
+        });
+
+    </script>
+    <style>
+        .slick-prev::before, .slick-next::before {
+            color: #1ab394 !important;
+        }
+    </style>
+{% endblock %}
+{% block mainpanel %}
+    <div class="pageheader">
+        <div class="media">
+            <div class="pageicon pull-left">
+                <i class="fa fa-th-list"></i>
+            </div>
+            <div class="media-body">
+                <ul class="breadcrumb">
+                    <li><a href="{{ path('index') }}"><i class="glyphicon glyphicon-home"></i></a></li>
+                    <li><a href="#">Campeonatos</a></li>
+                    <li><a href="{{ path('campeonato_detalhe', {campeonato: jogo.edicaoCampeonato.id}) }}">{{ jogo.edicaoCampeonato.campeonato.nome }} - {{ jogo.edicaoCampeonato.edicao }}</a></li>
+                    <li>Detalhe Jogo</li>
+                </ul>
+                <h4>{{ jogo.equipeMandante.nome }} x {{ jogo.equipeVisitante.nome }} - {{ jogo.rodada.numero }}º Rodada</h4>
+            </div>
+        </div><!-- media -->
+    </div><!-- pageheader -->
+    <div class="contentpanel">
+
+        <div class="row">
+
+            <div class="col-lg-6  col-md-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">{{ jogo.equipeMandante.nome }}</h3>
+                    </div>
+                    <div class="panel-body">
+                        
+                        <table class="table table-responsive">
+                            
+                            <thead>
+                                <tr>
+                                    <th>Camisa</th>
+                                    <th>Atleta</th>
+                                    <th>Capitão</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                
+                                {% for jogador in jogo.equipeMandante.getJogadores(jogo.edicaoCampeonato) %}
+                                    <tr>
+                                        <td><input type="number" class="form-control" /></td>
+                                        <td>{{ jogador.profissional.nome }}</td>
+                                        <td>
+                                            <div class="rdio rdio-default">
+                                                <input type="radio" name="capitao1" id="capitao1{{ loop.index }}" value="1" />
+                                                <label for="capitao1{{ loop.index }}"></label>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                                
+                            </tbody>
+                        </table>
+                        
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6  col-md-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">{{ jogo.equipeVisitante.nome }}</h3>
+                    </div>
+                    <div class="panel-body">
+                        <table class="table table-responsive">
+                            
+                            <thead>
+                                <th>Camisa</th>
+                                <th>Atleta</th>
+                                <th>Capitão</th>
+                            </thead>
+                            <tbody>
+                                {% for jogador in jogo.equipeVisitante.getJogadores(jogo.edicaoCampeonato) %}
+                                    <tr>
+                                        <td><input type="number" class="form-control" /></td>
+                                        <td>{{ jogador.profissional.nome }}</td>
+                                        <td>
+                                            <div class="rdio rdio-default">
+                                                <input type="radio" name="capitao2" id="capitao2{{ loop.index }}" value="1" />
+                                                <label for="capitao2{{ loop.index }}"></label>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+                            
+                            
+        <div class="row">
+
+            <div class="col-sm-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Gols</h3>
+                    </div>
+                    <div class="panel-body">
+                        
+                        <div class="row">
+                            <div class="col-md-6 col-sm-12">
+                                <div class="form-group">
+                                    <label class="control-label col-lg-8 col-md-6 text-right">{{ jogo.equipeMandante.nome }}</label>
+                                    <div class="col-md-6 col-lg-4">
+                                        <input type="number" class="form-control text-right" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-sm-12">
+                                <div class="form-group">
+                                    <div class="col-md-6 col-lg-4">
+                                        <input type="number" class="form-control" />
+                                    </div>
+                                    <label class="control-label col-lg-8 col-md-6">{{ jogo.equipeVisitante.nome }}</label>
+                                </div>
+                            </div>
+                            
+                        </div>
+                        
+                    </div>
+                </div>
+                   
+            </div>
+            
+        </div>
+        <div class="row">
+
+            <div class="col-sm-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Cartões Amarelos</h3>
+                    </div>
+                    <div class="panel-body">
+                        
+                        <div class="row">
+                            <div class="col-md-6 col-sm-12">
+                                <div class="form-group">
+                                    <label class="control-label col-lg-8 col-md-6 text-right">{{ jogo.equipeMandante.nome }}</label>
+                                    <div class="col-md-6 col-lg-4">
+                                        <input type="number" class="form-control text-right" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-sm-12">
+                                <div class="form-group">
+                                    <div class="col-md-6 col-lg-4">
+                                        <input type="number" class="form-control" />
+                                    </div>
+                                    <label class="control-label col-lg-8 col-md-6">{{ jogo.equipeVisitante.nome }}</label>
+                                </div>
+                            </div>
+                            
+                        </div>
+                        
+                    </div>
+                </div>
+                   
+            </div>
+            
+        </div>
+        <div class="row">
+
+            <div class="col-sm-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Cartões Vermelhos</h3>
+                    </div>
+                    <div class="panel-body">
+                        
+                        <div class="row">
+                            <div class="col-md-6 col-sm-12">
+                                <div class="form-group">
+                                    <label class="control-label col-lg-8 col-md-6 text-right">{{ jogo.equipeMandante.nome }}</label>
+                                    <div class="col-md-6 col-lg-4">
+                                        <input type="number" class="form-control text-right" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-sm-12">
+                                <div class="form-group">
+                                    <div class="col-md-6 col-lg-4">
+                                        <input type="number" class="form-control" />
+                                    </div>
+                                    <label class="control-label col-lg-8 col-md-6">{{ jogo.equipeVisitante.nome }}</label>
+                                </div>
+                            </div>
+                            
+                        </div>
+                        
+                    </div>
+                </div>
+                   
+            </div>
+            
+        </div>
+        <div class="row">
+
+            <div class="col-sm-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Arbitragem</h3>
+                    </div>
+                    <div class="panel-body">
+                        
+                        <div class="form-group">
+                            <label class="control-label col-lg-3 col-md-4">Mesário</label>
+                            <div class="col-md-8 col-lg-6">
+                                <input type="text" class="form-control" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-lg-3 col-md-4">Arbitro 1 </label>
+                            <div class="col-md-8 col-lg-6">
+                                <input type="text" class="form-control" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-lg-3 col-md-4">Arbitro 2 </label>
+                            <div class="col-md-8 col-lg-6">
+                                <input type="text" class="form-control" />
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                   
+            </div>
+            
+        </div>
+
+    </div><!-- contentpanel -->
+{% endblock %}

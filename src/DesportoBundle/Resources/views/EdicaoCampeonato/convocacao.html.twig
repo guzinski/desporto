@@ -17,6 +17,25 @@
             bootbox.alert("Erro ao processar informação");
         }
 
+
+        function finalizarInscricao() {
+            jQuery(".locked").fadeIn();
+            jQuery.post("{{ path("campeonato_finalizar_inscricao", {campeonato: campeonato.id}) }}", function(data) {
+                
+                if (data.finalizado) {
+                    location. href = "{{ path('campeonato_detalhe', {campeonato: campeonato.id}) }}";
+                } else {
+                    jQuery(".locked").fadeOut();
+                    bootbox.alert("É necessário inscrever todos os diretores, treinadores e o número mínimo de jagores em todas as equipes, para poder finaliar a inscrição.")
+                }
+                
+                }, "json")
+                .fail(defaultError);
+
+            
+            
+        }
+
         
         function repoFormatResult(repo) {
            var markup = '<div class="row">' +
@@ -341,6 +360,10 @@
                 </div>
 
             </div>
+        </div>
+                        
+        <div>
+            <button class="btn btn-primary pull-right" type="button" onclick="finalizarInscricao()">Finalizar Inscrição</button>
         </div>
 
 
