@@ -75,8 +75,8 @@
                 <tbody>
                     {% for equipe in campeonato.equipes %}
                         <tr>
-                            <td style="text-align: center"><strong>{{ loop.index }}</strong></td>
-                            <td><a href="#">{{ equipe.apelido }}</a></td>
+                            <td class="text-center"><strong class="h5">{{ loop.index }}</strong></td>
+                            <td><a class="h4" href="#">{{ equipe.apelido }}</a></td>
                             <td>0</td>
                             <td>0</td> 
                             <td>0</td>
@@ -106,7 +106,7 @@
                                     <th>
                                         Local
                                     </th>
-                                    <th>
+                                    <th class="text-center">
                                         Mandante
                                     </th>
                                     <th class="text-center">
@@ -117,7 +117,7 @@
                                     </th>
                                     <th class="text-center">
                                         Placar
-                                    <th>
+                                    <th class="text-center">
                                         Visitante
                                     </th>
                                     <th>
@@ -133,11 +133,11 @@
                                     <tr>
                                         <td><h5>16/09/2016 19:30</h5></td>
                                         <td><h5>Ginásio Municipal</h5></td>
-                                        <td><h4>{{ jogo.equipeMandante.apelido }}</h4></td>
-                                        <td class="text-center"><h3>0</h3></td>
-                                        <td class="text-center"><h4>X</h4></td>
-                                        <td class="text-center"><h3>0</h3></td>
-                                        <td><h4>{{ jogo.equipeVisitante.apelido }}</h4></td>
+                                        <td class="text-center"><span class="h4">{{ jogo.equipeMandante.apelido }}</span></td>
+                                        <td class="text-center"><span class="h3">0</span></td>
+                                        <td class="text-center"><span class="h4">X</span></td>
+                                        <td class="text-center"><span class="h3">0</span></td>
+                                        <td class="text-center"><span class="h4">{{ jogo.equipeVisitante.apelido }}</span></td>
                                         <td><a class="btn btn-default" type="button" href="{{ path('jogo_detalhar', {jogo: jogo.id})  }}" >Detalhar</a> </td>
                                         <td><button class="btn btn-default" ><i class="fa fa-print"></i></button></td>
                                     </tr>
