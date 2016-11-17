@@ -1,5 +1,14 @@
 
-# Created by https://www.gitignore.io/api/netbeans,symfony,composer
+# Created by https://www.gitignore.io/api/composer,netbeans,symfony
+
+### Composer ###
+composer.phar
+/vendor/
+
+# Commit your application's lock file http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file
+# You may choose to ignore a library lock file http://getcomposer.org/doc/02-libraries.md#lock-file
+# composer.lock
+
 
 ### NetBeans ###
 nbproject/private/
@@ -7,7 +16,6 @@ build/
 nbbuild/
 dist/
 nbdist/
-nbactions.xml
 .nb-gradle/
 
 
@@ -39,14 +47,10 @@ nbactions.xml
 /bin/*
 !bin/console
 !bin/symfony_requirements
-/vendor/
 
 # Assets and user uploads
 /web/bundles/
 /web/uploads/
-
-# Assets managed by Bower
-/web/assets/vendor/
 
 # PHPUnit
 /app/phpunit.xml
@@ -62,20 +66,5 @@ nbactions.xml
 */Entity/*~
 
 ### Symfony Patch ###
-/web/bundles/
-/web/uploads/
 /web/css/
 /web/js/
-
-
-### Composer ###
-composer.phar
-/vendor/
-
-# Commit your application's lock file http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file
-# You may choose to ignore a library lock file http://getcomposer.org/doc/02-libraries.md#lock-file
-# composer.lock
-
-
-!web/uploads/temp/.gitkeep
-!web/uploads/arquivos/.gitkeep
