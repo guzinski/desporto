@@ -68,14 +68,14 @@ class EdicaoCampeonatoService
      */
     public function getQuantidadesPossiveisChaves($numeroEquipes)
     {
-        if (empty($numeroEquipes)) {
+        if (is_null($numeroEquipes)) {
             throw new \InvalidArgumentException;
         }
 
         $result = [];
         
         for ($i=1; $i<$numeroEquipes/2; $i++) {
-            if (log($i, 2)-(int)log($i, 2) == 0 && $numEquipes%$i == 0) {
+            if (log($i, 2)-(int)log($i, 2) == 0 && $numeroEquipes%$i == 0) {
                 $result[] = $i;
             }
         }
@@ -243,7 +243,7 @@ class EdicaoCampeonatoService
     private function gerarReturno()
     {
         $rodadas = $this->edicaoCampeonato->getRodadas()->toArray();
-        $numeroRodada = $this->edicaoCampeonato->getRodadas()->count();
+        $numeroRodada = $this->edicaoCampeonato->getRodadas()->count()+1;
         
         foreach ($rodadas as $rodada) {
             /* @var $rodada Rodada */

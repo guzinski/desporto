@@ -78,7 +78,7 @@ class EdicaoCampeonatoController extends Controller
     {
         $numEquipes = $request->get("numeroEquipes");
         if (is_null($numEquipes)) {
-            throw new InvalidArgumentException;
+            throw new \InvalidArgumentException;
         }
         
         $result = [['id'=>"", 'text'=>"Selecione"],];
