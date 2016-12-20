@@ -9,7 +9,7 @@
 namespace DesportoBundle\Form;
 
 use DesportoBundle\Entity\Campeonato;
-use DesportoBundle\Entity\EdicaoCampeonatoEquipeProfissional;
+use DesportoBundle\Entity\InscricaoProfissional;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -32,7 +32,7 @@ class EscalacaoEquipeType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => EdicaoCampeonatoEquipeProfissional::class,
+            'data_class' => InscricaoProfissional::class,
         ));
     }
 

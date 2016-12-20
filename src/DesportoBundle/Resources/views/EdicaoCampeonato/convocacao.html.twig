@@ -329,7 +329,7 @@
                                 <th>Equipe</th>
                                 <th>Diretor</th>
                                 <th>Treinador</th>
-                                <th>isncritos</th>
+                                <th>Inscritos</th>
                                 <th></th>
                             </tr>
                         </thead>
@@ -349,7 +349,7 @@
                                     {% endif %}
                                     <td>{{ equipe.getJogadores(campeonato).count }}</td>
                                     {% if equipe.getJogadores(campeonato).count >= campeonato.quantidadeMaximaJogadores %}
-                                    <td><strong>Máximo de Jogadores isncritos</strong></td>
+                                    <td><strong>Máximo de Jogadores Inscritos</strong></td>
                                     {% else %}
                                     <td><button onclick="inscreverJogador({{ equipe.id }});" class="btn btn-default btn-sm">Inscrever jogadores</button></td>
                                     {% endif %}

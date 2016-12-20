@@ -90,9 +90,9 @@ class Profissional extends BaseEntity
 
     /**
      * @var Collection
-     * @ORM\OneToMany(targetEntity="EdicaoCampeonatoEquipeProfissional", mappedBy="profissional")
+     * @ORM\OneToMany(targetEntity="InscricaoProfissional", mappedBy="profissional")
      **/
-    private $campeoantosEquipes;
+    private $inscricoes;
 
     
     /**
@@ -127,7 +127,7 @@ class Profissional extends BaseEntity
     {
         parent::__construct();
         $this->setArquivos(new ArrayCollection());
-        $this->setCampeoantosEquipes(new ArrayCollection());
+        $this->setInscricoes(new ArrayCollection());
     }
 
     public function getNome()
@@ -273,14 +273,14 @@ class Profissional extends BaseEntity
     }
 
 
-    public function getCampeoantosEquipes()
+    public function getInscricoes()
     {
-        return $this->campeoantosEquipes;
+        return $this->inscricoes;
     }
 
-    public function setCampeoantosEquipes(Collection $campeoantosEquipes)
+    public function setInscricoes(Collection $campeoantosEquipes)
     {
-        $this->campeoantosEquipes = $campeoantosEquipes;
+        $this->inscricoes = $campeoantosEquipes;
         return $this;
     }
 

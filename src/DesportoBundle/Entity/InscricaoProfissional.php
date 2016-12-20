@@ -8,13 +8,12 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 
 /**
- * Description of EdicaoCampeonatoEquipeProfissional
- * @ORM\Table(name="edicao_campeonato_equipe_profissional", uniqueConstraints={
+ * @ORM\Table(name="inscricao_profissional", uniqueConstraints={
  *     @ORM\UniqueConstraint(name="profissional_campeonato_equipe", columns={"edicao_campeonato", "equipe", "profissional", "tipo"})})
  * @ORM\Entity
  * @UniqueEntity({"edicaoCampeonato", "equipe", "profissional", "tipo"})
  */
-class EdicaoCampeonatoEquipeProfissional
+class InscricaoProfissional
 {
     const JOGADOR = "J";
     const TREINADOR = "T";
@@ -32,7 +31,7 @@ class EdicaoCampeonatoEquipeProfissional
     /**
      * @var EdicaoCampeonato
      *
-     * @ORM\ManyToOne(targetEntity="EdicaoCampeonato")
+     * @ORM\ManyToOne(targetEntity="EdicaoCampeonato", inversedBy="inscricoes")
      * @ORM\JoinColumn(name="edicao_campeonato", referencedColumnName="id", nullable=false)
      */
     protected $edicaoCampeonato;
@@ -40,7 +39,7 @@ class EdicaoCampeonatoEquipeProfissional
     /**
      * @var Equipe
      *
-     * @ORM\ManyToOne(targetEntity="Equipe", inversedBy="campeonatosProfissionais")
+     * @ORM\ManyToOne(targetEntity="Equipe", inversedBy="inscricoes")
      * @ORM\JoinColumn(name="equipe", referencedColumnName="id", nullable=false)
      */
     protected $equipe;
@@ -48,7 +47,7 @@ class EdicaoCampeonatoEquipeProfissional
     /**
      * @var Profissional
      *
-     * @ORM\ManyToOne(targetEntity="Profissional", inversedBy="equipes")
+     * @ORM\ManyToOne(targetEntity="Profissional", inversedBy="inscricoes")
      * @ORM\JoinColumn(name="profissional", referencedColumnName="id", nullable=false)
      */
     protected $profissional;

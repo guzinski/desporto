@@ -3,7 +3,7 @@
 namespace DesportoBundle\Repository;
 
 use DesportoBundle\Entity\EdicaoCampeonato;
-use DesportoBundle\Entity\EdicaoCampeonatoEquipeProfissional;
+use DesportoBundle\Entity\InscricaoProfissional;
 use Doctrine\ORM\EntityRepository;
 use InvalidArgumentException;
 
@@ -101,7 +101,7 @@ class ProfissionalRepository extends EntityRepository
                 ->andWhere($query->expr()->eq("CE.tipo", ":tipo"))
                 ->setParameter("campeonato", $campeonato->getId())
                 ->setParameter("equipe", $idEquipe)
-                ->setParameter("tipo", EdicaoCampeonatoEquipeProfissional::JOGADOR)
+                ->setParameter("tipo", InscricaoProfissional::JOGADOR)
                 ->getQuery()
                 ->getResult();        
     }
@@ -116,7 +116,7 @@ class ProfissionalRepository extends EntityRepository
      */
     public function getJogadoresDisponíveis(EdicaoCampeonato $campeonato, $idEquipe, $busca = null, $inscritos = null)
     {
-        return $this->getProfissionaisDisponideis($campeonato, EdicaoCampeonatoEquipeProfissional::JOGADOR, $idEquipe, $busca, $inscritos, $campeonato->getModalidade());
+        return $this->getProfissionaisDisponideis($campeonato, InscricaoProfissional::JOGADOR, $idEquipe, $busca, $inscritos, $campeonato->getModalidade());
     }
     
     /**
@@ -128,7 +128,7 @@ class ProfissionalRepository extends EntityRepository
      */
     public function getDiretoresDisponíveis(EdicaoCampeonato $campeonato, $idEquipe, $busca = null)
     {
-        return $this->getProfissionaisDisponideis($campeonato, EdicaoCampeonatoEquipeProfissional::DIRETOR, $idEquipe, $busca);
+        return $this->getProfissionaisDisponideis($campeonato, InscricaoProfissional::DIRETOR, $idEquipe, $busca);
     }
     
     /**
@@ -140,7 +140,7 @@ class ProfissionalRepository extends EntityRepository
      */
     public function getTreinadoresDisponíveis(EdicaoCampeonato $campeonato, $idEquipe, $busca = null)
     {
-        return $this->getProfissionaisDisponideis($campeonato, EdicaoCampeonatoEquipeProfissional::TREINADOR, $idEquipe, $busca);
+        return $this->getProfissionaisDisponideis($campeonato, InscricaoProfissional::TREINADOR, $idEquipe, $busca);
     }
 
     /**

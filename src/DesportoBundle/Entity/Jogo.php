@@ -3,6 +3,7 @@
 namespace DesportoBundle\Entity;
 
 use DateTime;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -104,11 +105,19 @@ class Jogo
      * @ORM\OneToMany(targetEntity="Cartao", mappedBy="jogo")
      **/
     private $cartoes;
+    
+    /**
+     * @var Collection
+     * @ORM\OneToMany(targetEntity="InscricaoProfissional", mappedBy="jogo")
+     **/
+    private $inscricoes;
+
 
     public function __construct(Equipe $equipeMandante, Equipe $equipeVisitante)
     {
         $this->equipeMandante = $equipeMandante;
         $this->equipeVisitante = $equipeVisitante;
+        $this->setInscricoes(new ArrayCollection());
     }
 
     
@@ -226,6 +235,17 @@ class Jogo
         $this->cartoes = $cartoes;
         return $this;
     }
+    
+    public function getInscricoes() {
+        return $this->inscricoes;
+    }
+
+    public function setInscricoes(Collection $inscricoes) {
+        $this->inscricoes = $inscricoes;
+        return $this;
+    }
+
+
 
 
     

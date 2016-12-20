@@ -16,6 +16,15 @@
             });
 
         });
+        
+        function definirData(id) {
+            alert(id);
+        }
+        function definirLocal(id) {
+            alert(id);
+        }
+        
+        
 
     </script>
     <style>
@@ -46,7 +55,7 @@
             <div class="pull-right">
                 <a href=""><button class="btn btn-success " type="button"><i class="fa fa-print"></i>&nbsp;&nbsp;<span class="bold">Tabela</span></button></a>
                 <a href=""><button class="btn btn-success " type="button"><i class="fa fa-calendar-o"></i>&nbsp;&nbsp;<span class="bold">Gerar Carnê</span></button></a>
-                <a href="editar-equipes.html"><button class="btn btn-success " type="button"><i class="fa fa-users"></i>&nbsp;&nbsp;<span class="bold">Editar Equipes</span></button></a>
+                <a href="{{ path('campeonato_convocacao', {campeonato: campeonato.id}) }}"><button class="btn btn-success " type="button"><i class="fa fa-users"></i>&nbsp;&nbsp;<span class="bold">Editar Equipes</span></button></a>
                 <a href=""><button class="btn btn-success " type="button"><i class="fa fa-bars"></i>&nbsp;&nbsp;<span class="bold">Ficha Equipe</span></button></a>
                 <a href="campeonato-finais.html"><button class="btn btn-success " type="button"><i class="fa fa-share"></i>&nbsp;&nbsp;<span class="bold">Próxima Fase</span></button></a>
             </div>
@@ -131,8 +140,26 @@
                             <tbody>
                                 {% for jogo in rodada.jogos %}
                                     <tr>
-                                        <td><h5>16/09/2016 19:30</h5></td>
-                                        <td><h5>Ginásio Municipal</h5></td>
+                                        <td>
+                                            <h5>
+                                            {% if jogo.data is null %}
+                                                <a href="javascript:definirData({{ jogo.id }})">Definir data</a>
+                                            {% else %}
+                                                {{ jogo.data.format("d/m/Y H:i") }}
+                                            {% endif %}
+                                            </h5>
+                                        </td>
+                                        <td>
+                                            <h5>
+                                            <h5>
+                                            {% if jogo.data is null %}
+                                                <a href="javascript:definirLocal({{ jogo.id }})">Definir local</a>
+                                            {% else %}
+                                                {{ jogo.data.format("d/m/Y H:i") }}
+                                            {% endif %}
+                                            </h5>
+                                            </h5>
+                                        </td>
                                         <td class="text-center"><span class="h4">{{ jogo.equipeMandante.apelido }}</span></td>
                                         <td class="text-center"><span class="h3">0</span></td>
                                         <td class="text-center"><span class="h4">X</span></td>

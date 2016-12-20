@@ -4,7 +4,7 @@ namespace DesportoBundle\Service;
 
 use DesportoBundle\Entity\Chave;
 use DesportoBundle\Entity\EdicaoCampeonato;
-use DesportoBundle\Entity\EdicaoCampeonatoEquipeProfissional;
+use DesportoBundle\Entity\InscricaoProfissional;
 use DesportoBundle\Entity\Equipe;
 use DesportoBundle\Entity\FaseClassificatoria;
 use DesportoBundle\Entity\Jogo;
@@ -422,7 +422,7 @@ class EdicaoCampeonatoService
         $equipe = $this->getEquipeRepository()->find($idEquipe);
         foreach ($inscritos as $inscrito) {
             $jogador = $this->getProfissionaleRepository()->find($inscrito);
-            $inscricao = new EdicaoCampeonatoEquipeProfissional($campeonato, $equipe, $jogador, EdicaoCampeonatoEquipeProfissional::JOGADOR);
+            $inscricao = new InscricaoProfissional($campeonato, $equipe, $jogador, InscricaoProfissional::JOGADOR);
             $this->em->persist($inscricao);
         }
         $this->em->flush();
@@ -443,7 +443,7 @@ class EdicaoCampeonatoService
         $equipe = $this->getEquipeRepository()->find($idEquipe);
         $profissional = $this->getProfissionaleRepository()->find($profissional);
         
-        $inscricao = new EdicaoCampeonatoEquipeProfissional($campeonato, $equipe, $profissional, $tipo);
+        $inscricao = new InscricaoProfissional($campeonato, $equipe, $profissional, $tipo);
         
         $this->em->persist($inscricao);
         

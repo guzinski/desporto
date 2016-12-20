@@ -117,9 +117,9 @@ class Equipe extends BaseEntity
     
     /**
      * @var Collection
-     * @ORM\OneToMany(targetEntity="EdicaoCampeonatoEquipeProfissional", mappedBy="equipe")
+     * @ORM\OneToMany(targetEntity="InscricaoProfissional", mappedBy="equipe")
      **/
-    private $campeonatosProfissionais;
+    private $inscricoes;
     
     /**
      * @var Collection
@@ -134,7 +134,7 @@ class Equipe extends BaseEntity
         $this->setChaves(new ArrayCollection());
         $this->setFasesClassificatorias(new ArrayCollection());
         $this->setEdicoesCampeonatos(new ArrayCollection());
-        $this->setCampeonatosProfissionais(new ArrayCollection());
+        $this->setInscricoes(new ArrayCollection());
     }
 
     
@@ -291,14 +291,14 @@ class Equipe extends BaseEntity
     }
     
     
-    public function getCampeonatosProfissionais()
+    public function getInscricoes()
     {
-        return $this->campeonatosProfissionais;
+        return $this->inscricoes;
     }
 
-    public function setCampeonatosProfissionais(Collection $campeonatosProfissionais)
+    public function setInscricoes(Collection $inscricoes)
     {
-        $this->campeonatosProfissionais = $campeonatosProfissionais;
+        $this->inscricoes = $inscricoes;
         return $this;
     }
     
@@ -312,9 +312,9 @@ class Equipe extends BaseEntity
         $query = \Doctrine\Common\Collections\Criteria::create();
         
         $query->andWhere($query->expr()->eq("edicaoCampeonato", $campeonato))
-                ->andWhere($query->expr()->eq("tipo", EdicaoCampeonatoEquipeProfissional::DIRETOR));
+                ->andWhere($query->expr()->eq("tipo", InscricaoProfissional::DIRETOR));
         
-        $collection = $this->campeonatosProfissionais->matching($query);
+        $collection = $this->inscricoes->matching($query);
         if (!$collection->isEmpty()) {
             foreach ($collection as $row) {
                 /** @var $row EdicaoCampeonatoEquipeProfissional  */
@@ -334,9 +334,9 @@ class Equipe extends BaseEntity
         $query = \Doctrine\Common\Collections\Criteria::create();
         
         $query->andWhere($query->expr()->eq("edicaoCampeonato", $campeonato))
-                ->andWhere($query->expr()->eq("tipo", EdicaoCampeonatoEquipeProfissional::TREINADOR));
+                ->andWhere($query->expr()->eq("tipo", InscricaoProfissional::TREINADOR));
         
-        $collection = $this->campeonatosProfissionais->matching($query);
+        $collection = $this->inscricoes->matching($query);
         if (!$collection->isEmpty()) {
             foreach ($collection as $row) {
                 /** @var $row EdicaoCampeonatoEquipeProfissional  */
@@ -356,9 +356,9 @@ class Equipe extends BaseEntity
         $query = \Doctrine\Common\Collections\Criteria::create();
         
         $query->andWhere($query->expr()->eq("edicaoCampeonato", $campeonato))
-                ->andWhere($query->expr()->eq("tipo", EdicaoCampeonatoEquipeProfissional::JOGADOR));
+                ->andWhere($query->expr()->eq("tipo", InscricaoProfissional::JOGADOR));
         
-        return $this->campeonatosProfissionais->matching($query);
+        return $this->inscricoes->matching($query);
     }
 
 
