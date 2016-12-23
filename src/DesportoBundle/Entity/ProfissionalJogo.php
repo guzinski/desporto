@@ -6,7 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
- * @ORM\Table(name="inscricao_jogo", uniqueConstraints={
+ * @ORM\Table(name="profissional_jogo", uniqueConstraints={
  *     @ORM\UniqueConstraint(name="profissional_jogo", columns={"inscricao", "jogo"})})
  * @ORM\Entity
  * @UniqueEntity({"inscricao", "jogo"})
@@ -54,6 +54,11 @@ class ProfissionalJogo {
      */
     protected $capitao;
 
+    
+    public function __construct(InscricaoProfissional $inscricao = null)
+    {
+        $this->inscricao = $inscricao;
+    }
 
     public function getId() {
         return $this->id;

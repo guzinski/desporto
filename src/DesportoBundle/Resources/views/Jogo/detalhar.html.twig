@@ -65,25 +65,28 @@
                             </thead>
                             <tbody>
                                 
-                                {% for jogador in jogo.equipeMandante.getJogadores(jogo.edicaoCampeonato) %}
+                                {% for profissional in form.profissionais if profissional.inscricao.vars.value.equipe == jogo.equipeMandante %}
                                     <tr>
-                                        <td><input type="number" class="form-control" /></td>
-                                        <td>{{ jogador.profissional.nome }}</td>
+                                        <td>{{ form_widget(profissional.numero) }}</td>
+                                        <td>{{ profissional.inscricao.vars.value.profissional.nome }}</td>
                                         <td>
+                                            {{ form_widget(profissional.capitao) }}
                                             <div class="rdio rdio-default">
-                                                <input type="radio" name="capitao1" id="capitao1{{ loop.index }}" value="1" />
-                                                <label for="capitao1{{ loop.index }}"></label>
+                                                <input type="radio" name="capitao2" id="capitao2{{ loop.index }}" value="1" />
+                                                <label for="capitao2{{ loop.index }}"></label>
                                             </div>
                                         </td>
                                     </tr>
                                 {% endfor %}
-                                
+
                             </tbody>
                         </table>
                         
                     </div>
                 </div>
             </div>
+                                
+                                
             <div class="col-lg-6  col-md-12">
                 <div class="panel panel-default">
                     <div class="panel-heading">
@@ -98,11 +101,12 @@
                                 <th>Capitão</th>
                             </thead>
                             <tbody>
-                                {% for jogador in jogo.equipeVisitante.getJogadores(jogo.edicaoCampeonato) %}
+                            {% for profissional in form.profissionais if profissional.inscricao.vars.value.equipe == jogo.equipeVisitante %}
                                     <tr>
-                                        <td><input type="number" class="form-control" /></td>
-                                        <td>{{ jogador.profissional.nome }}</td>
+                                        <td>{{ form_widget(profissional.numero) }}</td>
+                                        <td>{{ profissional.inscricao.vars.value.profissional.nome }}</td>
                                         <td>
+                                            {{ form_widget(profissional.capitao) }}
                                             <div class="rdio rdio-default">
                                                 <input type="radio" name="capitao2" id="capitao2{{ loop.index }}" value="1" />
                                                 <label for="capitao2{{ loop.index }}"></label>

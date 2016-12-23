@@ -111,6 +111,12 @@ class Jogo
      * @ORM\OneToMany(targetEntity="InscricaoProfissional", mappedBy="jogo")
      **/
     private $inscricoes;
+    
+    /**
+     * @var Collection
+     * @ORM\OneToMany(targetEntity="ProfissionalJogo", mappedBy="jogo")
+     **/
+    private $profissionais;
 
 
     public function __construct(Equipe $equipeMandante, Equipe $equipeVisitante)
@@ -118,6 +124,7 @@ class Jogo
         $this->equipeMandante = $equipeMandante;
         $this->equipeVisitante = $equipeVisitante;
         $this->setInscricoes(new ArrayCollection());
+        $this->setProfissionais(new ArrayCollection());
     }
 
     
@@ -247,6 +254,17 @@ class Jogo
 
 
 
+    public function getProfissionais() {
+        return $this->profissionais;
+    }
+
+    public function setProfissionais(Collection $profissionais) {
+        $this->profissionais = $profissionais;
+        return $this;
+    }
+
+
+    
 
     
     
