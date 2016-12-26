@@ -231,7 +231,7 @@ class Profissional extends BaseEntity
 
     public function getLabel()
     {
-        $this->nome." - ".$this->cpf;
+        return $this->nome." - ".$this->cpf;
     }
 
 

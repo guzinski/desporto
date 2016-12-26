@@ -33,7 +33,7 @@ class JogoController extends Controller
         foreach ($inscricoes as $inscricao) {
             $profissionalJogo = new \DesportoBundle\Entity\ProfissionalJogo($inscricao);
             $profissionalJogo->setJogo($jogo);
-            $jogo->getProfissionais()->add($profissionalJogo);
+            $jogo->getProfissionalJogos()->add($profissionalJogo);
         }
         
         $form = $this->createForm(JogoType::class, $jogo);

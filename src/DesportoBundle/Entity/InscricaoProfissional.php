@@ -65,9 +65,9 @@ class InscricaoProfissional
     
     /**
      * @var Collection
-     * @ORM\ManyToMany(targetEntity="Jogo", mappedBy="inscricoes")
+     * @ORM\OneToMany(targetEntity="ProfissionalJogo", mappedBy="jogo")
      **/
-    private $jogo;
+    private $profissionalJogos;
 
     
     public function __construct(EdicaoCampeonato $edicaoCampeonato, Equipe $equipe, Profissional $profissional, $tipo)
@@ -104,6 +104,16 @@ class InscricaoProfissional
         return $this->tipo;
     }
 
+    public function getGols()
+    {
+        return $this->gols;
+    }
+
+    public function getProfissionalJogos()
+    {
+        return $this->profissionalJogos;
+    }
+
     public function setEdicaoCampeonato(EdicaoCampeonato $edicaoCampeonato)
     {
         $this->edicaoCampeonato = $edicaoCampeonato;
@@ -127,11 +137,6 @@ class InscricaoProfissional
         $this->tipo = $tipo;
         return $this;
     }
-    
-    public function getGols()
-    {
-        return $this->gols;
-    }
 
     public function setGols(Collection $gols)
     {
@@ -139,16 +144,12 @@ class InscricaoProfissional
         return $this;
     }
 
-    
-    public function getJogo()
+    public function setProfissionalJogos(Collection $profissionalJogos)
     {
-        return $this->jogo;
-    }
-
-    public function setJogo(Collection $jogo)
-    {
-        $this->jogo = $jogo;
+        $this->profissionalJogos = $profissionalJogos;
         return $this;
     }
 
+
+    
 }

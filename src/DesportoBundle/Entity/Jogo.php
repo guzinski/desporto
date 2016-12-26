@@ -109,30 +109,19 @@ class Jogo
      * @ORM\OneToMany(targetEntity="Cartao", mappedBy="jogo")
      **/
     private $cartoes;
-    
-    /**
-     * @var Collection Description
-     * @ORM\ManyToMany(targetEntity="InscricaoProfissional", inversedBy="jogos")
-     * @ORM\JoinTable(name="jogo_inscricao_profissional",
-     *      joinColumns={@ORM\JoinColumn(name="jogo", referencedColumnName="id")},
-     *      inverseJoinColumns={@ORM\JoinColumn(name="inscricao_profissional", referencedColumnName="id")}
-     * )
-     */
-    private $inscricoes;
-    
+        
     /**
      * @var Collection
-     * @ORM\OneToMany(targetEntity="ProfissionalJogo", mappedBy="jogo")
+     * @ORM\OneToMany(targetEntity="ProfissionalJogo", mappedBy="inscricao")
      **/
-    private $profissionais;
+    private $profissionalJogos;
 
 
     public function __construct(Equipe $equipeMandante, Equipe $equipeVisitante)
     {
         $this->equipeMandante = $equipeMandante;
         $this->equipeVisitante = $equipeVisitante;
-        $this->setInscricoes(new ArrayCollection());
-        $this->setProfissionais(new ArrayCollection());
+        $this->setProfissionalJogos(new ArrayCollection());
     }
 
     
@@ -251,29 +240,14 @@ class Jogo
         return $this;
     }
     
-    public function getInscricoes() {
-        return $this->inscricoes;
+    public function getProfissionalJogos()
+    {
+        return $this->profissionalJogos;
     }
 
-    public function setInscricoes(Collection $inscricoes) {
-        $this->inscricoes = $inscricoes;
+    public function setProfissionalJogos(Collection $profissionalJogos)
+    {
+        $this->profissionalJogos = $profissionalJogos;
         return $this;
     }
-
-
-
-    public function getProfissionais() {
-        return $this->profissionais;
-    }
-
-    public function setProfissionais(Collection $profissionais) {
-        $this->profissionais = $profissionais;
-        return $this;
-    }
-
-
-    
-
-    
-    
 }

@@ -8,7 +8,11 @@
 
 namespace DesportoBundle\Form;
 
+use DesportoBundle\Entity\Gol;
+use DesportoBundle\Entity\InscricaoProfissional;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -22,13 +26,21 @@ class GolType extends AbstractType
     
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        parent::buildForm($builder, $options);
+        $builder->add("inscricao", EntityType::class, array(
+            'class' => InscricaoProfissional::class,
+            'choice_label' => 'profissional',
+
+        ));
+        $builder->add("jogo", HiddenType::class);
+        $builder->add("minuto");
+        $builder->add("tempo");
+        $builder->add("contra");
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => \DesportoBundle\Entity\Gol::class,
+            'data_class' => Gol::class,
         ));
     }
 

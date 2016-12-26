@@ -25,8 +25,12 @@ class JogoType extends AbstractType {
     
     public function buildForm(FormBuilderInterface $builder, array $options) {
         
-        $builder->add("profissionais", CollectionType::class, array(
+        $builder->add("profissionalJogos", CollectionType::class, array(
             'entry_type'   => ProfissionalJogoType::class,
+        ));
+        $builder->add("gols", CollectionType::class, array(
+            'entry_type'    => GolType::class,
+            'allow_add'     => TRUE,
         ));
 
     }

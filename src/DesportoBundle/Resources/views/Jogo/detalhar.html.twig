@@ -24,6 +24,18 @@
             jQuery("#escalacaoVisitante input[type=checkbox]").change(function(event){
                 jQuery('#escalacaoVisitante input[type=checkbox]:checked').not(this).prop('checked', false);
             });
+            
+            var golsList = jQuery('#gols');
+            golCount = 0;
+            // grab the prototype template
+            var newWidget = golsList.attr('data-prototype');
+            // replace the "__name__" used in the id and name of the prototype
+            // with a number that's unique to your emails
+            // end name attribute looks like name="contact[emails][2]"
+            newWidget = newWidget.replace(/__name__/g, golCount);
+            golCount++;
+
+            golsList.append(newWidget)
 
         });
 
@@ -73,7 +85,7 @@
                             </thead>
                             <tbody>
 
-                                {% for profissional in form.profissionais if profissional.inscricao.vars.value.equipe == jogo.equipeMandante %}
+                                {% for profissional in form.profissionalJogos if profissional.inscricao.vars.value.equipe == jogo.equipeMandante %}
                                     <tr>
                                         <td>{{ form_widget(profissional.numero) }}</td>
                                         <td>{{ profissional.inscricao.vars.value.profissional.nome }}</td>
@@ -108,7 +120,7 @@
                             <th>Capitão</th>
                             </thead>
                             <tbody>
-                                {% for profissional in form.profissionais if profissional.inscricao.vars.value.equipe == jogo.equipeVisitante %}
+                                {% for profissional in form.profissionalJogos if profissional.inscricao.vars.value.equipe == jogo.equipeVisitante %}
                                     <tr>
                                         <td>{{ form_widget(profissional.numero) }}</td>
                                         <td>{{ profissional.inscricao.vars.value.profissional.nome }}</td>
@@ -138,7 +150,7 @@
                     </div>
                     <div class="panel-body">
 
-                        <div class="row">
+                        <div class="row" id="gols"  data-prototype="{{ form_widget(form.gols.vars.prototype)|e }}">
                             <div class="col-md-6 col-sm-12">
                                 <div class="form-group">
                                     <label class="control-label col-lg-8 col-md-6 text-right">{{ jogo.equipeMandante.nome }}</label>
