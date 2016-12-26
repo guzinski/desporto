@@ -1,5 +1,6 @@
 {% extends "DesportoBundle::layout.html.twig" %}
-{% block title %}Desporto | Campeonato Detalhe{% endblock %}
+{% form_theme form 'DesportoBundle:Form:fields.html.twig' %}
+{% block title %}Desporto | Jogo Detalhe{% endblock %}
 {% block head %}
     <link href="{{ asset('bundles/desporto/css/slick/slick.css') }}" rel="stylesheet">
     <link href="{{ asset('bundles/desporto/css/slick/slick-theme.css') }}" rel="stylesheet">
@@ -12,10 +13,17 @@
     <script src="{{ asset('bundles/desporto/js/jquery-ui-1.10.3.min.js') }}"></script>
     <script>
         jQuery(document).ready(function () {
-            jQuery("input[type='number']").keyup(function(){
+            jQuery("input[type='number']").keyup(function () {
                 var valor = jQuery(this).val();
                 jQuery(this).val(valor.replace(/[^\d]/gi, ""));
-            }).spinner({ min:0 });
+            }).spinner({min: 0});
+
+            jQuery("#escalacaoMandante input[type=checkbox]").change(function(event){
+                jQuery('#escalacaoMandante input[type=checkbox]:checked').not(this).prop('checked', false);
+            });
+            jQuery("#escalacaoVisitante input[type=checkbox]").change(function(event){
+                jQuery('#escalacaoVisitante input[type=checkbox]:checked').not(this).prop('checked', false);
+            });
 
         });
 
@@ -47,15 +55,15 @@
 
         <div class="row">
 
-            <div class="col-lg-6  col-md-12">
+            <div class="col-lg-6  col-md-12" id="escalacaoMandante"> 
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <h3 class="panel-title">{{ jogo.equipeMandante.nome }}</h3>
                     </div>
                     <div class="panel-body">
-                        
+
                         <table class="table table-responsive">
-                            
+
                             <thead>
                                 <tr>
                                     <th>Camisa</th>
@@ -64,16 +72,15 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                
+
                                 {% for profissional in form.profissionais if profissional.inscricao.vars.value.equipe == jogo.equipeMandante %}
                                     <tr>
                                         <td>{{ form_widget(profissional.numero) }}</td>
                                         <td>{{ profissional.inscricao.vars.value.profissional.nome }}</td>
                                         <td>
-                                            {{ form_widget(profissional.capitao) }}
-                                            <div class="rdio rdio-default">
-                                                <input type="radio" name="capitao2" id="capitao2{{ loop.index }}" value="1" />
-                                                <label for="capitao2{{ loop.index }}"></label>
+                                            <div class="ckbox ckbox-default">
+                                                {{ form_widget(profissional.capitao) }}
+                                                <label for="{{ profissional.capitao.vars.id }}"></label>
                                             </div>
                                         </td>
                                     </tr>
@@ -81,35 +88,34 @@
 
                             </tbody>
                         </table>
-                        
+
                     </div>
                 </div>
             </div>
-                                
-                                
-            <div class="col-lg-6  col-md-12">
+
+
+            <div class="col-lg-6  col-md-12" id="escalacaoVisitante">
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <h3 class="panel-title">{{ jogo.equipeVisitante.nome }}</h3>
                     </div>
                     <div class="panel-body">
                         <table class="table table-responsive">
-                            
+
                             <thead>
-                                <th>Camisa</th>
-                                <th>Atleta</th>
-                                <th>Capitão</th>
+                            <th>Camisa</th>
+                            <th>Atleta</th>
+                            <th>Capitão</th>
                             </thead>
                             <tbody>
-                            {% for profissional in form.profissionais if profissional.inscricao.vars.value.equipe == jogo.equipeVisitante %}
+                                {% for profissional in form.profissionais if profissional.inscricao.vars.value.equipe == jogo.equipeVisitante %}
                                     <tr>
                                         <td>{{ form_widget(profissional.numero) }}</td>
                                         <td>{{ profissional.inscricao.vars.value.profissional.nome }}</td>
                                         <td>
-                                            {{ form_widget(profissional.capitao) }}
-                                            <div class="rdio rdio-default">
-                                                <input type="radio" name="capitao2" id="capitao2{{ loop.index }}" value="1" />
-                                                <label for="capitao2{{ loop.index }}"></label>
+                                            <div class="ckbox ckbox-default">
+                                                {{ form_widget(profissional.capitao) }}
+                                                <label for="{{ profissional.capitao.vars.id }}"></label>
                                             </div>
                                         </td>
                                     </tr>
@@ -121,8 +127,8 @@
             </div>
 
         </div>
-                            
-                            
+
+
         <div class="row">
 
             <div class="col-sm-12">
@@ -131,7 +137,7 @@
                         <h3 class="panel-title">Gols</h3>
                     </div>
                     <div class="panel-body">
-                        
+
                         <div class="row">
                             <div class="col-md-6 col-sm-12">
                                 <div class="form-group">
@@ -149,14 +155,14 @@
                                     <label class="control-label col-lg-8 col-md-6">{{ jogo.equipeVisitante.nome }}</label>
                                 </div>
                             </div>
-                            
+
                         </div>
-                        
+
                     </div>
                 </div>
-                   
+
             </div>
-            
+
         </div>
         <div class="row">
 
@@ -166,7 +172,7 @@
                         <h3 class="panel-title">Cartões Amarelos</h3>
                     </div>
                     <div class="panel-body">
-                        
+
                         <div class="row">
                             <div class="col-md-6 col-sm-12">
                                 <div class="form-group">
@@ -184,14 +190,14 @@
                                     <label class="control-label col-lg-8 col-md-6">{{ jogo.equipeVisitante.nome }}</label>
                                 </div>
                             </div>
-                            
+
                         </div>
-                        
+
                     </div>
                 </div>
-                   
+
             </div>
-            
+
         </div>
         <div class="row">
 
@@ -201,7 +207,7 @@
                         <h3 class="panel-title">Cartões Vermelhos</h3>
                     </div>
                     <div class="panel-body">
-                        
+
                         <div class="row">
                             <div class="col-md-6 col-sm-12">
                                 <div class="form-group">
@@ -219,14 +225,14 @@
                                     <label class="control-label col-lg-8 col-md-6">{{ jogo.equipeVisitante.nome }}</label>
                                 </div>
                             </div>
-                            
+
                         </div>
-                        
+
                     </div>
                 </div>
-                   
+
             </div>
-            
+
         </div>
         <div class="row">
 
@@ -236,7 +242,7 @@
                         <h3 class="panel-title">Arbitragem</h3>
                     </div>
                     <div class="panel-body">
-                        
+
                         <div class="form-group">
                             <label class="control-label col-lg-3 col-md-4">Mesário</label>
                             <div class="col-md-8 col-lg-6">
@@ -258,9 +264,9 @@
 
                     </div>
                 </div>
-                   
+
             </div>
-            
+
         </div>
 
     </div><!-- contentpanel -->

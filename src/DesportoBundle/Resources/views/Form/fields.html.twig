@@ -28,6 +28,12 @@
 {% endspaceless %}
 {% endblock checkbox_widget %}
 
+{% block integer_widget %}
+{% spaceless %}
+    <input type="number" class="form-control" id="{{ id }}" name="{{ full_name }}" />
+{% endspaceless %}
+{% endblock integer_widget %}
+
 
 {% block form_row %}
     <div class="form-group  {% if errors|length > 0 %} has-error {% endif %}">

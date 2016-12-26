@@ -14,6 +14,10 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Jogo
 {
+    
+    const PRIMEIRO_TEMPO = '1';
+    const SEGUNDO_TEMPO = '2';
+
     /**
      * @var integer
      *
@@ -107,9 +111,13 @@ class Jogo
     private $cartoes;
     
     /**
-     * @var Collection
-     * @ORM\OneToMany(targetEntity="InscricaoProfissional", mappedBy="jogo")
-     **/
+     * @var Collection Description
+     * @ORM\ManyToMany(targetEntity="InscricaoProfissional", inversedBy="jogos")
+     * @ORM\JoinTable(name="jogo_inscricao_profissional",
+     *      joinColumns={@ORM\JoinColumn(name="jogo", referencedColumnName="id")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="inscricao_profissional", referencedColumnName="id")}
+     * )
+     */
     private $inscricoes;
     
     /**
