@@ -17,6 +17,14 @@
                 var valor = jQuery(this).val();
                 jQuery(this).val(valor.replace(/[^\d]/gi, ""));
             }).spinner({min: 0});
+            
+            
+            jQuery( "#golsMandante" ).on( "spinchange", function( event, ui ) {
+                
+                console.log(jQuery(this).val());
+                console.log("fasdf");
+
+            });
 
             jQuery("#escalacaoMandante input[type=checkbox]").change(function(event){
                 jQuery('#escalacaoMandante input[type=checkbox]:checked').not(this).prop('checked', false);
@@ -27,7 +35,8 @@
             
             var golsList = jQuery('#gols');
             golCount = 0;
-            // grab the prototype template
+            //
+            //  grab the prototype template
             var newWidget = golsList.attr('data-prototype');
             // replace the "__name__" used in the id and name of the prototype
             // with a number that's unique to your emails
@@ -35,7 +44,7 @@
             newWidget = newWidget.replace(/__name__/g, golCount);
             golCount++;
 
-            golsList.append(newWidget)
+             jQuery('#gols > div').append(newWidget)
 
         });
 
@@ -64,9 +73,10 @@
         </div><!-- media -->
     </div><!-- pageheader -->
     <div class="contentpanel">
-
+        
+        <!-- ESCALAÇÃO -->
         <div class="row">
-
+            <!-- ESCALAÇÃO EQUIPE MANDANTE -->
             <div class="col-lg-6  col-md-12" id="escalacaoMandante"> 
                 <div class="panel panel-default">
                     <div class="panel-heading">
@@ -105,7 +115,7 @@
                 </div>
             </div>
 
-
+            <!-- ESCALAÇÃO EQUIPE VISITANTE -->
             <div class="col-lg-6  col-md-12" id="escalacaoVisitante">
                 <div class="panel panel-default">
                     <div class="panel-heading">
@@ -140,7 +150,7 @@
 
         </div>
 
-
+        <!-- PLACAR -->
         <div class="row">
 
             <div class="col-sm-12">
@@ -150,19 +160,31 @@
                     </div>
                     <div class="panel-body">
 
+                        
                         <div class="row" id="gols"  data-prototype="{{ form_widget(form.gols.vars.prototype)|e }}">
                             <div class="col-md-6 col-sm-12">
                                 <div class="form-group">
                                     <label class="control-label col-lg-8 col-md-6 text-right">{{ jogo.equipeMandante.nome }}</label>
                                     <div class="col-md-6 col-lg-4">
-                                        <input type="number" class="form-control text-right" />
+                                        <input id="golsMandante" type="number" class="form-control" />
                                     </div>
                                 </div>
+                                
+                                    <div class="table table-responsive">
+                                        <table class="table">
+                                            
+                                            
+                                            
+                                        </table>
+                                    </div>
+                                    
+                                
+                                    
                             </div>
                             <div class="col-md-6 col-sm-12">
                                 <div class="form-group">
                                     <div class="col-md-6 col-lg-4">
-                                        <input type="number" class="form-control" />
+                                        <input id="golsVisitante" type="number" class="form-control" />
                                     </div>
                                     <label class="control-label col-lg-8 col-md-6">{{ jogo.equipeVisitante.nome }}</label>
                                 </div>
@@ -176,6 +198,8 @@
             </div>
 
         </div>
+                                
+        <!-- CARTÔES AMARELOS -->
         <div class="row">
 
             <div class="col-sm-12">
@@ -211,6 +235,9 @@
             </div>
 
         </div>
+                                
+                                
+        <!-- CARTÔES VERMELHOS -->
         <div class="row">
 
             <div class="col-sm-12">
@@ -246,6 +273,9 @@
             </div>
 
         </div>
+                                
+                                
+        <!-- Arbitragem -->     
         <div class="row">
 
             <div class="col-sm-12">

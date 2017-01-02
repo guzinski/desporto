@@ -20,17 +20,10 @@
 {% endblock radio_widget %}
 
 
-{% block checkbox_widget %}
-{% spaceless %}
-    <div class="checkbox block">
-        <label  for="{{ id }}"><input type="checkbox" {{ block('widget_attributes') }}{% if value is defined %} value="{{ value }}"{% endif %}{% if checked %} checked="checked"{% endif %} />{{ label|trans }}</label>
-    </div>
-{% endspaceless %}
-{% endblock checkbox_widget %}
 
 {% block integer_widget %}
 {% spaceless %}
-    <input type="number" class="form-control" id="{{ id }}" name="{{ full_name }}" />
+    <input type="number" class="form-control" {{ block('widget_attributes') }} id="{{ id }}" name="{{ full_name }}" />
 {% endspaceless %}
 {% endblock integer_widget %}
 
