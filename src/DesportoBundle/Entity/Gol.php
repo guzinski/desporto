@@ -9,16 +9,8 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="gol")
  * @ORM\Entity
  */
-class Gol
+class Gol extends BaseEntity
 {
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     */
-    private $id;
 
     /**
      * @var InscricaoProfissional
@@ -53,12 +45,6 @@ class Gol
      * @ORM\Column(type="string", columnDefinition="ENUM('1', '2')", nullable=false)
      */
     protected $tempo;
-
-    
-    public function getId()
-    {
-        return $this->id;
-    }
 
     public function getInscricao()
     {
@@ -104,6 +90,12 @@ class Gol
         return $this;
     }
     
-    
+
+    public function getLabel()
+    {
+        return $this->inscricao->getProfissional()->getNome(). " " .$this->minuto. " " .$this->tempo;
+    }
+
+
     
 }

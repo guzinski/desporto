@@ -9,37 +9,26 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="cartao")
  * @ORM\Entity
  */
-class Cartao
+class Cartao extends BaseEntity
 {
     const VERMELHO = "V";
     const AMARELO = "A";
-    
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     */
-    private $id;
-    
+        
     /**
      *  @ORM\Column(type="string", columnDefinition="ENUM('A', 'V')", nullable=false)
      */
     private $cor;
 
-    
     /**
-     * @var Profissional
+     * @var InscricaoProfissional
      *
-     * @ORM\ManyToOne(targetEntity="Profissional", inversedBy="cartoes")
+     * @ORM\ManyToOne(targetEntity="InscricaoProfissional", inversedBy="cartoes")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="profissional", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="inscricao_profissional", referencedColumnName="id")
      * })
      */
-    private $profissional;
+    private $inscricao;    
 
-    
     /**
      * @var Jogo
      *
@@ -57,6 +46,59 @@ class Cartao
      */
     private $minuto;
 
+    /**
+     * @var string
+     * 
+     * @ORM\Column(type="string", columnDefinition="ENUM('1', '2')", nullable=false)
+     */
+    protected $tempo;
+
     
+    function getCor()
+    {
+        return $this->cor;
+    }
+
+    function getInscricao()
+    {
+        return $this->inscricao;
+    }
+
+    function getJogo()
+    {
+        return $this->jogo;
+    }
+
+    function getMinuto()
+    {
+        return $this->minuto;
+    }
+
+    function setCor($cor)
+    {
+        $this->cor = $cor;
+    }
+
+    function setInscricao(InscricaoProfissional $inscricao)
+    {
+        $this->inscricao = $inscricao;
+    }
+
+    function setJogo(Jogo $jogo)
+    {
+        $this->jogo = $jogo;
+    }
+
+    function setMinuto($minuto)
+    {
+        $this->minuto = $minuto;
+    }
+
+        
+    public function getLabel()
+    {
+        return $this->inscricao->getProfissional()->getNome(). " "  .$this->cor;
+    }
+
     
 }

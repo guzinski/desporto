@@ -32,6 +32,10 @@ class JogoType extends AbstractType {
             'entry_type'    => GolType::class,
             'allow_add'     => TRUE,
         ));
+        $builder->add("cartoes", CollectionType::class, array(
+            'entry_type'    => CartaoType::class,
+            'allow_add'     => TRUE,
+        ));
 
     }
 
