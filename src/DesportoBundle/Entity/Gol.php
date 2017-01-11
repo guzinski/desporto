@@ -54,13 +54,6 @@ class Gol
      */
     protected $tempo;
 
-    /**
-     * @var int
-     *
-     * @ORM\Column(type="boolean", nullable=false)
-     */
-    private $contra;
-
     
     public function getId()
     {
@@ -87,11 +80,6 @@ class Gol
         return $this->tempo;
     }
 
-    public function getContra()
-    {
-        return $this->contra;
-    }
-
     public function setInscricao(InscricaoProfissional $inscricao)
     {
         $this->inscricao = $inscricao;
@@ -115,14 +103,6 @@ class Gol
         $this->tempo = $tempo;
         return $this;
     }
-
-    public function setContra($contra)
-    {
-        $this->contra = $contra;
-        return $this;
-    }
-
-
     
     
     

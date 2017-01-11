@@ -1,5 +1,6 @@
 {% extends "DesportoBundle::layout.html.twig" %}
 {% form_theme form 'DesportoBundle:Form:fields.html.twig' %}
+{% form_theme form.gols 'DesportoBundle:Form:gols.html.twig' %}
 {% block title %}Desporto | Jogo Detalhe{% endblock %}
 {% block head %}
     <link href="{{ asset('bundles/desporto/css/slick/slick.css') }}" rel="stylesheet">
@@ -12,42 +13,65 @@
     <script src="{{ asset('bundles/desporto/js/slick.min.js') }}"></script>
     <script src="{{ asset('bundles/desporto/js/jquery-ui-1.10.3.min.js') }}"></script>
     <script>
+        
+        var iGol = 0;
+        var selectGolMandante;
         jQuery(document).ready(function () {
             jQuery("input[type='number']").keyup(function () {
                 var valor = jQuery(this).val();
                 jQuery(this).val(valor.replace(/[^\d]/gi, ""));
             }).spinner({min: 0});
-            
-            
-            jQuery( "#golsMandante" ).on( "spinchange", function( event, ui ) {
-                
-                console.log(jQuery(this).val());
-                console.log("fasdf");
 
+
+            jQuery("#golsMandante").on("spinchange", function (event, ui) {
+                adicionarGols(jQuery(this).val(), "#tableGolsMandante")
+            });
+            jQuery("#golsVisitante").on("spinchange", function (event, ui) {
+                adicionarGols(jQuery(this).val(), "#tableGolsVisitante")
             });
 
-            jQuery("#escalacaoMandante input[type=checkbox]").change(function(event){
+            jQuery("#escalacaoMandante input[type=checkbox]").change(function (event) {
                 jQuery('#escalacaoMandante input[type=checkbox]:checked').not(this).prop('checked', false);
             });
-            jQuery("#escalacaoVisitante input[type=checkbox]").change(function(event){
+            jQuery("#escalacaoVisitante input[type=checkbox]").change(function (event) {
                 jQuery('#escalacaoVisitante input[type=checkbox]:checked').not(this).prop('checked', false);
             });
             
-            var golsList = jQuery('#gols');
-            golCount = 0;
-            //
-            //  grab the prototype template
-            var newWidget = golsList.attr('data-prototype');
-            // replace the "__name__" used in the id and name of the prototype
-            // with a number that's unique to your emails
-            // end name attribute looks like name="contact[emails][2]"
-            newWidget = newWidget.replace(/__name__/g, golCount);
-            golCount++;
-
-{#             jQuery('#gols > div').append(newWidget)#}
 
         });
 
+
+        function adicionarGols(numeroGols, table) {
+            var tableBody = jQuery(table+" tbody");
+            tableBody.html('');
+            var strHtml = jQuery("#gols").data('prototype-inscricao');
+            if (numeroGols == 0) {
+                tableBody.parent().hide();
+            } else {
+                tableBody.parent().show();
+            }
+            for (var i = 0; i < numeroGols; i++) {
+                tableBody.append(strHtml.replace(/__name__/g, iGol));
+                iGol++;
+            }
+            tableBody.find("tr").each(function(){
+                jQuery(this).find("input[type='number']").keyup(function () {
+                    var valor = jQuery(this).val();
+                    jQuery(this).val(valor.replace(/[^\d]/gi, ""));
+                }).spinner({min: 0});
+                if (table ==  "#tableGolsMandante") {
+                    {% for profissional in form.profissionalJogos if profissional.inscricao.vars.value.equipe == jogo.equipeMandante %}
+                        jQuery(this).find("td:first select").append(new Option('{{ profissional.inscricao.vars.value.profissional.nome }}', '{{ profissional.inscricao.vars.value.id }}'));
+                    {% endfor %}
+                    
+                } else if (table == "#tableGolsVisitante") {
+                    {% for profissional in form.profissionalJogos if profissional.inscricao.vars.value.equipe == jogo.equipeVisitante %}
+                        jQuery(this).find("td:first select").append(new Option('{{ profissional.inscricao.vars.value.profissional.nome }}', '{{ profissional.inscricao.vars.value.id }}'));
+                    {% endfor %}
+                }
+            })
+            
+        }
     </script>
     <style>
         .slick-prev::before, .slick-next::before {
@@ -73,7 +97,7 @@
         </div><!-- media -->
     </div><!-- pageheader -->
     <div class="contentpanel">
-        
+
         <!-- ESCALAÇÃO -->
         <div class="row">
             <!-- ESCALAÇÃO EQUIPE MANDANTE -->
@@ -160,8 +184,7 @@
                     </div>
                     <div class="panel-body">
 
-                        
-                        <div class="row" id="gols"  data-prototype="{{ form_widget(form.gols.vars.prototype)|e }}">
+                        <div class="row" id="gols"  data-prototype-inscricao="{{ form_widget(form.gols.vars.prototype)|replace({'div': "tr"}) }}">
                             <div class="col-md-6 col-sm-12">
                                 <div class="form-group">
                                     <label class="control-label col-lg-8 col-md-6 text-right">{{ jogo.equipeMandante.nome }}</label>
@@ -169,75 +192,28 @@
                                         <input id="golsMandante" type="number" class="form-control" />
                                     </div>
                                 </div>
-                                
-                                    <div class="table table-responsive">
-                                        <table class="table">
-                                            <thead>
-                                                <tr>
-                                                    <th>Jogador</th>
-                                                    <th>Minuto</th>
-                                                    <th>Tempo</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr>
-                                                    <td style="width: 50%;">
-                                                        <select class="form-control">
-                                                            <option>Selecione</option>
-                                                        </select>
-                                                    </td>
-                                                    <td style="width: 25%;">
-                                                        <input type="number"  class="form-control" />
-                                                    </td>
-                                                    <td>
-                                                        <select class="form-control">
-                                                            <option>T</option>
-                                                            <option>1º</option>
-                                                            <option>2º</option>
-                                                        </select>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td style="width: 50%;">
-                                                        <select class="form-control">
-                                                            <option>Selecione</option>
-                                                        </select>
-                                                    </td>
-                                                    <td style="width: 25%;">
-                                                        <input type="number"  class="form-control" />
-                                                    </td>
-                                                    <td>
-                                                        <select class="form-control">
-                                                            <option>T</option>
-                                                            <option>1º</option>
-                                                            <option>2º</option>
-                                                        </select>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td style="width: 50%;">
-                                                        <select class="form-control">
-                                                            <option>Selecione</option>
-                                                        </select>
-                                                    </td>
-                                                    <td style="width: 25%;">
-                                                        <input type="number"  class="form-control" />
-                                                    </td>
-                                                    <td>
-                                                        <select class="form-control">
-                                                            <option>T</option>
-                                                            <option>1º</option>
-                                                            <option>2º</option>
-                                                        </select>
-                                                    </td>
-                                                </tr>
-                                            </tbody>
-                                            
-                                        </table>
-                                    </div>
-                                    
-                                
-                                    
+
+                                <div class="table table-responsive">
+                                    <table class="table" style="display: none;" id="tableGolsMandante" >
+                                        <thead>
+                                            <tr>
+                                                <th>Jogador</th>
+                                                <th>Minuto</th>
+                                                <th>Tempo</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <th>Jogador</th>
+                                                <th>Minuto</th>
+                                                <th>Tempo</th>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+
+
+
                             </div>
                             <div class="col-md-6 col-sm-12">
                                 <div class="form-group">
@@ -246,44 +222,26 @@
                                     </div>
                                     <label class="control-label col-lg-8 col-md-6">{{ jogo.equipeVisitante.nome }}</label>
                                 </div>
-                                
-                                
-                                
-                                    <div class="table table-responsive">
-                                        <table class="table">
-                                            <thead>
-                                                <tr>
-                                                    <th>Jogador</th>
-                                                    <th>Minuto</th>
-                                                    <th>Tempo</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr>
-                                                    <td style="width: 50%;">
-                                                        <select class="form-control">
-                                                            <option>Selecione</option>
-                                                        </select>
-                                                    </td>
-                                                    <td style="width: 25%;">
-                                                        <input type="number"  class="form-control" />
-                                                    </td>
-                                                    <td>
-                                                        <select class="form-control">
-                                                            <option>T</option>
-                                                            <option>1º</option>
-                                                            <option>2º</option>
-                                                        </select>
-                                                    </td>
-                                                </tr>
-                                            </tbody>
-                                            
-                                        </table>
-                                    </div>
 
-                                
-                                
-                                
+
+
+                                <div class="table table-responsive">
+                                    <table class="table" style="display: none;" id="tableGolsVisitante"> 
+                                        <thead>
+                                            <tr>
+                                                <th>Jogador</th>
+                                                <th>Minuto</th>
+                                                <th>Tempo</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                        </tbody>
+                                    </table>
+                                </div>
+
+
+
+
                             </div>
 
                         </div>
@@ -294,7 +252,7 @@
             </div>
 
         </div>
-                                
+
         <!-- CARTÔES AMARELOS -->
         <div class="row">
 
@@ -331,8 +289,8 @@
             </div>
 
         </div>
-                                
-                                
+
+
         <!-- CARTÔES VERMELHOS -->
         <div class="row">
 
@@ -369,8 +327,8 @@
             </div>
 
         </div>
-                                
-                                
+
+
         <!-- Arbitragem -->     
         <div class="row">
 

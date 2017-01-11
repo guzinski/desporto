@@ -95,10 +95,10 @@ class ProfissionalRepository extends EntityRepository
         $query = $this->createQueryBuilder("J");
         
         return $query->select("J")
-                ->join("J.campeoantosEquipes", "CE")
-                ->andWhere($query->expr()->eq("CE.edicaoCampeonato", ":campeonato"))
-                ->andWhere($query->expr()->eq("CE.equipe", ":equipe"))
-                ->andWhere($query->expr()->eq("CE.tipo", ":tipo"))
+                ->join("J.inscricoes", "I")
+                ->andWhere($query->expr()->eq("I.edicaoCampeonato", ":campeonato"))
+                ->andWhere($query->expr()->eq("I.equipe", ":equipe"))
+                ->andWhere($query->expr()->eq("I.tipo", ":tipo"))
                 ->setParameter("campeonato", $campeonato->getId())
                 ->setParameter("equipe", $idEquipe)
                 ->setParameter("tipo", InscricaoProfissional::JOGADOR)
@@ -164,15 +164,15 @@ class ProfissionalRepository extends EntityRepository
 
         $subQuery = $this->createQueryBuilder("J2");
 
-        $subQuery->innerJoin("J2.campeoantosEquipes", "CE")
+        $subQuery->innerJoin("J2.inscricoes", "I")
                 ->orWhere(
                         $subQuery->expr()->andX(
-                                $subQuery->expr()->eq("CE.edicaoCampeonato", ":campeonato"), $subQuery->expr()->eq("CE.tipo", ":tipo")
+                                $subQuery->expr()->eq("I.edicaoCampeonato", ":campeonato"), $subQuery->expr()->eq("I.tipo", ":tipo")
                         )
                 )
                 ->orWhere(
                         $subQuery->expr()->andX(
-                                $subQuery->expr()->eq("CE.edicaoCampeonato", ":campeonato"), $subQuery->expr()->neq("CE.equipe", ":equipe")
+                                $subQuery->expr()->eq("I.edicaoCampeonato", ":campeonato"), $subQuery->expr()->neq("I.equipe", ":equipe")
                         )
         );
 

@@ -17,7 +17,6 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class ProfissionalJogoType extends AbstractType 
 {
     
-    
     public function buildForm(FormBuilderInterface $builder, array $options) 
     {
         

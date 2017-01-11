@@ -317,7 +317,7 @@ class Equipe extends BaseEntity
         $collection = $this->inscricoes->matching($query);
         if (!$collection->isEmpty()) {
             foreach ($collection as $row) {
-                /** @var $row EdicaoCampeonatoEquipeProfissional  */
+                /** @var $row InscricaoProfissional  */
                 return $row->getProfissional();
             }
         }
@@ -339,7 +339,7 @@ class Equipe extends BaseEntity
         $collection = $this->inscricoes->matching($query);
         if (!$collection->isEmpty()) {
             foreach ($collection as $row) {
-                /** @var $row EdicaoCampeonatoEquipeProfissional  */
+                /** @var $row InscricaoProfissional  */
                 return $row->getProfissional();
             }
         }

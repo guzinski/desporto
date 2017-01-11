@@ -100,19 +100,19 @@ class Jogo
 
     /**
      * @var Collection
-     * @ORM\OneToMany(targetEntity="Gol", mappedBy="jogo")
+     * @ORM\OneToMany(targetEntity="Gol", cascade={"all"}, mappedBy="jogo")
      **/
     private $gols;
     
     /**
      * @var Collection
-     * @ORM\OneToMany(targetEntity="Cartao", mappedBy="jogo")
+     * @ORM\OneToMany(targetEntity="Cartao", cascade={"all"}, mappedBy="jogo")
      **/
     private $cartoes;
         
     /**
      * @var Collection
-     * @ORM\OneToMany(targetEntity="ProfissionalJogo", mappedBy="inscricao")
+     * @ORM\OneToMany(targetEntity="ProfissionalJogo", cascade={"all"}, mappedBy="inscricao")
      **/
     private $profissionalJogos;
 

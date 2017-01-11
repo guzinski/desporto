@@ -2,6 +2,9 @@
 
 namespace DesportoBundle\Entity;
 
+use DesportoBundle\Repository\InscricaoProfissionalRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
@@ -76,7 +79,7 @@ class InscricaoProfissional
         $this->setEquipe($equipe);
         $this->setProfissional($profissional);
         $this->setTipo($tipo);
-        $this->setGols(new \Doctrine\Common\Collections\ArrayCollection());
+        $this->setGols(new ArrayCollection());
     }
 
     public function getId()

@@ -30,8 +30,8 @@
         jQuery("#progressWizard").validate({
             rules: {
                 'edicao_campeonato[quantidadeEquipes]' : {min: 4, max: 64, digits: true},
-                'edicao_campeonato[quantidadeMinimaJogadores]' : {min: 5, max: function() {return jQuery('#edicao_campeonato_quantidadeMaximaJogadores').val() ==  "" ? 32 : jQuery('#edicao_campeonato_quantidadeMaximaJogadores').val() }, digits: true},
-                'edicao_campeonato[quantidadeMaximaJogadores]' : {min: function() {jQuery('#edicao_campeonato_quantidadeMinimaJogadores').val() ==  "" ? 5 : jQuery('#edicao_campeonato_quantidadeMinimaJogadores').val()}, max: 32, digits: true},
+                'edicao_campeonato[quantidadeMinimaJogadores]' : {min: 5, max: function() {return jQuery('#edicao_campeonato_quantidadeMaximaJogadores').val() ==  "" ? 32 : parseInt( jQuery('#edicao_campeonato_quantidadeMaximaJogadores').val() ) }, digits: true},
+                'edicao_campeonato[quantidadeMaximaJogadores]' : {min: function() {jQuery('#edicao_campeonato_quantidadeMinimaJogadores').val() ==  "" ? 5 : parseInt( jQuery('#edicao_campeonato_quantidadeMinimaJogadores').val() )}, max: 32, digits: true},
             },
             messages: {
                 'edicao_campeonato[campeonato]' : {required: "Selecione o campeonato"},

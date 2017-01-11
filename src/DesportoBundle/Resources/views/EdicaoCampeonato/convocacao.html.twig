@@ -85,14 +85,14 @@
 
         function inscreverDiretor(idEquipe) {
             jQuery(".locked").fadeIn();
-            var tipo = "{{ constant('DesportoBundle\\Entity\\EdicaoCampeonatoEquipeProfissional::DIRETOR') }}";
+            var tipo = "{{ constant('DesportoBundle\\Entity\\InscricaoProfissional::DIRETOR') }}";
             jQuery.post("{{ path("campeonato_form_inscricao_profissional", {campeonato:  campeonato.id }) }}", {equipe: idEquipe, tipo: tipo})
                 .done(callBackInscreverDiretor).fail(defaultError);
         }
         
         function inscreverTreinador(idEquipe) {
             jQuery(".locked").fadeIn();
-            var tipo = "{{ constant('DesportoBundle\\Entity\\EdicaoCampeonatoEquipeProfissional::TREINADOR') }}"
+            var tipo = "{{ constant('DesportoBundle\\Entity\\InscricaoProfissional::TREINADOR') }}"
             jQuery.post("{{ path("campeonato_form_inscricao_profissional", {campeonato:  campeonato.id }) }}", {equipe: idEquipe, tipo: tipo})
                 .done(callBackInscreverTreinador).fail(defaultError);
         }
@@ -234,7 +234,7 @@
         function callBackInscreverTreinador(html) {
             jQuery(".locked").fadeOut();
             bootbox.dialog({
-                title: "Inscrever Diretor",
+                title: "Inscrever Treinador",
                 size: "large",
                 message: html,
                 buttons: {

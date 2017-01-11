@@ -278,9 +278,9 @@ class Profissional extends BaseEntity
         return $this->inscricoes;
     }
 
-    public function setInscricoes(Collection $campeoantosEquipes)
+    public function setInscricoes(Collection $campeonatosEquipes)
     {
-        $this->inscricoes = $campeoantosEquipes;
+        $this->inscricoes = $campeonatosEquipes;
         return $this;
     }
 
