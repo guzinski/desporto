@@ -1,6 +1,7 @@
 {% extends "DesportoBundle::layout.html.twig" %}
 {% form_theme form 'DesportoBundle:Form:fields.html.twig' %}
 {% form_theme form.gols 'DesportoBundle:Form:gols.html.twig' %}
+{% form_theme form.cartoes 'DesportoBundle:Form:gols.html.twig' %}
 {% block title %}Desporto | Jogo Detalhe{% endblock %}
 {% block head %}
     <link href="{{ asset('bundles/desporto/css/slick/slick.css') }}" rel="stylesheet">
@@ -13,8 +14,9 @@
     <script src="{{ asset('bundles/desporto/js/slick.min.js') }}"></script>
     <script src="{{ asset('bundles/desporto/js/jquery-ui-1.10.3.min.js') }}"></script>
     <script>
-        
+
         var iGol = 0;
+        var iCartao = 0;
         var selectGolMandante;
         jQuery(document).ready(function () {
             jQuery("input[type='number']").keyup(function () {
@@ -24,10 +26,27 @@
 
 
             jQuery("#golsMandante").on("spinchange", function (event, ui) {
-                adicionarGols(jQuery(this).val(), "#tableGolsMandante")
+                adicionarGols(jQuery(this).val(), "#tableGolsMandante");
             });
             jQuery("#golsVisitante").on("spinchange", function (event, ui) {
-                adicionarGols(jQuery(this).val(), "#tableGolsVisitante")
+                adicionarGols(jQuery(this).val(), "#tableGolsVisitante");
+            });
+
+            
+            //CARTÕES AMARELOS
+            jQuery("#cartoesAmarelosMandante").on("spinchange", function (event, ui) {
+                adicionarCartoes(jQuery(this).val(), "#tableCartoesAmarelosMandante", "{{ constant('DesportoBundle\\Entity\\Cartao::AMARELO') }}");
+            });
+            jQuery("#cartoesAmarelosVisitante").on("spinchange", function (event, ui) {
+                adicionarCartoes(jQuery(this).val(), "#tableCartoesAmarelosVisitante", "{{ constant('DesportoBundle\\Entity\\Cartao::AMARELO') }}");
+            });
+            
+            //CARTÕES VERMELHOS
+            jQuery("#cartoesVermelhosMandante").on("spinchange", function (event, ui) {
+                adicionarCartoes(jQuery(this).val(), "#tableCartoesVermelhosMandante", "{{ constant('DesportoBundle\\Entity\\Cartao::VERMELHO') }}");
+            });
+            jQuery("#cartoesVermelhosVisitante").on("spinchange", function (event, ui) {
+                adicionarCartoes(jQuery(this).val(), "#tableCartoesVermelhosVisitante", "{{ constant('DesportoBundle\\Entity\\Cartao::VERMELHO') }}");
             });
 
             jQuery("#escalacaoMandante input[type=checkbox]").change(function (event) {
@@ -36,15 +55,15 @@
             jQuery("#escalacaoVisitante input[type=checkbox]").change(function (event) {
                 jQuery('#escalacaoVisitante input[type=checkbox]:checked').not(this).prop('checked', false);
             });
-            
+
 
         });
 
 
         function adicionarGols(numeroGols, table) {
-            var tableBody = jQuery(table+" tbody");
+            var tableBody = jQuery(table + " tbody");
             tableBody.html('');
-            var strHtml = jQuery("#gols").data('prototype-inscricao');
+            var strHtml = jQuery("#gols").data('prototype');
             if (numeroGols == 0) {
                 tableBody.parent().hide();
             } else {
@@ -54,23 +73,55 @@
                 tableBody.append(strHtml.replace(/__name__/g, iGol));
                 iGol++;
             }
-            tableBody.find("tr").each(function(){
+            tableBody.find("tr").each(function () {
                 jQuery(this).find("input[type='number']").keyup(function () {
                     var valor = jQuery(this).val();
                     jQuery(this).val(valor.replace(/[^\d]/gi, ""));
                 }).spinner({min: 0});
-                if (table ==  "#tableGolsMandante") {
+                if (table == "#tableGolsMandante") {
                     {% for profissional in form.profissionalJogos if profissional.inscricao.vars.value.equipe == jogo.equipeMandante %}
-                        jQuery(this).find("td:first select").append(new Option('{{ profissional.inscricao.vars.value.profissional.nome }}', '{{ profissional.inscricao.vars.value.id }}'));
+                    jQuery(this).find("td:first select").append(new Option('{{ profissional.inscricao.vars.value.profissional.nome }}', '{{ profissional.inscricao.vars.value.id }}'));
                     {% endfor %}
-                    
                 } else if (table == "#tableGolsVisitante") {
                     {% for profissional in form.profissionalJogos if profissional.inscricao.vars.value.equipe == jogo.equipeVisitante %}
                         jQuery(this).find("td:first select").append(new Option('{{ profissional.inscricao.vars.value.profissional.nome }}', '{{ profissional.inscricao.vars.value.id }}'));
                     {% endfor %}
                 }
             })
-            
+
+        }
+        
+        function adicionarCartoes(numeroCartoes, table, cor) {
+            var tableBody = jQuery(table + " tbody");
+            tableBody.html('');
+            var strHtml = jQuery("#gols").data('prototype');
+            if (numeroCartoes == 0) {
+                tableBody.parent().hide();
+            } else {
+                tableBody.parent().show();
+            }
+            for (var i = 0; i < numeroCartoes; i++) {
+                tableBody.append(strHtml.replace(/__name__/g, iCartao));
+                iCartao++;
+            }
+            tableBody.find("tr").each(function () {
+                
+                jQuery(this).find("input[type='number']").keyup(function () {
+                    var valor = jQuery(this).val();
+                    jQuery(this).val(valor.replace(/[^\d]/gi, ""));
+                }).spinner({min: 0});
+                jQuery(this).find("input[type='number']").val(cor);
+                if (table === "#tableCartoesAmarelosMandante" || table === "#tableCartoesVermelhosMandante") {
+                    {% for profissional in form.profissionalJogos if profissional.inscricao.vars.value.equipe == jogo.equipeMandante %}
+                    jQuery(this).find("td:first select").append(new Option('{{ profissional.inscricao.vars.value.profissional.nome }}', '{{ profissional.inscricao.vars.value.id }}'));
+                    {% endfor %}
+                } else if (table === "#tableCartoesAmarelosVisitante" || table === "#tableCartoesVermelhosVisitante") {
+                    {% for profissional in form.profissionalJogos if profissional.inscricao.vars.value.equipe == jogo.equipeVisitante %}
+                        jQuery(this).find("td:first select").append(new Option('{{ profissional.inscricao.vars.value.profissional.nome }}', '{{ profissional.inscricao.vars.value.id }}'));
+                    {% endfor %}
+                }
+            })
+
         }
     </script>
     <style>
@@ -184,7 +235,7 @@
                     </div>
                     <div class="panel-body">
 
-                        <div class="row" id="gols"  data-prototype-inscricao="{{ form_widget(form.gols.vars.prototype)|replace({'div': "tr"}) }}">
+                        <div class="row" id="gols"  data-prototype="{{ form_widget(form.gols.vars.prototype)|replace({'div': "tr"}) }}">
                             <div class="col-md-6 col-sm-12">
                                 <div class="form-group">
                                     <label class="control-label col-lg-8 col-md-6 text-right">{{ jogo.equipeMandante.nome }}</label>
@@ -203,11 +254,6 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr>
-                                                <th>Jogador</th>
-                                                <th>Minuto</th>
-                                                <th>Tempo</th>
-                                            </tr>
                                         </tbody>
                                     </table>
                                 </div>
@@ -254,7 +300,7 @@
         </div>
 
         <!-- CARTÔES AMARELOS -->
-        <div class="row">
+        <div class="row" id="cartoes"  data-prototype="{{ form_widget(form.cartoes.vars.prototype)|replace({'div': "tr"}) }}">
 
             <div class="col-sm-12">
                 <div class="panel panel-default">
@@ -262,27 +308,59 @@
                         <h3 class="panel-title">Cartões Amarelos</h3>
                     </div>
                     <div class="panel-body">
+                        <div class="row" id="cartoesAmarelos">
 
-                        <div class="row">
                             <div class="col-md-6 col-sm-12">
                                 <div class="form-group">
                                     <label class="control-label col-lg-8 col-md-6 text-right">{{ jogo.equipeMandante.nome }}</label>
                                     <div class="col-md-6 col-lg-4">
-                                        <input type="number" class="form-control text-right" />
+                                        <input id="cartoesAmarelosMandante" type="number" class="form-control" />
                                     </div>
                                 </div>
+                                    
+                                    
+                                <div class="table table-responsive">
+                                    <table class="table" style="display: none;" id="tableCartoesAmarelosMandante" >
+                                        <thead>
+                                            <tr>
+                                                <th>Jogador</th>
+                                                <th>Minuto</th>
+                                                <th>Tempo</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                                    
+                                    
                             </div>
                             <div class="col-md-6 col-sm-12">
                                 <div class="form-group">
                                     <div class="col-md-6 col-lg-4">
-                                        <input type="number" class="form-control" />
+                                        <input id="cartoesAmarelosVisitante" type="number" class="form-control" />
                                     </div>
                                     <label class="control-label col-lg-8 col-md-6">{{ jogo.equipeVisitante.nome }}</label>
                                 </div>
+                                
+                                <div class="table table-responsive">
+                                    <table class="table" style="display: none;" id="tableCartoesAmarelosVisitante" >
+                                        <thead>
+                                            <tr>
+                                                <th>Jogador</th>
+                                                <th>Minuto</th>
+                                                <th>Tempo</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                
                             </div>
 
                         </div>
-
                     </div>
                 </div>
 
@@ -301,22 +379,55 @@
                     </div>
                     <div class="panel-body">
 
-                        <div class="row">
+                        <div class="row" id="cartoesVermelhos">
                             <div class="col-md-6 col-sm-12">
                                 <div class="form-group">
                                     <label class="control-label col-lg-8 col-md-6 text-right">{{ jogo.equipeMandante.nome }}</label>
                                     <div class="col-md-6 col-lg-4">
-                                        <input type="number" class="form-control text-right" />
+                                        <input id="cartoesVermelhosMandante" type="number" class="form-control" />
                                     </div>
                                 </div>
+                                    
+                                    
+                                <div class="table table-responsive">
+                                    <table class="table" style="display: none;" id="tableCartoesVermelhosMandante" >
+                                        <thead>
+                                            <tr>
+                                                <th>Jogador</th>
+                                                <th>Minuto</th>
+                                                <th>Tempo</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                                    
                             </div>
                             <div class="col-md-6 col-sm-12">
                                 <div class="form-group">
                                     <div class="col-md-6 col-lg-4">
-                                        <input type="number" class="form-control" />
+                                        <input id="cartoesVermelhosVisitante" type="number" class="form-control" />
                                     </div>
                                     <label class="control-label col-lg-8 col-md-6">{{ jogo.equipeVisitante.nome }}</label>
                                 </div>
+                                
+                                <div class="table table-responsive">
+                                    <table class="table" style="display: none;" id="tableCartoesVermelhosVisitante" >
+                                        <thead>
+                                            <tr>
+                                                <th>Jogador</th>
+                                                <th>Minuto</th>
+                                                <th>Tempo</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                                
                             </div>
 
                         </div>
