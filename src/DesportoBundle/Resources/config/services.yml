@@ -42,8 +42,3 @@ services:
         arguments: ["@doctrine.orm.entity_manager"]
         tags:
             - { name: form.type }
-    desporto.form.type.entity_hidden:
-        class: DesportoBundle\Form\Type\EntityHiddenType
-        arguments: ["@doctrine.orm.entity_manager"]
-        tags:
-        - { name: form.type, alias: entity_hidden }
