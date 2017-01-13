@@ -17,7 +17,7 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class JogoController extends Controller
 {
-    
+        
     /**
      * 
      * @Route("/{jogo}", name="jogo_detalhar")
@@ -37,9 +37,10 @@ class JogoController extends Controller
         }
         
         $form = $this->createForm(JogoType::class, $jogo);
-//        $form->handleRequest($request);
-        if ($form->isValid()) {
-//            $this->getService()->salvarCampeonato($jogo);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            $this->getDoctrine()->getManager()->persist($jogo);
             return new RedirectResponse($this->generateUrl('campeonato_detalhe', array('campeonato'=>$jogo->getEdicaoCampeonato()->getId())));
         }
         return ['form'=>$form->createView(), 'jogo'=>$jogo];

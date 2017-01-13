@@ -4,21 +4,20 @@
 {% form_theme form.cartoes 'DesportoBundle:Form:gols.html.twig' %}
 {% block title %}Desporto | Jogo Detalhe{% endblock %}
 {% block head %}
-    <link href="{{ asset('bundles/desporto/css/slick/slick.css') }}" rel="stylesheet">
-    <link href="{{ asset('bundles/desporto/css/slick/slick-theme.css') }}" rel="stylesheet">
 
-    <script src="{{ asset('bundles/desporto/js/jquery.dataTables.min.js') }}"></script>
-    <script src="{{ asset('bundles/desporto/js/jquery-datatables.responsive.js') }}"></script>
-    <script src="//cdn.datatables.net/plug-ins/725b2a2115b/integration/bootstrap/3/dataTables.bootstrap.js"></script>
     <script src="{{ asset('bundles/desporto/js/select2.min.js') }}"></script>
-    <script src="{{ asset('bundles/desporto/js/slick.min.js') }}"></script>
     <script src="{{ asset('bundles/desporto/js/jquery-ui-1.10.3.min.js') }}"></script>
+    <script src="{{ asset('bundles/desporto/js/jquery.validate.min.js') }}"></script>
+    <script src="{{ asset('bundles/desporto/js/messages_ptbr.js') }}"></script>
+    <script src="{{ asset('bundles/desporto/js/validate/additional-methods.js') }}"></script>
     <script>
 
         var iGol = 0;
         var iCartao = 0;
         var selectGolMandante;
         jQuery(document).ready(function () {
+            jQuery("#jogo_gols, #jogo_cartoes, #loading").hide();
+        
             jQuery("input[type='number']").keyup(function () {
                 var valor = jQuery(this).val();
                 jQuery(this).val(valor.replace(/[^\d]/gi, ""));
@@ -55,6 +54,29 @@
             jQuery("#escalacaoVisitante input[type=checkbox]").change(function (event) {
                 jQuery('#escalacaoVisitante input[type=checkbox]:checked').not(this).prop('checked', false);
             });
+            
+            jQuery("form").validate({
+                highlight: function(element) {
+                    jQuery(element).closest('.form-group').removeClass('has-success').addClass('has-error');
+                },
+                success: function(element) {
+                    jQuery(element).closest('.form-group').removeClass('has-error');
+                },
+                errorPlacement: function(error, element) {
+                    if (element.attr('type')=='number') {
+                        jQuery(element).closest('td').append(error);
+                    } else if (element.attr('type')=='text') {
+                        jQuery(element).closest('.form-group').append(error);
+                    }
+                },
+                validClass: "",
+                submitHandler: function(form) {
+                    jQuery('button').hide();
+                    jQuery('#loading').fadeIn(200);
+                    form.submit();
+               }
+            });
+
 
 
         });
@@ -94,7 +116,7 @@
         function adicionarCartoes(numeroCartoes, table, cor) {
             var tableBody = jQuery(table + " tbody");
             tableBody.html('');
-            var strHtml = jQuery("#gols").data('prototype');
+            var strHtml = jQuery("#cartoes").data('prototype');
             if (numeroCartoes == 0) {
                 tableBody.parent().hide();
             } else {
@@ -110,7 +132,7 @@
                     var valor = jQuery(this).val();
                     jQuery(this).val(valor.replace(/[^\d]/gi, ""));
                 }).spinner({min: 0});
-                jQuery(this).find("input[type='number']").val(cor);
+                jQuery(this).find("input[type='hidden']").val(cor);
                 if (table === "#tableCartoesAmarelosMandante" || table === "#tableCartoesVermelhosMandante") {
                     {% for profissional in form.profissionalJogos if profissional.inscricao.vars.value.equipe == jogo.equipeMandante %}
                     jQuery(this).find("td:first select").append(new Option('{{ profissional.inscricao.vars.value.profissional.nome }}', '{{ profissional.inscricao.vars.value.id }}'));
@@ -148,6 +170,7 @@
         </div><!-- media -->
     </div><!-- pageheader -->
     <div class="contentpanel">
+        {{ form_start(form) }}
 
         <!-- ESCALAÇÃO -->
         <div class="row">
@@ -173,7 +196,10 @@
                                 {% for profissional in form.profissionalJogos if profissional.inscricao.vars.value.equipe == jogo.equipeMandante %}
                                     <tr>
                                         <td>{{ form_widget(profissional.numero) }}</td>
-                                        <td>{{ profissional.inscricao.vars.value.profissional.nome }}</td>
+                                        <td>
+                                            <h5>{{ profissional.inscricao.vars.value.profissional.nome }}</h5>
+                                            {{ form_widget(profissional.inscricao) }}
+                                        </td>
                                         <td>
                                             <div class="ckbox ckbox-default">
                                                 {{ form_widget(profissional.capitao) }}
@@ -208,7 +234,10 @@
                                 {% for profissional in form.profissionalJogos if profissional.inscricao.vars.value.equipe == jogo.equipeVisitante %}
                                     <tr>
                                         <td>{{ form_widget(profissional.numero) }}</td>
-                                        <td>{{ profissional.inscricao.vars.value.profissional.nome }}</td>
+                                        <td>
+                                            <h5>{{ profissional.inscricao.vars.value.profissional.nome }}</h5>
+                                            {{ form_widget(profissional.inscricao) }}
+                                        </td>
                                         <td>
                                             <div class="ckbox ckbox-default">
                                                 {{ form_widget(profissional.capitao) }}
@@ -254,6 +283,11 @@
                                             </tr>
                                         </thead>
                                         <tbody>
+                                            {% for gol in form.gols if gol.inscricao.vars.value.equipe == jogo.equipeMandante %}
+                                                <tr>
+                                                    {{ form_row(gol) }}
+                                                </tr>
+                                            {% endfor %}
                                         </tbody>
                                     </table>
                                 </div>
@@ -281,6 +315,11 @@
                                             </tr>
                                         </thead>
                                         <tbody>
+                                            {% for gol in form.gols if gol.inscricao.vars.value.equipe == jogo.equipeVisitante %}
+                                                <tr>
+                                                    {{ form_row(gol) }}
+                                                </tr>
+                                            {% endfor %}
                                         </tbody>
                                     </table>
                                 </div>
@@ -329,6 +368,11 @@
                                             </tr>
                                         </thead>
                                         <tbody>
+                                            {% for cartaoAmarelo in form.cartoes if cartaoAmarelo.inscricao.vars.value.equipe == jogo.equipeMandante and cartaoAmarelo.inscricao.vars.value == constant('DesportoBundle\\Entity\\Cartao::AMARELO')  %}
+                                                <tr>
+                                                    {{ form_row(cartaoAmarelo) }}
+                                                </tr>
+                                            {% endfor %}
                                         </tbody>
                                     </table>
                                 </div>
@@ -354,6 +398,11 @@
                                             </tr>
                                         </thead>
                                         <tbody>
+                                            {% for cartaoAmarelo in form.cartoes if cartaoAmarelo.inscricao.vars.value.equipe == jogo.equipeVisitante and cartaoAmarelo.inscricao.vars.value == constant('DesportoBundle\\Entity\\Cartao::AMARELO')  %}
+                                                <tr>
+                                                    {{ form_row(cartaoAmarelo) }}
+                                                </tr>
+                                            {% endfor %}
                                         </tbody>
                                     </table>
                                 </div>
@@ -399,6 +448,11 @@
                                             </tr>
                                         </thead>
                                         <tbody>
+                                            {% for cartaoVermelho in form.cartoes if cartaoVermelho.inscricao.vars.value.equipe == jogo.equipemandante and cartaoVermelho.inscricao.vars.value == constant('DesportoBundle\\Entity\\Cartao::VERMELHO')  %}
+                                                <tr>
+                                                    {{ form_row(cartaoVermelho) }}
+                                                </tr>
+                                            {% endfor %}
                                         </tbody>
                                     </table>
                                 </div>
@@ -423,6 +477,11 @@
                                             </tr>
                                         </thead>
                                         <tbody>
+                                            {% for cartaoVermelho in form.cartoes if cartaoVermelho.inscricao.vars.value.equipe == jogo.equipeVisitante and cartaoVermelho.inscricao.vars.value == constant('DesportoBundle\\Entity\\Cartao::VERMELHO')  %}
+                                                <tr>
+                                                    {{ form_row(cartaoVermelho) }}
+                                                </tr>
+                                            {% endfor %}
                                         </tbody>
                                     </table>
                                 </div>
@@ -450,31 +509,28 @@
                     </div>
                     <div class="panel-body">
 
-                        <div class="form-group">
-                            <label class="control-label col-lg-3 col-md-4">Mesário</label>
-                            <div class="col-md-8 col-lg-6">
-                                <input type="text" class="form-control" />
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="control-label col-lg-3 col-md-4">Arbitro 1 </label>
-                            <div class="col-md-8 col-lg-6">
-                                <input type="text" class="form-control" />
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="control-label col-lg-3 col-md-4">Arbitro 2 </label>
-                            <div class="col-md-8 col-lg-6">
-                                <input type="text" class="form-control" />
-                            </div>
-                        </div>
-
+                           {{ form_row(form.mesario) }}
+                           {{ form_row(form.arbitro1) }}
+                           {{ form_row(form.arbitro2) }}
+                        
                     </div>
                 </div>
 
             </div>
 
         </div>
+        
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <div class="row">
+                    <button class="btn btn-primary mr5">Salvar</button>
+                    <img  src="{{ asset('bundles/desporto/images/loading.gif') }}" id="loading" alt="Carregando" />
+                    <a class="btn btn-default" href="javascript:history.back()">Voltar</a>
+                </div>
+            </div>
+        </div><!-- panel -->
+        
+        {{ form_end(form) }}
 
     </div><!-- contentpanel -->
 {% endblock %}

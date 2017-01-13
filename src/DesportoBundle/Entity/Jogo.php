@@ -97,6 +97,32 @@ class Jogo
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $local;
+    
+    
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(type="string", length=255, nullable=false)
+     */
+    private $mesario;
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(type="string", length=255, nullable=false)
+     */
+    private $arbitro1;
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(type="string", length=255, nullable=false)
+     */
+    private $arbitro2;
+
+    
+    
 
     /**
      * @var Collection
@@ -250,4 +276,57 @@ class Jogo
         $this->profissionalJogos = $profissionalJogos;
         return $this;
     }
+    
+    public function getMesario()
+    {
+        return $this->mesario;
+    }
+
+    public function getArbitro1()
+    {
+        return $this->arbitro1;
+    }
+
+    public function getArbitro2()
+    {
+        return $this->arbitro2;
+    }
+
+    public function setMesario($mesario)
+    {
+        $this->mesario = $mesario;
+        return $this;
+    }
+
+    public function setArbitro1($arbitro1)
+    {
+        $this->arbitro1 = $arbitro1;
+        return $this;
+    }
+
+    public function setArbitro2($arbitro2)
+    {
+        $this->arbitro2 = $arbitro2;
+        return $this;
+    }
+
+    
+    public function addProfissionalJogo(ProfissionalJogo $profissionaljogo) 
+    {
+        $profissionaljogo->setJogo($this);
+        $this->profissionalJogos->add($profissionaljogo);
+    }
+    
+    public function addGol(Gol $gol) 
+    {
+        $gol->setJogo($this);
+        $this->gols->add($gol);
+    }
+    
+    public function addCartao(Cartao $cartao) 
+    {
+        $cartao->setJogo($this);
+        $this->cartoes->add($cartao);
+    }
+
 }

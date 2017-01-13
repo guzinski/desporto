@@ -20,22 +20,28 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  *
  * @author Luciano
  */
-class JogoType extends AbstractType {
-    
+class JogoType extends AbstractType 
+{
     
     public function buildForm(FormBuilderInterface $builder, array $options) {
         
         $builder->add("profissionalJogos", CollectionType::class, array(
             'entry_type'   => ProfissionalJogoType::class,
+            'by_reference'  => FALSE,
         ));
         $builder->add("gols", CollectionType::class, array(
             'entry_type'    => GolType::class,
             'allow_add'     => TRUE,
+            'by_reference'  => FALSE,
         ));
         $builder->add("cartoes", CollectionType::class, array(
             'entry_type'    => CartaoType::class,
             'allow_add'     => TRUE,
+            'by_reference'  => FALSE,
         ));
+        $builder->add("mesario");
+        $builder->add("arbitro1");
+        $builder->add("arbitro2");
 
     }
 

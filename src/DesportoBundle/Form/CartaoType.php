@@ -23,9 +23,9 @@ class CartaoType extends AbstractType
         $builder->add("cor", HiddenType::class);
         $builder->add("tempo", ChoiceType::class, [
             'choices' => [
-                    'Selecione' => null,
-                    '1º' => 1,
-                    '2º' => 2,
+                'Selecione' => null,
+                '1º' => 1,
+                '2º' => 2,
             ]
         ]);
     }

@@ -86,6 +86,12 @@ class InscricaoProfissional
     {
         return $this->id;
     }
+    
+    public function id($id)
+    {
+        $this->id = $id;
+    }
+
 
     public function getEdicaoCampeonato()
     {

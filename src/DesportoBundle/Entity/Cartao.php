@@ -53,46 +53,63 @@ class Cartao extends BaseEntity
      */
     protected $tempo;
 
-    
-    function getCor()
+
+    public function getCor()
     {
         return $this->cor;
     }
 
-    function getInscricao()
+    public function getInscricao()
     {
         return $this->inscricao;
     }
 
-    function getJogo()
+    public function getJogo()
     {
         return $this->jogo;
     }
 
-    function getMinuto()
+    public function getMinuto()
     {
         return $this->minuto;
     }
 
-    function setCor($cor)
+    public function getTempo()
+    {
+        return $this->tempo;
+    }
+
+    public function setCor($cor)
     {
         $this->cor = $cor;
+        return $this;
     }
 
-    function setInscricao(InscricaoProfissional $inscricao)
+    public function setInscricao(InscricaoProfissional $inscricao)
     {
         $this->inscricao = $inscricao;
+        return $this;
     }
 
-    function setJogo(Jogo $jogo)
+    public function setJogo(Jogo $jogo)
     {
         $this->jogo = $jogo;
+        return $this;
     }
 
-    function setMinuto($minuto)
+    public function setMinuto($minuto)
     {
         $this->minuto = $minuto;
+        return $this;
     }
+
+    public function setTempo($tempo)
+    {
+        $this->tempo = $tempo;
+        return $this;
+    }
+
+    
 
         
     public function getLabel()
