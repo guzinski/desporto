@@ -82,20 +82,20 @@
                     </tr>
                 </thead>
                 <tbody>
-                    {% for equipe in campeonato.equipes %}
+                    {% for classificacao in tabela %}
                         <tr>
                             <td class="text-center"><strong class="h5">{{ loop.index }}</strong></td>
-                            <td><a class="h4" href="#">{{ equipe.apelido }}</a></td>
+                            <td><a class="h4" href="#">{{ classificacao.equipe.apelido }}</a></td>
+                            <td>{{ classificacao.pontos }}</td>
+                            <td>{{ classificacao.vitorias }}</td>
+                            <td>{{ classificacao.empates }}</td>
+                            <td>{{ classificacao.derrotas }}</td>
+                            <td>{{ classificacao.golsMarcados }}</td>
+                            <td>{{ classificacao.golsSofridos }}</td>
+                            <td>{{ classificacao.golsSaldo }}</td>
+                            <td>{{ classificacao.cartoesAmarelos }}</td>
+                            <td>{{ classificacao.cartoesVermelhos }}</td>
                             <td>0</td>
-                            <td>0</td> 
-                            <td>0</td>
-                            <td>0</td>
-                            <td>0</td>
-                            <td>0</td>
-                            <td>0</td>
-                            <td>0</td>
-                            <td>0</td>
-                            <td>0%</td>                                                     
                         </tr>
                     {% endfor %}
                 </tbody>
@@ -161,9 +161,9 @@
                                             </h5>
                                         </td>
                                         <td class="text-center"><span class="h4">{{ jogo.equipeMandante.apelido }}</span></td>
-                                        <td class="text-center"><span class="h3">0</span></td>
+                                        <td class="text-center"><span class="h3">{{ jogo.numeroGolsMandante }}</span></td>
                                         <td class="text-center"><span class="h4">X</span></td>
-                                        <td class="text-center"><span class="h3">0</span></td>
+                                        <td class="text-center"><span class="h3">{{ jogo.numeroGolsVisitante }}</span></td>
                                         <td class="text-center"><span class="h4">{{ jogo.equipeVisitante.apelido }}</span></td>
                                         <td><a class="btn btn-default" type="button" href="{{ path('jogo_detalhar', {jogo: jogo.id})  }}" >Detalhar</a> </td>
                                         <td><button class="btn btn-default" ><i class="fa fa-print"></i></button></td>

@@ -23,9 +23,8 @@ class Cartao extends BaseEntity
      * @var InscricaoProfissional
      *
      * @ORM\ManyToOne(targetEntity="InscricaoProfissional", inversedBy="cartoes")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="inscricao_profissional", referencedColumnName="id")
-     * })
+     * @ORM\JoinColumn(name="inscricao_profissional", referencedColumnName="id", nullable=false)
+     * 
      */
     private $inscricao;    
 
@@ -33,9 +32,8 @@ class Cartao extends BaseEntity
      * @var Jogo
      *
      * @ORM\ManyToOne(targetEntity="Jogo", inversedBy="cartoes")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="jogo", referencedColumnName="id")
-     * })
+     * @ORM\JoinColumn(name="jogo", referencedColumnName="id", nullable=false)
+     * 
      */
     private $jogo;
 

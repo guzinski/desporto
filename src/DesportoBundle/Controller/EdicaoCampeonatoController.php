@@ -54,7 +54,8 @@ class EdicaoCampeonatoController extends Controller
         if ($campeonato->getStatus()==EdicaoCampeonato::AGUARDANDO_CONVOCACAO) {
             return $this->redirectToRoute("campeonato_convocacao", array("campeonato"=>$campeonato->getId()));
         }
-        return array("campeonato"=>$campeonato);
+        $tabela = $this->getService()->calculaTabela($campeonato);
+        return array("campeonato"=>$campeonato, "tabela"=>$tabela);
     }
 
     /**

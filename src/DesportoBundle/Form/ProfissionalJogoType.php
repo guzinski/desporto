@@ -4,8 +4,10 @@ namespace DesportoBundle\Form;
 
 use DesportoBundle\Entity\InscricaoProfissional;
 use DesportoBundle\Entity\ProfissionalJogo;
+use Shapecode\Bundle\HiddenEntityTypeBundle\Form\Type\HiddenEntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -20,13 +22,16 @@ class ProfissionalJogoType extends AbstractType
     
     public function buildForm(FormBuilderInterface $builder, array $options) 
     {
-        
-        $builder->add("inscricao", \Symfony\Component\Form\Extension\Core\Type\HiddenType::class, ['property_path' => 'inscricao.id' ]);
-        $builder->add("numero");
+        $builder->add("inscricao", HiddenEntityType::class, [
+            'class' => InscricaoProfissional::class,
+        ]);
+        $builder->add("numero", NumberType::class);
         $builder->add('capitao', CheckboxType::class, array(
             'label'    => null,
             'required' => false,
         ));
+        
+
         
     }
 

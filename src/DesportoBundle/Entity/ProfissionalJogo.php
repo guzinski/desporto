@@ -35,7 +35,7 @@ class ProfissionalJogo {
     /**
      * @var Jogo
      *
-     * @ORM\ManyToOne(targetEntity="Jogo", inversedBy="profissionais")
+     * @ORM\ManyToOne(targetEntity="Jogo", inversedBy="profissionalJogos")
      * @ORM\JoinColumn(name="jogo", referencedColumnName="id", nullable=false)
      */
     protected $jogo;

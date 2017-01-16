@@ -30,7 +30,7 @@ class Jogo
     /**
      * @var Equipe
      *
-     * @ORM\ManyToOne(targetEntity="Equipe", inversedBy="jogos")
+     * @ORM\ManyToOne(targetEntity="Equipe")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="equipe_mandante", referencedColumnName="id")
      * })
@@ -40,7 +40,7 @@ class Jogo
     /**
      * @var Equipe
      *
-     * @ORM\ManyToOne(targetEntity="Equipe", inversedBy="jogos")
+     * @ORM\ManyToOne(targetEntity="Equipe")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="equipe_visitante", referencedColumnName="id")
      * })
@@ -120,37 +120,85 @@ class Jogo
      * @ORM\Column(type="string", length=255, nullable=false)
      */
     private $arbitro2;
-
     
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(type="boolean", nullable=false)
+     */
+    private $jogado = FALSE;
     
-
     /**
      * @var Collection
-     * @ORM\OneToMany(targetEntity="Gol", cascade={"all"}, mappedBy="jogo")
+     * @ORM\OneToMany(targetEntity="Gol", cascade={"all"}, mappedBy="jogo", orphanRemoval=true)
      **/
     private $gols;
     
     /**
      * @var Collection
-     * @ORM\OneToMany(targetEntity="Cartao", cascade={"all"}, mappedBy="jogo")
+     * @ORM\OneToMany(targetEntity="Cartao", cascade={"all"}, mappedBy="jogo", orphanRemoval=true)
      **/
     private $cartoes;
         
     /**
      * @var Collection
-     * @ORM\OneToMany(targetEntity="ProfissionalJogo", cascade={"all"}, mappedBy="inscricao")
+     * @ORM\OneToMany(targetEntity="ProfissionalJogo", cascade={"all"}, mappedBy="jogo")
      **/
     private $profissionalJogos;
+    
+    
+    /**
+     * @var Collection
+     */
+    private $golsMandante;
+    
+    /**
+     * @var Collection
+     */
+    private $golsVisitante;
+    
+    private $numeroGolsMandante;
+    private $numeroGolsVisitante;
 
+    /**
+     * @var Collection
+     */    
+    private $cartoesAmarelosMandante;
+    
+    /**
+     * @var Collection
+     */
+    private $cartoesAmarelosVisitante;
+    
+    /**
+     * @var Collection
+     */
+    private $cartoesVermelhosMandante;
+    
+    /**
+     * @var Collection
+     */
+    private $cartoesVermelhosVisitante;
+    
+    
+    private $numeroCartoesAmarelosMandante;
+    private $numeroCartoesAmarelosVisitante;
+    private $numeroCartoesVermelhosMandante;
+    private $numeroCartoesVermelhosVisitante;
 
-    public function __construct(Equipe $equipeMandante, Equipe $equipeVisitante)
+    public function __construct(Equipe $equipeMandante = null, Equipe $equipeVisitante = null)
     {
         $this->equipeMandante = $equipeMandante;
         $this->equipeVisitante = $equipeVisitante;
-        $this->setProfissionalJogos(new ArrayCollection());
+        $this->profissionalJogos = new ArrayCollection();
+        $this->golsMandante = new ArrayCollection();
+        $this->golsVisitante = new ArrayCollection();
+        $this->cartoesAmarelosMandante = new ArrayCollection();
+        $this->cartoesAmarelosVisitante = new ArrayCollection();
+        $this->cartoesVermelhosMandante = new ArrayCollection();
+        $this->cartoesVermelhosVisitante = new ArrayCollection();
     }
 
-    
     public function getId()
     {
         return $this->id;
@@ -309,12 +357,29 @@ class Jogo
         $this->arbitro2 = $arbitro2;
         return $this;
     }
+    
+    public function getJogado()
+    {
+        return $this->jogado;
+    }
 
+    public function setJogado($jogado)
+    {
+        $this->jogado = $jogado;
+        return $this;
+    }
+
+    
     
     public function addProfissionalJogo(ProfissionalJogo $profissionaljogo) 
     {
         $profissionaljogo->setJogo($this);
         $this->profissionalJogos->add($profissionaljogo);
+    }
+    
+    public function removeProfissionalJogo(ProfissionalJogo $profissionaljogo)
+    {
+        
     }
     
     public function addGol(Gol $gol) 
@@ -323,10 +388,213 @@ class Jogo
         $this->gols->add($gol);
     }
     
-    public function addCartao(Cartao $cartao) 
+    public function removeGol(Gol $gol)
+    {
+        if ($this->gols->contains($gol)) {
+            
+            $this->gols->removeElement($gol);
+        }
+    }
+
+    
+    public function addCartoe(Cartao $cartao) 
     {
         $cartao->setJogo($this);
         $this->cartoes->add($cartao);
     }
+    
+    public function removeCartoe(Cartao $cartao) 
+    {
+        if ($this->cartoes->contains($gol)) {
+            
+            $this->cartoes->removeElement($gol);
+        }
+    }
+    
+    public function getGolsMandante()
+    {
+        $this->golsMandante = new ArrayCollection();
+        foreach ($this->getGols() as $gol) {
+            /* @var $gol Gol  */
+            if ($gol->getInscricao()->getEquipe() == $this->getEquipeMandante()) {
+                $this->golsMandante->add($gol);
+            }
+        }
+        return $this->golsMandante;
+    }
+
+    public function getGolsVisitante()
+    {
+        $this->golsVisitante = new ArrayCollection();
+        foreach ($this->getGols() as $gol) {
+            /* @var $gol Gol  */
+            if ($gol->getInscricao()->getEquipe() == $this->getEquipeVisitante()) {
+                $this->golsVisitante->add($gol);
+            }
+        }
+        return $this->golsVisitante;
+    }
+
+    public function getNumeroGolsMandante()
+    {
+        $this->numeroGolsMandante = $this->getGolsMandante()->count();
+
+        return $this->numeroGolsMandante;
+    }
+
+    public function getNumeroGolsVisitante()
+    {
+        $this->numeroGolsVisitante = $this->getGolsVisitante()->count();
+
+        return $this->numeroGolsVisitante;
+    }
+
+    public function setGolsMandante(Collection $golsMandante)
+    {
+        $this->golsMandante = $golsMandante;
+        return $this;
+    }
+
+    public function setGolsVisitante(Collection $golsVisitante)
+    {
+        $this->golsVisitante = $golsVisitante;
+        return $this;
+    }
+
+    public function setNumeroGolsMandante($numeroGolsMandante)
+    {
+        $this->numeroGolsMandante = $numeroGolsMandante;
+        return $this;
+    }
+
+    public function setNumeroGolsVisitante($numeroGolsVisitante)
+    {
+        $this->numeroGolsVisitante = $numeroGolsVisitante;
+        return $this;
+    }
+    
+    public function getCartoesAmarelosMandante()
+    {
+        $this->cartoesAmarelosMandante = new ArrayCollection();
+        foreach ($this->getCartoes() as $cartao) {
+            /* @var $cartao Cartao  */
+            if ($cartao->getInscricao()->getEquipe() == $this->getEquipeMandante() && $cartao->getCor() == Cartao::AMARELO) {
+                $this->cartoesAmarelosMandante->add($cartao);
+            }
+        }
+        return $this->cartoesAmarelosMandante;
+    }
+
+    public function getNumeroCartoesAmarelosMandante()
+    {
+        $this->numeroCartoesAmarelosMandante = $this->getCartoesAmarelosMandante()->count();
+        return $this->numeroCartoesAmarelosMandante;
+    }
+    
+    public function getCartoesAmarelosVisitante()
+    {
+        $this->cartoesAmarelosVisitante = new ArrayCollection();
+        foreach ($this->getCartoes() as $cartao) {
+            /* @var $cartao Cartao  */
+            if ($cartao->getInscricao()->getEquipe() == $this->getEquipeVisitante() && $cartao->getCor() == Cartao::AMARELO) {
+                $this->cartoesAmarelosVisitante->add($cartao);
+            }
+        }
+        return $this->cartoesAmarelosVisitante;
+    }
+
+    public function getNumeroCartoesAmarelosVisitante()
+    {
+        $this->numeroCartoesAmarelosVisitante = $this->getCartoesAmarelosVisitante()->count();
+        return $this->numeroCartoesAmarelosVisitante;
+    }
+    
+    public function getCartoesVermelhosMandante()
+    {
+        $this->cartoesVermelhosMandante = new ArrayCollection();
+        foreach ($this->getCartoes() as $cartao) {
+            /* @var $cartao Cartao  */
+            if ($cartao->getInscricao()->getEquipe() == $this->getEquipeMandante() && $cartao->getCor() == Cartao::VERMELHO) {
+                $this->cartoesVermelhosMandante->add($cartao);
+            }
+        }
+        return $this->cartoesVermelhosMandante;
+    }
+
+    public function getNumeroCartoesVermelhosMandante()
+    {
+        $this->numeroCartoesVermelhosMandante = $this->getCartoesVermelhosMandante()->count();
+        return $this->numeroCartoesVermelhosMandante;
+    }
+    
+    public function getCartoesVermelhosVisitante()
+    {
+        $this->cartoesVermelhosVisitante = new ArrayCollection();
+        foreach ($this->getCartoes() as $cartao) {
+            /* @var $cartao Cartao  */
+            if ($cartao->getInscricao()->getEquipe() == $this->getEquipeVisitante() && $cartao->getCor() == Cartao::VERMELHO) {
+                $this->cartoesVermelhosVisitante->add($cartao);
+            }
+        }
+        return $this->cartoesVermelhosVisitante;
+    }
+
+    public function getNumeroCartoesVermelhosVisitante()
+    {
+        $this->numeroCartoesVermelhosVisitante = $this->getCartoesVermelhosVisitante()->count();
+        return $this->numeroCartoesVermelhosVisitante;
+    }
+
+    public function setCartoesVermelhosVisitante(Collection $cartoesVermelhosVisitante)
+    {
+        $this->cartoesVermelhosVisitante = $cartoesVermelhosVisitante;
+        return $this;
+    }
+
+    public function setNumeroCartoesVermelhosVisitante($numeroCartoesVermelhosVisitante)
+    {
+        $this->numeroCartoesVermelhosVisitante = $numeroCartoesVermelhosVisitante;
+        return $this;
+    }
+
+    
+    public function setCartoesVermelhosMandante(Collection $cartoesVermelhosMandante)
+    {
+        $this->cartoesVermelhosMandante = $cartoesVermelhosMandante;
+        return $this;
+    }
+
+    public function setNumeroCartoesVermelhosMandante($numeroCartoesVermelhosMandante)
+    {
+        $this->numeroCartoesVermelhosMandante = $numeroCartoesVermelhosMandante;
+        return $this;
+    }
+
+    
+    public function setCartoesAmarelosVisitante(Collection $cartoesAmarelosVisitante)
+    {
+        $this->cartoesAmarelosVisitante = $cartoesAmarelosVisitante;
+        return $this;
+    }
+
+    public function setNumeroCartoesAmarelosVisitante($numeroCartoesAmarelosVisitante)
+    {
+        $this->numeroCartoesAmarelosVisitante = $numeroCartoesAmarelosVisitante;
+        return $this;
+    }
+
+    
+    public function setCartoesAmarelosMandante(Collection $cartoesAmarelosMandante)
+    {
+        $this->cartoesAmarelosMandante = $cartoesAmarelosMandante;
+        return $this;
+    }
+
+    public function setNumeroCartoesAmarelosMandante($numeroCartoesAmarelosMandante)
+    {
+        $this->numeroCartoesAmarelosMandante = $numeroCartoesAmarelosMandante;
+        return $this;
+    }
+
 
 }

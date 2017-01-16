@@ -2,14 +2,18 @@
 
 namespace DesportoBundle\Service;
 
+use DesportoBundle\Data\Classificacao;
 use DesportoBundle\Entity\Chave;
 use DesportoBundle\Entity\EdicaoCampeonato;
-use DesportoBundle\Entity\InscricaoProfissional;
 use DesportoBundle\Entity\Equipe;
 use DesportoBundle\Entity\FaseClassificatoria;
+use DesportoBundle\Entity\InscricaoProfissional;
 use DesportoBundle\Entity\Jogo;
 use DesportoBundle\Entity\Profissional;
 use DesportoBundle\Entity\Rodada;
+use DesportoBundle\Repository\EdicaoCampeonatoRepository;
+use DesportoBundle\Repository\EquipeRepository;
+use DesportoBundle\Repository\ProfissionalRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\EntityManager;
@@ -453,7 +457,7 @@ class EdicaoCampeonatoService
     /**
      * 
      * @param EdicaoCampeonato $campeonato
-     * @return \DesportoBundle\Repository\EquipeRepository
+     * @return EquipeRepository
      */
     public function verificafinalizacaoInscricao(EdicaoCampeonato $campeonato)
     {
@@ -480,7 +484,7 @@ class EdicaoCampeonatoService
     
     /**
      * 
-     * @return \DesportoBundle\Repository\EquipeRepository
+     * @return EquipeRepository
      */
     private function getEquipeRepository()
     {
@@ -489,7 +493,7 @@ class EdicaoCampeonatoService
     
     /**
      * 
-     * @return \DesportoBundle\Repository\ProfissionalRepository
+     * @return ProfissionalRepository
      */
     private function getProfissionaleRepository()
     {
@@ -498,59 +502,101 @@ class EdicaoCampeonatoService
     
     /**
      * 
-     * @return \DesportoBundle\Repository\EdicaoCampeonatoRepository
+     * @return EdicaoCampeonatoRepository
      */
     private function getEdicaoCampeonatoRepository()
     {
         return $this->em->getRepository(EdicaoCampeonato::class);
     }
 
-
-//    /**
-//     * @deprecated since version number
-//     * 
-//     * @param Equipe $equipeMandante
-//     * @param Equipe $equipeVisitante
-//     * @param array $rodadas
-//     * @return boolean
-//     */
-//    private function verificaJogoExistente (Equipe $equipeMandante, Equipe $equipeVisitante, $rodadas)
-//    {
-//        foreach ($rodadas as $rodada) {
-//            /* @var $rodada Rodada */
-//            foreach ($rodada->getJogos() as $jogo) {
-//                /* @var $jogo Jogo */
-//                if ($jogo->getEquipeMandante()===$equipeMandante || $jogo->getEquipeVisitante()===$equipeMandante) {
-//                    if ($jogo->getEquipeMandante()===$equipeVisitante || $jogo->getEquipeVisitante()===$equipeVisitante) {
-//                        return true;
-//                    }
-//                }
-//            }
-//        }
-//        return false;
-//    }
-//    
-//    
-//    /**
-//     * @deprecated since version number
-//     * 
-//     * @param Equipe $equipeMandante
-//     * @param Equipe $equipeVisitante
-//     * @param Rodada $rodada
-//     * @return boolean
-//     */
-//    private function verificaEquipeJogaRodada (Equipe $equipeMandante, Equipe $equipeVisitante, Rodada $rodada)
-//    {
-//        foreach ($rodada->getJogos() as $jogo) {
-//            /* @var $jogo Jogo */
-//            if ($jogo->getEquipeMandante()===$equipeMandante || $jogo->getEquipeVisitante()===$equipeMandante) {
-//                return true;
-//            }
-//            if ($jogo->getEquipeMandante()===$equipeVisitante || $jogo->getEquipeVisitante()===$equipeVisitante) {
-//                return true;
-//            }
-//        }
-//        return false;
-//    }
+    /**
+     * 
+     * @param EdicaoCampeonato $campeonato
+     * @return ArrayCollection
+     */
+    public function calculaTabela(EdicaoCampeonato $campeonato)
+    {
+        if ($campeonato->getTipo() == EdicaoCampeonato::PONTOS_CORRIDOS) {
+            return $this->calculaTabelaPontosCorridos($campeonato);
+        }
+    }
     
+    /**
+     * 
+     * @param EdicaoCampeonato $campeonato
+     * @return ArrayCollection
+     */
+    private function calculaTabelaPontosCorridos(EdicaoCampeonato $campeonato)
+    {
+        $tabela = new ArrayCollection();
+        
+        foreach ($campeonato->getJogos() as $jogo) {
+            /* @var $jogo Jogo */
+            if ($jogo->getJogado()) {
+                $classificacaoMandante = $this->getClassificacaoEquipe($jogo->getEquipeMandante(), $tabela);
+                $classificacaoVisitante = $this->getClassificacaoEquipe($jogo->getEquipeVisitante(), $tabela);
+                
+                
+                if ($jogo->getNumeroGolsMandante() > $jogo->getNumeroGolsVisitante()) {
+                    $classificacaoMandante->addVitoria();
+                    $classificacaoVisitante->addDerrota();
+                } elseif ($jogo->getNumeroGolsMandante() === $jogo->getNumeroGolsVisitante()) {
+                    $classificacaoMandante->addEmpate();
+                    $classificacaoVisitante->addEmpate();
+                } else {
+                    $classificacaoMandante->addDerrota();
+                    $classificacaoVisitante->addVitoria();
+                }
+                $classificacaoMandante->addCartaoAmarelo($jogo->getNumeroCartoesAmarelosMandante());
+                $classificacaoMandante->addCartaoVermelho($jogo->getNumeroCartoesVermelhosMandante());
+                $classificacaoMandante->addGolsMarcados($jogo->getNumeroGolsMandante());
+                $classificacaoMandante->addGolsSofridos($jogo->getNumeroGolsVisitante());
+
+                $classificacaoVisitante->addCartaoAmarelo($jogo->getNumeroCartoesAmarelosVisitante());
+                $classificacaoVisitante->addCartaoVermelho($jogo->getNumeroCartoesVermelhosVisitante());
+                $classificacaoVisitante->addGolsMarcados($jogo->getNumeroGolsVisitante());
+                $classificacaoVisitante->addGolsSofridos($jogo->getNumeroGolsMandante());
+
+                
+            }
+        }
+        
+        
+        foreach ($tabela as $classificacao) {
+            /* @var $classificacao Classificacao */
+            $classificacao->setGolsSaldo($classificacao->getGolsMarcados()-$classificacao->getGolsSofridos());
+            $classificacao->setPontos(($classificacao->getVitorias()*3)+$classificacao->getEmpates());
+        }
+        
+        $iterator = $tabela->getIterator();
+        $iterator->uasort(function ($first, $second) {
+            return $first->getPontos() > $second->getPontos() ? -1 : 1;
+
+        });
+        
+        $tabela = new ArrayCollection(iterator_to_array($iterator));
+
+        
+        return $tabela;
+        
+    }
+    
+    /**
+     * 
+     * @param Equipe $equipe
+     * @param Collection $tabela
+     * @return Classificacao
+     */
+    private function getClassificacaoEquipe(Equipe $equipe, Collection $tabela)
+    {
+        foreach ($tabela as $classificacao) {
+            /* @var $classificacao Classificacao */
+            if ($classificacao->getEquipe()==$equipe) {
+                return $classificacao;
+            }
+        }
+        $classificacao = new Classificacao($equipe);
+        $tabela->add($classificacao);
+        return $classificacao;
+    }
 }

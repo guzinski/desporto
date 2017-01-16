@@ -123,7 +123,7 @@ class Equipe extends BaseEntity
     
     /**
      * @var Collection
-     * @ORM\ManyToMany(targetEntity="FaseClassificatoria", mappedBy="fasesClassificatorias")
+     * @ORM\ManyToMany(targetEntity="FaseClassificatoria", mappedBy="equipes")
      **/
     private $fasesClassificatorias;
 

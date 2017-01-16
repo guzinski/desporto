@@ -50,7 +50,7 @@ class InscricaoProfissional
     /**
      * @var Profissional
      *
-     * @ORM\ManyToOne(targetEntity="Profissional", inversedBy="inscricoes")
+     * @ORM\ManyToOne(targetEntity="Profissional", inversedBy="inscricoes", fetch="EAGER")
      * @ORM\JoinColumn(name="profissional", referencedColumnName="id", nullable=false)
      */
     protected $profissional;
@@ -62,9 +62,15 @@ class InscricaoProfissional
     
     /**
      * @var Collection
-     * @ORM\OneToMany(targetEntity="Gol", mappedBy="jogo")
+     * @ORM\OneToMany(targetEntity="Gol", mappedBy="inscricao")
      **/
     private $gols;
+    
+    /**
+     * @var Collection
+     * @ORM\OneToMany(targetEntity="Cartao", mappedBy="inscricao")
+     **/
+    private $cartoes;
     
     /**
      * @var Collection
@@ -80,6 +86,7 @@ class InscricaoProfissional
         $this->setProfissional($profissional);
         $this->setTipo($tipo);
         $this->setGols(new ArrayCollection());
+        $this->setCartoes(new ArrayCollection());
     }
 
     public function getId()
@@ -87,12 +94,6 @@ class InscricaoProfissional
         return $this->id;
     }
     
-    public function id($id)
-    {
-        $this->id = $id;
-    }
-
-
     public function getEdicaoCampeonato()
     {
         return $this->edicaoCampeonato;
@@ -159,6 +160,21 @@ class InscricaoProfissional
         return $this;
     }
 
+    public function getCartoes()
+    {
+        return $this->cartoes;
+    }
 
+    public function setCartoes(Collection $cartoes)
+    {
+        $this->cartoes = $cartoes;
+        return $this;
+    }
+
+    
+    public function __toString()
+    {
+        return $this->getProfissional()->getNome();
+    }
     
 }

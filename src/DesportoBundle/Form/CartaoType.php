@@ -18,7 +18,11 @@ class CartaoType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add("inscricao", ChoiceType::class);
+        $builder->add('inscricao', \Symfony\Bridge\Doctrine\Form\Type\EntityType::class, [
+            'placeholder' => 'Selecione',
+            'choices' => $options['inscricoes'],
+            'class' => \DesportoBundle\Entity\InscricaoProfissional::class
+        ]);
         $builder->add("minuto");
         $builder->add("cor", HiddenType::class);
         $builder->add("tempo", ChoiceType::class, [
@@ -34,6 +38,9 @@ class CartaoType extends AbstractType
     {
         $resolver->setDefaults(array(
             'data_class' => Cartao::class,
+        ));
+        $resolver->setRequired(array(
+            'inscricoes',
         ));
     }
 }

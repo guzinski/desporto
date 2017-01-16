@@ -12,39 +12,39 @@
     <script src="{{ asset('bundles/desporto/js/validate/additional-methods.js') }}"></script>
     <script>
 
-        var iGol = 0;
-        var iCartao = 0;
+        var iGol = {{ form.gols|length  }};
+        var iCartao = {{ form.cartoes|length  }};
         var selectGolMandante;
         jQuery(document).ready(function () {
-            jQuery("#jogo_gols, #jogo_cartoes, #loading").hide();
+            jQuery("#jogo_gols, #jogo_cartoes, #loading, #escalacaoMandante select, #escalacaoVisitante select").hide();
         
-            jQuery("input[type='number']").keyup(function () {
+            jQuery("input[type='number'], #escalacaoMandante input[type='text'], #escalacaoVisitante input[type='text'], #jogo_numeroGolsMandante, #jogo_numeroGolsVisitante, #jogo_numeroCartoesAmarelosMandante, #jogo_numeroCartoesAmarelosVisitante, #jogo_numeroCartoesVermelhosMandante, #jogo_numeroCartoesVermelhosVisitante").keyup(function () {
                 var valor = jQuery(this).val();
                 jQuery(this).val(valor.replace(/[^\d]/gi, ""));
             }).spinner({min: 0});
 
 
-            jQuery("#golsMandante").on("spinchange", function (event, ui) {
+            jQuery("#jogo_numeroGolsMandante").on("spinchange", function (event, ui) {
                 adicionarGols(jQuery(this).val(), "#tableGolsMandante");
             });
-            jQuery("#golsVisitante").on("spinchange", function (event, ui) {
+            jQuery("#jogo_numeroGolsVisitante").on("spinchange", function (event, ui) {
                 adicionarGols(jQuery(this).val(), "#tableGolsVisitante");
             });
 
             
             //CARTÕES AMARELOS
-            jQuery("#cartoesAmarelosMandante").on("spinchange", function (event, ui) {
+            jQuery("#jogo_numeroCartoesAmarelosMandante").on("spinchange", function (event, ui) {
                 adicionarCartoes(jQuery(this).val(), "#tableCartoesAmarelosMandante", "{{ constant('DesportoBundle\\Entity\\Cartao::AMARELO') }}");
             });
-            jQuery("#cartoesAmarelosVisitante").on("spinchange", function (event, ui) {
+            jQuery("#jogo_numeroCartoesAmarelosVisitante").on("spinchange", function (event, ui) {
                 adicionarCartoes(jQuery(this).val(), "#tableCartoesAmarelosVisitante", "{{ constant('DesportoBundle\\Entity\\Cartao::AMARELO') }}");
             });
             
             //CARTÕES VERMELHOS
-            jQuery("#cartoesVermelhosMandante").on("spinchange", function (event, ui) {
+            jQuery("#jogo_numeroCartoesVermelhosMandante").on("spinchange", function (event, ui) {
                 adicionarCartoes(jQuery(this).val(), "#tableCartoesVermelhosMandante", "{{ constant('DesportoBundle\\Entity\\Cartao::VERMELHO') }}");
             });
-            jQuery("#cartoesVermelhosVisitante").on("spinchange", function (event, ui) {
+            jQuery("#jogo_numeroCartoesVermelhosVisitante").on("spinchange", function (event, ui) {
                 adicionarCartoes(jQuery(this).val(), "#tableCartoesVermelhosVisitante", "{{ constant('DesportoBundle\\Entity\\Cartao::VERMELHO') }}");
             });
 
@@ -63,10 +63,10 @@
                     jQuery(element).closest('.form-group').removeClass('has-error');
                 },
                 errorPlacement: function(error, element) {
-                    if (element.attr('type')=='number') {
-                        jQuery(element).closest('td').append(error);
+                    if (element.hasClass("ui-spinner-input")) {
+                        jQuery(element).parent().parent().append(error);
                     } else if (element.attr('type')=='text') {
-                        jQuery(element).closest('.form-group').append(error);
+                        jQuery(element).parent().append(error);
                     }
                 },
                 validClass: "",
@@ -78,9 +78,59 @@
             });
 
 
+            ajustaCampos(jQuery("#tableGolsMandante tbody"));
+            ajustaCampos(jQuery("#tableGolsVisitante tbody"));
+            ajustaCampos(jQuery("#tableCartoesAmarelosMandante tbody"), '{{ constant('DesportoBundle\\Entity\\Cartao::AMARELO') }}');
+            ajustaCampos(jQuery("#tableCartoesAmarelosVisitante tbody"), '{{ constant('DesportoBundle\\Entity\\Cartao::AMARELO') }}');
+            ajustaCampos(jQuery("#tableCartoesVermelhosMandante tbody"), '{{ constant('DesportoBundle\\Entity\\Cartao::VERMELHO') }}');
+            ajustaCampos(jQuery("#tableCartoesVermelhosVisitante tbody"), '{{ constant('DesportoBundle\\Entity\\Cartao::VERMELHO') }}');
+
 
         });
 
+
+        function ajustaCampos(tableBody, cor = "")
+        {
+            var table = tableBody.parent().attr("id");
+            if (tableBody.find("tr").length == 0) {
+                tableBody.parent().hide();
+                return ;
+            } else {
+                tableBody.parent().show();
+            }
+                
+            tableBody.find("tr").each(function () {
+                jQuery(this).find("select").select2({
+                    minimumResultsForSearch: -1,
+                }).removeClass("form-control");
+
+                jQuery('.select2-container').css("width", "100%");
+                jQuery(this).find("td:nth-child(2) input").keyup(function () {
+                    var valor = jQuery(this).val();
+                    jQuery(this).val(valor.replace(/[^\d]/gi, ""));
+                }).spinner({min: 0});
+                if (cor != "") {
+                    jQuery(this).find("input[type='hidden']").val(cor);
+                }
+                if (table == "tableGolsMandante" || table === "tableCartoesAmarelosMandante" || table === "tableCartoesVermelhosMandante") {
+                    {% for profissional in form.profissionalJogos if profissional.vars.data.inscricao.equipe == jogo.equipeVisitante %}
+                    jQuery(this).find("td:first select option").each(function() {
+                        if (jQuery(this).val()=='{{ profissional.vars.data.inscricao.id }}') {
+                            jQuery(this).remove();
+                        }
+                    });
+                    {% endfor %}
+                } else if (table == "tableGolsVisitante" || table === "tableCartoesAmarelosVisitante" || table === "tableCartoesVermelhosVisitante") {
+                    {% for profissional in form.profissionalJogos if profissional.vars.data.inscricao.equipe == jogo.equipeMandante %}
+                    jQuery(this).find("td:first select option").each(function() {
+                        if (jQuery(this).val()=='{{ profissional.vars.data.inscricao.id }}') {
+                            jQuery(this).remove();
+                        }
+                    });
+                    {% endfor %}
+                }
+            })
+        }
 
         function adicionarGols(numeroGols, table) {
             var tableBody = jQuery(table + " tbody");
@@ -95,22 +145,7 @@
                 tableBody.append(strHtml.replace(/__name__/g, iGol));
                 iGol++;
             }
-            tableBody.find("tr").each(function () {
-                jQuery(this).find("input[type='number']").keyup(function () {
-                    var valor = jQuery(this).val();
-                    jQuery(this).val(valor.replace(/[^\d]/gi, ""));
-                }).spinner({min: 0});
-                if (table == "#tableGolsMandante") {
-                    {% for profissional in form.profissionalJogos if profissional.inscricao.vars.value.equipe == jogo.equipeMandante %}
-                    jQuery(this).find("td:first select").append(new Option('{{ profissional.inscricao.vars.value.profissional.nome }}', '{{ profissional.inscricao.vars.value.id }}'));
-                    {% endfor %}
-                } else if (table == "#tableGolsVisitante") {
-                    {% for profissional in form.profissionalJogos if profissional.inscricao.vars.value.equipe == jogo.equipeVisitante %}
-                        jQuery(this).find("td:first select").append(new Option('{{ profissional.inscricao.vars.value.profissional.nome }}', '{{ profissional.inscricao.vars.value.id }}'));
-                    {% endfor %}
-                }
-            })
-
+            ajustaCampos(tableBody);
         }
         
         function adicionarCartoes(numeroCartoes, table, cor) {
@@ -126,24 +161,26 @@
                 tableBody.append(strHtml.replace(/__name__/g, iCartao));
                 iCartao++;
             }
-            tableBody.find("tr").each(function () {
+            
+            ajustaCampos(tableBody, cor);
+{#            tableBody.find("tr").each(function () {
                 
                 jQuery(this).find("input[type='number']").keyup(function () {
                     var valor = jQuery(this).val();
                     jQuery(this).val(valor.replace(/[^\d]/gi, ""));
                 }).spinner({min: 0});
-                jQuery(this).find("input[type='hidden']").val(cor);
+                
                 if (table === "#tableCartoesAmarelosMandante" || table === "#tableCartoesVermelhosMandante") {
-                    {% for profissional in form.profissionalJogos if profissional.inscricao.vars.value.equipe == jogo.equipeMandante %}
-                    jQuery(this).find("td:first select").append(new Option('{{ profissional.inscricao.vars.value.profissional.nome }}', '{{ profissional.inscricao.vars.value.id }}'));
+                    {% for profissional in form.profissionalJogos if profissional.vars.data.inscricao.equipe == jogo.equipeMandante %}
+                    jQuery(this).find("td:first select").append(new Option('{{ profissional.vars.data.inscricao.profissional.nome }}', '{{ profissional.vars.data.inscricao.id }}'));
                     {% endfor %}
                 } else if (table === "#tableCartoesAmarelosVisitante" || table === "#tableCartoesVermelhosVisitante") {
-                    {% for profissional in form.profissionalJogos if profissional.inscricao.vars.value.equipe == jogo.equipeVisitante %}
-                        jQuery(this).find("td:first select").append(new Option('{{ profissional.inscricao.vars.value.profissional.nome }}', '{{ profissional.inscricao.vars.value.id }}'));
+                    {% for profissional in form.profissionalJogos if profissional.vars.data.inscricao.equipe == jogo.equipeVisitante %}
+                        jQuery(this).find("td:first select").append(new Option('{{ profissional.vars.data.inscricao.profissional.nome }}', '{{ profissional.vars.data.inscricao.id }}'));
                     {% endfor %}
                 }
             })
-
+#}
         }
     </script>
     <style>
@@ -171,6 +208,7 @@
     </div><!-- pageheader -->
     <div class="contentpanel">
         {{ form_start(form) }}
+        {{ form_errors(form) }}
 
         <!-- ESCALAÇÃO -->
         <div class="row">
@@ -192,12 +230,14 @@
                                 </tr>
                             </thead>
                             <tbody>
-
-                                {% for profissional in form.profissionalJogos if profissional.inscricao.vars.value.equipe == jogo.equipeMandante %}
+                                {% for profissional in form.profissionalJogos if profissional.vars.data.inscricao.equipe == jogo.equipeMandante %}
                                     <tr>
-                                        <td>{{ form_widget(profissional.numero) }}</td>
+                                        
                                         <td>
-                                            <h5>{{ profissional.inscricao.vars.value.profissional.nome }}</h5>
+                                            {{ form_widget(profissional.numero) }}
+                                        </td>
+                                        <td>
+                                            <h5>{{ profissional.vars.data.inscricao.profissional.nome }}</h5>
                                             {{ form_widget(profissional.inscricao) }}
                                         </td>
                                         <td>
@@ -208,7 +248,6 @@
                                         </td>
                                     </tr>
                                 {% endfor %}
-
                             </tbody>
                         </table>
 
@@ -231,11 +270,11 @@
                             <th>Capitão</th>
                             </thead>
                             <tbody>
-                                {% for profissional in form.profissionalJogos if profissional.inscricao.vars.value.equipe == jogo.equipeVisitante %}
+                                {% for profissional in form.profissionalJogos if profissional.vars.data.inscricao.equipe == jogo.equipeVisitante %}
                                     <tr>
                                         <td>{{ form_widget(profissional.numero) }}</td>
                                         <td>
-                                            <h5>{{ profissional.inscricao.vars.value.profissional.nome }}</h5>
+                                            <h5>{{ profissional.vars.data.inscricao.profissional.nome }}</h5>
                                             {{ form_widget(profissional.inscricao) }}
                                         </td>
                                         <td>
@@ -260,7 +299,7 @@
             <div class="col-sm-12">
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        <h3 class="panel-title">Gols</h3>
+                        <h3 class="panel-title">Placar</h3>
                     </div>
                     <div class="panel-body">
 
@@ -269,12 +308,12 @@
                                 <div class="form-group">
                                     <label class="control-label col-lg-8 col-md-6 text-right">{{ jogo.equipeMandante.nome }}</label>
                                     <div class="col-md-6 col-lg-4">
-                                        <input id="golsMandante" type="number" class="form-control" />
+                                        {{ form_widget(form.numeroGolsMandante) }}
                                     </div>
                                 </div>
 
                                 <div class="table table-responsive">
-                                    <table class="table" style="display: none;" id="tableGolsMandante" >
+                                    <table class="table" id="tableGolsMandante" >
                                         <thead>
                                             <tr>
                                                 <th>Jogador</th>
@@ -283,9 +322,11 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            {% for gol in form.gols if gol.inscricao.vars.value.equipe == jogo.equipeMandante %}
+                                            {% for gol in form.gols if gol.vars.value.inscricao.equipe  == jogo.equipeMandante %}
                                                 <tr>
-                                                    {{ form_row(gol) }}
+                                                    {{ form_row(gol.inscricao) }}
+                                                    {{ form_row(gol.minuto) }}
+                                                    {{ form_row(gol.tempo) }}
                                                 </tr>
                                             {% endfor %}
                                         </tbody>
@@ -298,7 +339,7 @@
                             <div class="col-md-6 col-sm-12">
                                 <div class="form-group">
                                     <div class="col-md-6 col-lg-4">
-                                        <input id="golsVisitante" type="number" class="form-control" />
+                                        {{ form_widget(form.numeroGolsVisitante) }}
                                     </div>
                                     <label class="control-label col-lg-8 col-md-6">{{ jogo.equipeVisitante.nome }}</label>
                                 </div>
@@ -306,7 +347,7 @@
 
 
                                 <div class="table table-responsive">
-                                    <table class="table" style="display: none;" id="tableGolsVisitante"> 
+                                    <table class="table" id="tableGolsVisitante"> 
                                         <thead>
                                             <tr>
                                                 <th>Jogador</th>
@@ -315,11 +356,14 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            {% for gol in form.gols if gol.inscricao.vars.value.equipe == jogo.equipeVisitante %}
+                                            {% for gol in form.gols if gol.vars.value.inscricao.equipe  == jogo.equipeVisitante %}
                                                 <tr>
-                                                    {{ form_row(gol) }}
+                                                    {{ form_row(gol.inscricao) }}
+                                                    {{ form_row(gol.minuto) }}
+                                                    {{ form_row(gol.tempo) }}
                                                 </tr>
                                             {% endfor %}
+
                                         </tbody>
                                     </table>
                                 </div>
@@ -353,7 +397,7 @@
                                 <div class="form-group">
                                     <label class="control-label col-lg-8 col-md-6 text-right">{{ jogo.equipeMandante.nome }}</label>
                                     <div class="col-md-6 col-lg-4">
-                                        <input id="cartoesAmarelosMandante" type="number" class="form-control" />
+                                        {{ form_widget(form.numeroCartoesAmarelosMandante) }}
                                     </div>
                                 </div>
                                     
@@ -368,9 +412,12 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            {% for cartaoAmarelo in form.cartoes if cartaoAmarelo.inscricao.vars.value.equipe == jogo.equipeMandante and cartaoAmarelo.inscricao.vars.value == constant('DesportoBundle\\Entity\\Cartao::AMARELO')  %}
+                                            {% for cartaoAmarelo in form.cartoes if cartaoAmarelo.vars.data.inscricao.equipe == jogo.equipeMandante and cartaoAmarelo.vars.value.cor == constant('DesportoBundle\\Entity\\Cartao::AMARELO')  %}
                                                 <tr>
-                                                    {{ form_row(cartaoAmarelo) }}
+                                                    {{ form_row(cartaoAmarelo.cor) }}
+                                                    {{ form_row(cartaoAmarelo.inscricao) }}
+                                                    {{ form_row(cartaoAmarelo.minuto) }}
+                                                    {{ form_row(cartaoAmarelo.tempo) }}
                                                 </tr>
                                             {% endfor %}
                                         </tbody>
@@ -383,7 +430,7 @@
                             <div class="col-md-6 col-sm-12">
                                 <div class="form-group">
                                     <div class="col-md-6 col-lg-4">
-                                        <input id="cartoesAmarelosVisitante" type="number" class="form-control" />
+                                        {{ form_widget(form.numeroCartoesAmarelosVisitante) }}
                                     </div>
                                     <label class="control-label col-lg-8 col-md-6">{{ jogo.equipeVisitante.nome }}</label>
                                 </div>
@@ -398,9 +445,12 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            {% for cartaoAmarelo in form.cartoes if cartaoAmarelo.inscricao.vars.value.equipe == jogo.equipeVisitante and cartaoAmarelo.inscricao.vars.value == constant('DesportoBundle\\Entity\\Cartao::AMARELO')  %}
+                                            {% for cartaoAmarelo in form.cartoes if cartaoAmarelo.vars.data.inscricao.equipe == jogo.equipeVisitante and cartaoAmarelo.vars.data.cor == constant('DesportoBundle\\Entity\\Cartao::AMARELO')  %}
                                                 <tr>
-                                                    {{ form_row(cartaoAmarelo) }}
+                                                    {{ form_row(cartaoAmarelo.cor) }}
+                                                    {{ form_row(cartaoAmarelo.inscricao) }}
+                                                    {{ form_row(cartaoAmarelo.minuto) }}
+                                                    {{ form_row(cartaoAmarelo.tempo) }}
                                                 </tr>
                                             {% endfor %}
                                         </tbody>
@@ -433,7 +483,7 @@
                                 <div class="form-group">
                                     <label class="control-label col-lg-8 col-md-6 text-right">{{ jogo.equipeMandante.nome }}</label>
                                     <div class="col-md-6 col-lg-4">
-                                        <input id="cartoesVermelhosMandante" type="number" class="form-control" />
+                                        {{ form_widget(form.numeroCartoesVermelhosMandante) }}
                                     </div>
                                 </div>
                                     
@@ -448,9 +498,12 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            {% for cartaoVermelho in form.cartoes if cartaoVermelho.inscricao.vars.value.equipe == jogo.equipemandante and cartaoVermelho.inscricao.vars.value == constant('DesportoBundle\\Entity\\Cartao::VERMELHO')  %}
+                                            {% for cartaoVermelho in form.cartoes if cartaoVermelho.vars.data.inscricao.equipe == jogo.equipemandante and cartaoVermelho.vars.data.cor == constant('DesportoBundle\\Entity\\Cartao::VERMELHO')  %}
                                                 <tr>
-                                                    {{ form_row(cartaoVermelho) }}
+                                                    {{ form_row(cartaoVermelho.cor) }}
+                                                    {{ form_row(cartaoVermelho.inscricao) }}
+                                                    {{ form_row(cartaoVermelho.minuto) }}
+                                                    {{ form_row(cartaoVermelho.tempo) }}
                                                 </tr>
                                             {% endfor %}
                                         </tbody>
@@ -462,7 +515,7 @@
                             <div class="col-md-6 col-sm-12">
                                 <div class="form-group">
                                     <div class="col-md-6 col-lg-4">
-                                        <input id="cartoesVermelhosVisitante" type="number" class="form-control" />
+                                        {{ form_widget(form.numeroCartoesVermelhosVisitante) }}
                                     </div>
                                     <label class="control-label col-lg-8 col-md-6">{{ jogo.equipeVisitante.nome }}</label>
                                 </div>
@@ -477,9 +530,12 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            {% for cartaoVermelho in form.cartoes if cartaoVermelho.inscricao.vars.value.equipe == jogo.equipeVisitante and cartaoVermelho.inscricao.vars.value == constant('DesportoBundle\\Entity\\Cartao::VERMELHO')  %}
+                                            {% for cartaoVermelho in form.cartoes if cartaoVermelho.vars.data.inscricao.equipe == jogo.equipeVisitante and cartaoVermelho.vars.data.cor == constant('DesportoBundle\\Entity\\Cartao::VERMELHO')  %}
                                                 <tr>
-                                                    {{ form_row(cartaoVermelho) }}
+                                                    {{ form_row(cartaoVermelho.cor) }}
+                                                    {{ form_row(cartaoVermelho.inscricao) }}
+                                                    {{ form_row(cartaoVermelho.minuto) }}
+                                                    {{ form_row(cartaoVermelho.tempo) }}
                                                 </tr>
                                             {% endfor %}
                                         </tbody>

@@ -2,8 +2,10 @@
 
 namespace DesportoBundle\Controller;
 
+use DesportoBundle\Entity\InscricaoProfissional;
 use DesportoBundle\Entity\Jogo;
 use DesportoBundle\Form\JogoType;
+use DesportoBundle\Service\JogoService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -17,34 +19,39 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class JogoController extends Controller
 {
-        
+
     /**
      * 
      * @Route("/{jogo}", name="jogo_detalhar")
      * @Template()
      * @param Jogo $jogo
      */
-    public function detalharAction(Jogo $jogo, Request $request) 
+    public function detalharAction(Jogo $jogo, Request $request)
     {
-        
-        $inscricoes = $this->getDoctrine()->getRepository(\DesportoBundle\Entity\InscricaoProfissional::class)
+
+        $inscricoes = $this->getDoctrine()->getRepository(InscricaoProfissional::class)
                 ->getJogadoresPorJogo($jogo);
-        
-        foreach ($inscricoes as $inscricao) {
-            $profissionalJogo = new \DesportoBundle\Entity\ProfissionalJogo($inscricao);
-            $profissionalJogo->setJogo($jogo);
-            $jogo->getProfissionalJogos()->add($profissionalJogo);
-        }
-        
-        $form = $this->createForm(JogoType::class, $jogo);
+
+        $jogo = $this->getJogoService()->getParaEdicao($jogo);
+        $form = $this->createForm(JogoType::class, $jogo, ['inscricoes'=>$inscricoes]);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-
+            $jogo->setJogado(TRUE);
             $this->getDoctrine()->getManager()->persist($jogo);
-            return new RedirectResponse($this->generateUrl('campeonato_detalhe', array('campeonato'=>$jogo->getEdicaoCampeonato()->getId())));
+            $this->getDoctrine()->getManager()->flush();
+            return new RedirectResponse($this->generateUrl('campeonato_detalhe', array('campeonato' => $jogo->getEdicaoCampeonato()->getId())));
         }
-        return ['form'=>$form->createView(), 'jogo'=>$jogo];
+
+        return ['form' => $form->createView(), 'jogo' => $jogo];
     }
-    
-    
+
+    /**
+     * 
+     * @return JogoService
+     */
+    protected function getJogoService()
+    {
+        return $this->get("jogo");
+    }
+
 }

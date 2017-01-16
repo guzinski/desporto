@@ -16,19 +16,17 @@ class Gol extends BaseEntity
      * @var InscricaoProfissional
      *
      * @ORM\ManyToOne(targetEntity="InscricaoProfissional", inversedBy="gols")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="inscricao_profissional", referencedColumnName="id")
-     * })
+     * @ORM\JoinColumn(name="inscricao_profissional", referencedColumnName="id", nullable=false)
+     * 
      */
-    private $inscricao;    
+    private $inscricao;
     
     /**
      * @var Jogo
      *
      * @ORM\ManyToOne(targetEntity="Jogo", inversedBy="gols")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="jogo", referencedColumnName="id")
-     * })
+     * @ORM\JoinColumn(name="jogo", referencedColumnName="id", nullable=false)
+     * 
      */
     private $jogo;
 

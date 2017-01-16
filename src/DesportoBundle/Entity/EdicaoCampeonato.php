@@ -172,6 +172,14 @@ class EdicaoCampeonato extends BaseEntity
      * @ORM\OneToMany(targetEntity="FaseClassificatoria", cascade={"persist"}, mappedBy="edicaoCampeonato")
      **/
     private $fasesClassificatorias;
+    
+    
+    /**
+     * @var Collection
+     * @ORM\OneToMany(targetEntity="Jogo", mappedBy="edicaoCampeonato")
+     **/
+    private $jogos;
+
 
     private $pontosCorridos;
     private $faseDeGrupos;
@@ -191,6 +199,7 @@ class EdicaoCampeonato extends BaseEntity
         $this->setFasesClassificatorias(new ArrayCollection());
         $this->setRodadas(new ArrayCollection());
         $this->setInscricoes(new ArrayCollection());
+        $this->setJogos(new ArrayCollection());
     }
 
 
@@ -498,6 +507,19 @@ class EdicaoCampeonato extends BaseEntity
         $this->inscricoes = $inscricoes;
         return $this;
     }
+    
+    public function getJogos()
+    {
+        return $this->jogos;
+    }
+
+    public function setJogos(Collection $jogos)
+    {
+        $this->jogos = $jogos;
+        return $this;
+    }
+
+
 
 
 
