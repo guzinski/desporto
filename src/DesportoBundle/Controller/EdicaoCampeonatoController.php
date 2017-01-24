@@ -95,7 +95,6 @@ class EdicaoCampeonatoController extends Controller
     
     /**
      * @Route("/detalhe/{campeonato}", name="campeonato_detalhe")
-     * @Template()
      * @param Campeonato $campeonato
      */
     public function detalheAction(EdicaoCampeonato $campeonato)
@@ -104,7 +103,10 @@ class EdicaoCampeonatoController extends Controller
             return $this->redirectToRoute("campeonato_convocacao", array("campeonato"=>$campeonato->getId()));
         }
         $tabela = $this->getService()->calculaTabela($campeonato);
-        return array("campeonato"=>$campeonato, "tabela"=>$tabela);
+        if ($campeonato->getTipo() == EdicaoCampeonato::PONTOS_CORRIDOS) {
+            return $this->render("DesportoBundle::EdicaoCampeonato\pontosCorridos.html.twig", ["campeonato"=>$campeonato, "tabela"=>$tabela]);
+        }
+
     }
 
     /**
