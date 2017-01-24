@@ -22,7 +22,7 @@ class Cartao extends BaseEntity
     /**
      * @var InscricaoProfissional
      *
-     * @ORM\ManyToOne(targetEntity="InscricaoProfissional", inversedBy="cartoes")
+     * @ORM\ManyToOne(targetEntity="InscricaoProfissional", inversedBy="cartoes",fetch="EAGER")
      * @ORM\JoinColumn(name="inscricao_profissional", referencedColumnName="id", nullable=false)
      * 
      */

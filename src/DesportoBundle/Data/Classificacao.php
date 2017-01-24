@@ -27,6 +27,7 @@ class Classificacao
     private $golsMarcados = 0;
     private $golsSofridos  = 0;
     private $golsSaldo = 0;
+    private $aproveitamento = 0;
     
     
     public function __construct(Equipe $equipe)
@@ -181,7 +182,13 @@ class Classificacao
         $this->golsSofridos += $valor;
     }
     
-    
+    public function getAproveitamento()
+    {
+        if ($this->getVitorias()+$this->getDerrotas()+$this->getEmpates() == 0) {
+            return 0;
+        }
+        return $this->getPontos() / (($this->getVitorias()+$this->getDerrotas()+$this->getEmpates()) *3) * 100;
+    }
     
     
     

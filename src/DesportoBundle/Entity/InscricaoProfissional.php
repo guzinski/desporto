@@ -34,7 +34,7 @@ class InscricaoProfissional
     /**
      * @var EdicaoCampeonato
      *
-     * @ORM\ManyToOne(targetEntity="EdicaoCampeonato", inversedBy="inscricoes")
+     * @ORM\ManyToOne(targetEntity="EdicaoCampeonato", inversedBy="inscricoes", fetch="EAGER")
      * @ORM\JoinColumn(name="edicao_campeonato", referencedColumnName="id", nullable=false)
      */
     protected $edicaoCampeonato;
@@ -42,7 +42,7 @@ class InscricaoProfissional
     /**
      * @var Equipe
      *
-     * @ORM\ManyToOne(targetEntity="Equipe", inversedBy="inscricoes")
+     * @ORM\ManyToOne(targetEntity="Equipe", inversedBy="inscricoes", fetch="EAGER")
      * @ORM\JoinColumn(name="equipe", referencedColumnName="id", nullable=false)
      */
     protected $equipe;

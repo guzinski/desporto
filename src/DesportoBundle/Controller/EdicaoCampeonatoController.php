@@ -25,6 +25,55 @@ class EdicaoCampeonatoController extends Controller
 {
     
     /**
+     * @Route("/", name="campeonato_index")
+     * @Template()
+     * @return type
+     */
+    public function indexAction()
+    {
+        return [];
+    }
+    
+    /**
+     * @Route("/pagination", name="campeonato_pagination")
+     */
+    public function paginationAction(Request $request)
+    {
+        $firstResult    = $request->query->getInt("start");
+        $maxResults     = $request->query->getInt("length");
+        $busca          = $request->get("search");
+        
+        $repCampeonatos = $this->getDoctrine()
+                            ->getRepository(EdicaoCampeonato::class);
+        $campeonatos = $repCampeonatos->getCampeonatos($busca['value'], $maxResults, $firstResult);
+        $dados = array();
+        foreach ($campeonatos as $campeonato) {
+            $dados[] = [
+                "<a href=\"".$this->generateUrl("campeonato_detalhe", array("campeonato"=>$campeonato->getId()))."\">". $campeonato->getCampeonato()->getNome()."</a>",
+                $campeonato->getEdicao(),
+                $campeonato->getModalidade() == \DesportoBundle\Doctrine\Type\EnumSexoType::MASCULINO ? "Masculino" : "Feminino",
+            ];
+        }
+        
+        $recordsTotal = $repCampeonatos->count();
+        if (!empty($busca['value'])) {
+            $recordsFiltered = $repCampeonatos->count($busca['value']);
+        } else {
+            $recordsFiltered = $recordsTotal;
+        }
+        
+        $return = [
+            'draw' => $request->get("draw"),
+            'recordsTotal' => $recordsTotal,
+            'recordsFiltered' => $recordsFiltered,
+            'data' => $dados,
+        ];
+        return new Response(json_encode($return));
+    }
+
+    
+    
+    /**
      * @Route("/novo", name="campeonato_novo")
      * @Template()
      * 

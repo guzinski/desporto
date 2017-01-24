@@ -569,9 +569,8 @@ class EdicaoCampeonatoService
         }
         
         $iterator = $tabela->getIterator();
-        $iterator->uasort(function ($first, $second) {
-            return $first->getPontos() > $second->getPontos() ? -1 : 1;
-
+        $iterator->uasort(function (Classificacao $first, Classificacao $second) use ($campeonato) {
+            return $this->regraDesempate($first, $second, $campeonato, 1);
         });
         
         $tabela = new ArrayCollection(iterator_to_array($iterator));
@@ -579,6 +578,54 @@ class EdicaoCampeonatoService
         
         return $tabela;
         
+    }
+    
+    private function regraDesempate(Classificacao $first, Classificacao $second, EdicaoCampeonato $campeonato, $nivel)
+    {
+        if ($nivel == 1) {
+            $desempate = $campeonato->getDesempate1();
+        } elseif ($nivel == 2) {
+            $desempate = $campeonato->getDesempate2();
+        } elseif ($nivel == 3) {
+            $desempate = $campeonato->getDesempate3();
+        } else {
+            return 0;
+        }
+        
+        if ($desempate == EdicaoCampeonato::DISCIPLINA) {
+            if ($first->getCartoesVermelhos() > $second->getCartoesVermelhos()) {
+                return 1;
+            } elseif ($first->getCartoesVermelhos() < $second->getCartoesVermelhos()) {
+                return -1;
+            } elseif ($first->getCartoesAmarelos() > $second->getCartoesAmarelos()) {
+                return 1;
+            } elseif ($first->getCartoesAmarelos() < $second->getCartoesAmarelos()) {
+                return -1;
+            } else {
+                return $this->regraDesempate($first, $second, $campeonato, ++$nivel);
+            }
+        } elseif ($desempate == EdicaoCampeonato::VITORIA) {
+            if ($first->getVitorias() > $second->getVitorias()) {
+                return -1;
+            } elseif ($first->getVitorias() < $second->getVitorias()) {
+                return 1;
+            } else {
+                return $this->regraDesempate($first, $second, $campeonato, ++$nivel);
+            }
+        } elseif ($desempate == EdicaoCampeonato::SALDO_GOLS) {
+            if ($first->getGolsSaldo() > $second->getGolsSaldo()) {
+                return -1;
+            } elseif ($first->getGolsSaldo() < $second->getGolsSaldo()) {
+                return 1;
+            } elseif ($first->getGolsMarcados() > $second->getGolsMarcados()) {
+                return -1;
+            } elseif ($first->getGolsMarcados() < $second->getGolsMarcados()) {
+                return 1;
+            } else {
+                return $this->regraDesempate($first, $second, $campeonato, ++$nivel);
+            }
+        }
+
     }
     
     /**

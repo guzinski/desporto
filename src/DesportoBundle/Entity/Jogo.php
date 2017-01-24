@@ -130,13 +130,13 @@ class Jogo
     
     /**
      * @var Collection
-     * @ORM\OneToMany(targetEntity="Gol", cascade={"all"}, mappedBy="jogo", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="Gol", cascade={"all"}, mappedBy="jogo", orphanRemoval=true, fetch="EAGER")
      **/
     private $gols;
     
     /**
      * @var Collection
-     * @ORM\OneToMany(targetEntity="Cartao", cascade={"all"}, mappedBy="jogo", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="Cartao", cascade={"all"}, mappedBy="jogo", orphanRemoval=true, fetch="EAGER")
      **/
     private $cartoes;
         
