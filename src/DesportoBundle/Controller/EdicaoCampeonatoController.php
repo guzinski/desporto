@@ -105,6 +105,10 @@ class EdicaoCampeonatoController extends Controller
         $tabela = $this->getService()->calculaTabela($campeonato);
         if ($campeonato->getTipo() == EdicaoCampeonato::PONTOS_CORRIDOS) {
             return $this->render("DesportoBundle::EdicaoCampeonato\pontosCorridos.html.twig", ["campeonato"=>$campeonato, "tabela"=>$tabela]);
+        } elseif ($campeonato->getTipo() == EdicaoCampeonato::TORNEIO) {
+            return $this->render("DesportoBundle::EdicaoCampeonato\torneio.html.twig", ["campeonato"=>$campeonato, "tabela"=>$tabela]);
+        } elseif ($campeonato->getTipo() == EdicaoCampeonato::CHAVE) {
+            return $this->render("DesportoBundle::EdicaoCampeonato\chave.html.twig", ["campeonato"=>$campeonato, "tabela"=>$tabela]);
         }
 
     }
@@ -117,7 +121,16 @@ class EdicaoCampeonatoController extends Controller
      */
     public function convocacaoAction(EdicaoCampeonato $campeonato)
     {
-        return array("campeonato"=>$campeonato);
+//        $this
+//    ->get('doctrine')
+//    ->getConnection()
+//    ->getConfiguration()
+//    ->setSQLLogger(new \Doctrine\DBAL\Logging\EchoSQLLogger());
+
+        $equipes = $this->getDoctrine()->getRepository(Equipe::class)->getEquipesCampeonato($campeonato, TRUE);
+//        var_dump($equipes);
+//        die();
+        return array("campeonato"=>$campeonato, "equipes" => $equipes);
     }
 
     /**

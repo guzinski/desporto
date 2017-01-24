@@ -67,43 +67,64 @@
 
         <div class="row">
             <div class="col-sm-12">
-                <table class="table table-bordered table-striped">
-                    <thead>
-                        <tr>
-                            <th></th>
-                            <th>Equipe</th>
-                            <th>Pontos</th>
-                            <th>Vitórias</th>
-                            <th>Empates</th>
-                            <th>Derrotas</th>
-                            <th class="tooltips" data-toggle="tooltip" data-original-title="Gols Pró">GP</th>
-                            <th class="tooltips" data-toggle="tooltip" data-original-title="Gols Contra">GC</th>
-                            <th class="tooltips" data-toggle="tooltip" data-original-title="Saldo de Gols">SG</th>
-                            <th class="tooltips" data-toggle="tooltip" data-original-title="Cartões Amarelos">CA</th>
-                            <th class="tooltips" data-toggle="tooltip" data-original-title="Cartões Vermelhos">CV</th>
-                            <th class="tooltips" data-toggle="tooltip" data-original-title="Aproveitamento em %" >Aprov.</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for classificacao in tabela %}
-                            <tr>
-                                <td class="text-center"><strong class="h5">{{ loop.index }}</strong></td>
-                                <td><a class="h4" href="#">{{ classificacao.equipe.apelido }}</a></td>
-                                <td>{{ classificacao.pontos }}</td>
-                                <td>{{ classificacao.vitorias }}</td>
-                                <td>{{ classificacao.empates }}</td>
-                                <td>{{ classificacao.derrotas }}</td>
-                                <td>{{ classificacao.golsMarcados }}</td>
-                                <td>{{ classificacao.golsSofridos }}</td>
-                                <td>{{ classificacao.golsSaldo }}</td>
-                                <td>{{ classificacao.cartoesAmarelos }}</td>
-                                <td>{{ classificacao.cartoesVermelhos }}</td>
-                                <td>{{ classificacao.aproveitamento|number_format(1) }}%</td>
-                            </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-            </div><!-- col-sm-12 -->
+                
+                <h5 class="lg-title mb10">Classificação</h5>
+
+                <!-- Nav tabs -->
+                <ul class="nav nav-tabs">
+                    {% for chave in campeonato.chaves %}
+                        <li {% if loop.index == 1 %}class="active" {% endif %}><a href="#classificacao{{ loop.index }}" data-toggle="tab"><strong>Chave {{ loop.index }}</strong></a></li>
+                    {% endfor %}
+                </ul>
+
+                
+                <div class="tab-content mb30">
+                {% for tabelaChave in tabela %}
+                    <div class="tab-pane {% if loop.index == 1 %} active {% endif %}" id="classificacao{{ loop.index }}">
+                        <table class="table table-bordered table-striped">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Equipe</th>
+                                    <th>Pontos</th>
+                                    <th>Vitórias</th>
+                                    <th>Empates</th>
+                                    <th>Derrotas</th>
+                                    <th class="tooltips" data-toggle="tooltip" data-original-title="Gols Pró">GP</th>
+                                    <th class="tooltips" data-toggle="tooltip" data-original-title="Gols Contra">GC</th>
+                                    <th class="tooltips" data-toggle="tooltip" data-original-title="Saldo de Gols">SG</th>
+                                    <th class="tooltips" data-toggle="tooltip" data-original-title="Cartões Amarelos">CA</th>
+                                    <th class="tooltips" data-toggle="tooltip" data-original-title="Cartões Vermelhos">CV</th>
+                                    <th class="tooltips" data-toggle="tooltip" data-original-title="Aproveitamento em %" >Aprov.</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for classificacao in tabelaChave %}
+                                    <tr>
+                                        <td class="text-center"><strong class="h5">{{ loop.index }}</strong></td>
+                                        <td><a class="h4" href="#">{{ classificacao.equipe.apelido }}</a></td>
+                                        <td>{{ classificacao.pontos }}</td>
+                                        <td>{{ classificacao.vitorias }}</td>
+                                        <td>{{ classificacao.empates }}</td>
+                                        <td>{{ classificacao.derrotas }}</td>
+                                        <td>{{ classificacao.golsMarcados }}</td>
+                                        <td>{{ classificacao.golsSofridos }}</td>
+                                        <td>{{ classificacao.golsSaldo }}</td>
+                                        <td>{{ classificacao.cartoesAmarelos }}</td>
+                                        <td>{{ classificacao.cartoesVermelhos }}</td>
+                                        <td>{{ classificacao.aproveitamento|number_format(1) }}%</td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div><!-- tab-pane -->
+                {% endfor %}
+                
+                
+
+                </div><!-- tab-content -->
+                
+            </div>
         </div> <!-- row -->
         <hr/>
         <div class="panel panel-default">

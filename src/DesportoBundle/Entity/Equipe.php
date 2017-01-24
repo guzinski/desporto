@@ -309,19 +309,26 @@ class Equipe extends BaseEntity
      */
     public function getDiretor(EdicaoCampeonato $campeonato)
     {
-        $query = \Doctrine\Common\Collections\Criteria::create();
         
-        $query->andWhere($query->expr()->eq("edicaoCampeonato", $campeonato))
-                ->andWhere($query->expr()->eq("tipo", InscricaoProfissional::DIRETOR));
-        
-        $collection = $this->inscricoes->matching($query);
-        if (!$collection->isEmpty()) {
-            foreach ($collection as $row) {
-                /** @var $row InscricaoProfissional  */
-                return $row->getProfissional();
+        foreach ($this->getInscricoes() as $inscricao) {
+            if ($inscricao->getTipo() == InscricaoProfissional::DIRETOR) {
+                return $inscricao->getProfissional();
             }
         }
         return null;
+//        $query = \Doctrine\Common\Collections\Criteria::create();
+//        
+//        $query->andWhere($query->expr()->eq("edicaoCampeonato", $campeonato))
+//                ->andWhere($query->expr()->eq("tipo", InscricaoProfissional::DIRETOR));
+//        
+//        $collection = $this->inscricoes->matching($query);
+//        if (!$collection->isEmpty()) {
+//            foreach ($collection as $row) {
+//                /** @var $row InscricaoProfissional  */
+//                return $row->getProfissional();
+//            }
+//        }
+//        return null;
     }
     
     /**
@@ -331,19 +338,28 @@ class Equipe extends BaseEntity
      */
     public function getTreinador(EdicaoCampeonato $campeonato)
     {
-        $query = \Doctrine\Common\Collections\Criteria::create();
         
-        $query->andWhere($query->expr()->eq("edicaoCampeonato", $campeonato))
-                ->andWhere($query->expr()->eq("tipo", InscricaoProfissional::TREINADOR));
-        
-        $collection = $this->inscricoes->matching($query);
-        if (!$collection->isEmpty()) {
-            foreach ($collection as $row) {
-                /** @var $row InscricaoProfissional  */
-                return $row->getProfissional();
+        foreach ($this->getInscricoes() as $inscricao) {
+            if ($inscricao->getTipo() == InscricaoProfissional::TREINADOR) {
+                return $inscricao->getProfissional();
             }
         }
         return null;
+
+        
+//        $query = \Doctrine\Common\Collections\Criteria::create();
+//        
+//        $query->andWhere($query->expr()->eq("edicaoCampeonato", $campeonato))
+//                ->andWhere($query->expr()->eq("tipo", InscricaoProfissional::TREINADOR));
+//        
+//        $collection = $this->inscricoes->matching($query);
+//        if (!$collection->isEmpty()) {
+//            foreach ($collection as $row) {
+//                /** @var $row InscricaoProfissional  */
+//                return $row->getProfissional();
+//            }
+//        }
+//        return null;
     }
 
     /**
@@ -353,12 +369,22 @@ class Equipe extends BaseEntity
      */
     public function getJogadores(EdicaoCampeonato $campeonato)
     {
-        $query = \Doctrine\Common\Collections\Criteria::create();
+        $jogadores = new ArrayCollection();
+        foreach ($this->getInscricoes() as $inscricao) {
+            if ($inscricao->getTipo() == InscricaoProfissional::JOGADOR) {
+                $jogadores->add($inscricao->getProfissional());
+            }
+        }
+        return $jogadores;
+
         
-        $query->andWhere($query->expr()->eq("edicaoCampeonato", $campeonato))
-                ->andWhere($query->expr()->eq("tipo", InscricaoProfissional::JOGADOR));
         
-        return $this->inscricoes->matching($query);
+//        $query = \Doctrine\Common\Collections\Criteria::create();
+//        
+//        $query->andWhere($query->expr()->eq("edicaoCampeonato", $campeonato))
+//                ->andWhere($query->expr()->eq("tipo", InscricaoProfissional::JOGADOR));
+//        
+//        return $this->inscricoes->matching($query);
     }
 
 

@@ -2,7 +2,9 @@
 
 namespace DesportoBundle\Repository;
 
+use DesportoBundle\Entity\EdicaoCampeonato;
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\Query\Expr\Join;
 
 /**
  * Description of EquipeRepository
@@ -57,6 +59,26 @@ class EquipeRepository extends EntityRepository
         }
         
         return $query->getQuery()->getSingleScalarResult();
+    }
+    
+    /**
+     * 
+     * @param EdicaoCampeonato $campeonato
+     * @param boolean $inscricoes Se TRUE carrega as inscrições de cada equipe
+     */
+    public function getEquipesCampeonato(EdicaoCampeonato $campeonato, $inscricoes = FALSE)
+    {
+        $queri = $this->createQueryBuilder("E");
+        if ($inscricoes) {
+            $queri->select("E, I, P");
+            $queri->leftJoin("E.inscricoes", "I", Join::WITH, "I.edicaoCampeonato = :campeonato");
+            $queri->leftJoin("I.profissional", "P");
+        }
+        $queri->innerJoin("E.edicoesCampeonatos", "EC", Join::WITH, "EC.id = :campeonato");
+        $queri->andWhere($queri->expr()->eq("EC.id", ":campeonato"))
+                ->setParameter("campeonato", $campeonato->getId());
+        
+        return $queri->getQuery()->getResult();
     }
 
     

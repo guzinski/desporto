@@ -10,7 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Description of Jogo
  * @ORM\Table(name="jogo")
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="DesportoBundle\Repository\JogoRepository")
  */
 class Jogo
 {
@@ -31,9 +31,8 @@ class Jogo
      * @var Equipe
      *
      * @ORM\ManyToOne(targetEntity="Equipe")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="equipe_mandante", referencedColumnName="id")
-     * })
+     * @ORM\JoinColumn(name="equipe_mandante", referencedColumnName="id", nullable=false)
+     * 
      */
     private $equipeMandante;
     
@@ -41,9 +40,7 @@ class Jogo
      * @var Equipe
      *
      * @ORM\ManyToOne(targetEntity="Equipe")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="equipe_visitante", referencedColumnName="id")
-     * })
+     * @ORM\JoinColumn(name="equipe_visitante", referencedColumnName="id", nullable=false)
      */
     private $equipeVisitante;
     
@@ -103,21 +100,21 @@ class Jogo
     /**
      * @var string
      *
-     * @ORM\Column(type="string", length=255, nullable=false)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $mesario;
     
     /**
      * @var string
      *
-     * @ORM\Column(type="string", length=255, nullable=false)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $arbitro1;
     
     /**
      * @var string
      *
-     * @ORM\Column(type="string", length=255, nullable=false)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $arbitro2;
     

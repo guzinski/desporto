@@ -102,18 +102,18 @@ class EdicaoCampeonatoService
         if (empty($numeroChaves) || empty($numeroEquipes)) {
             throw new \InvalidArgumentException;
         }
-        $numEquipesChave = $numEquipes/$numChaves;
+        $numEquipesChave = $numeroEquipes/$numeroChaves;
         
         $result = [];
         
         for ($i=1; $i<$numEquipesChave; $i++) {
-            if ($i*$numChaves==1) {
+            if ($i*$numeroChaves==1) {
                 continue;
             }
-            if ($i*$numChaves>16) {
+            if ($i*$numeroChaves>16) {
                 break;
             }
-            if (log($i*$numChaves, 2)-(int)log($i*$numChaves, 2) == 0 ) {
+            if (log($i*$numeroChaves, 2)-(int)log($i*$numeroChaves, 2) == 0 ) {
                 $result[] = $i;
             }
         }
@@ -512,13 +512,45 @@ class EdicaoCampeonatoService
     /**
      * 
      * @param EdicaoCampeonato $campeonato
-     * @return ArrayCollection
+     * @return mixed
      */
     public function calculaTabela(EdicaoCampeonato $campeonato)
     {
         if ($campeonato->getTipo() == EdicaoCampeonato::PONTOS_CORRIDOS) {
             return $this->calculaTabelaPontosCorridos($campeonato);
         }
+        if ($campeonato->getTipo() == EdicaoCampeonato::CHAVE) {
+            return $this->calculaTabelaChave($campeonato);
+        }
+    }
+    
+    /**
+     * 
+     * @param EdicaoCampeonato $campeonato
+     * @return array
+     */
+    public function calculaTabelaChave(EdicaoCampeonato $campeonato)
+    {
+        $tabelas = [];
+        
+        foreach ($campeonato->getChaves() as $chave) {
+            /* @var $chave Chave */
+            $tabelaChave = new ArrayCollection();
+
+            $jogos = $this->getjogoRepository()->getjogosJogados($campeonato, $chave);
+
+            foreach ($chave->getEquipes() as $equipe) {
+                $this->getClassificacaoEquipe($equipe, $tabelaChave);
+            }
+
+            $this->montaTabela($jogos, $tabelaChave);                
+                    
+            $tabelas[] = $this->ordenaTabela($tabelaChave, $campeonato);
+
+        }
+        
+        return $tabelas;
+
     }
     
     /**
@@ -530,54 +562,65 @@ class EdicaoCampeonatoService
     {
         $tabela = new ArrayCollection();
         
-        foreach ($campeonato->getJogos() as $jogo) {
-            /* @var $jogo Jogo */
-            if ($jogo->getJogado()) {
-                $classificacaoMandante = $this->getClassificacaoEquipe($jogo->getEquipeMandante(), $tabela);
-                $classificacaoVisitante = $this->getClassificacaoEquipe($jogo->getEquipeVisitante(), $tabela);
-                
-                
-                if ($jogo->getNumeroGolsMandante() > $jogo->getNumeroGolsVisitante()) {
-                    $classificacaoMandante->addVitoria();
-                    $classificacaoVisitante->addDerrota();
-                } elseif ($jogo->getNumeroGolsMandante() === $jogo->getNumeroGolsVisitante()) {
-                    $classificacaoMandante->addEmpate();
-                    $classificacaoVisitante->addEmpate();
-                } else {
-                    $classificacaoMandante->addDerrota();
-                    $classificacaoVisitante->addVitoria();
-                }
-                $classificacaoMandante->addCartaoAmarelo($jogo->getNumeroCartoesAmarelosMandante());
-                $classificacaoMandante->addCartaoVermelho($jogo->getNumeroCartoesVermelhosMandante());
-                $classificacaoMandante->addGolsMarcados($jogo->getNumeroGolsMandante());
-                $classificacaoMandante->addGolsSofridos($jogo->getNumeroGolsVisitante());
-
-                $classificacaoVisitante->addCartaoAmarelo($jogo->getNumeroCartoesAmarelosVisitante());
-                $classificacaoVisitante->addCartaoVermelho($jogo->getNumeroCartoesVermelhosVisitante());
-                $classificacaoVisitante->addGolsMarcados($jogo->getNumeroGolsVisitante());
-                $classificacaoVisitante->addGolsSofridos($jogo->getNumeroGolsMandante());
-
-                
-            }
+        $jogos = $this->getjogoRepository()->getjogosJogados($campeonato);
+        
+        
+        foreach ($campeonato->getEquipes() as $equipe) {
+            $this->getClassificacaoEquipe($equipe, $tabela);
         }
         
+        $this->montaTabela($jogos, $tabela);                
+        
+        return $this->ordenaTabela($tabela, $campeonato);
+        
+    }
+    
+    private function ordenaTabela(Collection $tabela, EdicaoCampeonato $campeonato)
+    {
+        $iterator = $tabela->getIterator();
+        $iterator->uasort(function (Classificacao $first, Classificacao $second) use ($campeonato) {
+            return $this->regraDesempate($first, $second, $campeonato, 1);
+        });
+        
+        return new ArrayCollection(iterator_to_array($iterator));
+    }
+    
+    
+    private function montaTabela($jogos, $tabela)
+    {
+        foreach ($jogos as $jogo) {
+            /* @var $jogo Jogo */
+            $classificacaoMandante = $this->getClassificacaoEquipe($jogo->getEquipeMandante(), $tabela);
+            $classificacaoVisitante = $this->getClassificacaoEquipe($jogo->getEquipeVisitante(), $tabela);
+
+
+            if ($jogo->getNumeroGolsMandante() > $jogo->getNumeroGolsVisitante()) {
+                $classificacaoMandante->addVitoria();
+                $classificacaoVisitante->addDerrota();
+            } elseif ($jogo->getNumeroGolsMandante() === $jogo->getNumeroGolsVisitante()) {
+                $classificacaoMandante->addEmpate();
+                $classificacaoVisitante->addEmpate();
+            } else {
+                $classificacaoMandante->addDerrota();
+                $classificacaoVisitante->addVitoria();
+            }
+            $classificacaoMandante->addCartaoAmarelo($jogo->getNumeroCartoesAmarelosMandante());
+            $classificacaoMandante->addCartaoVermelho($jogo->getNumeroCartoesVermelhosMandante());
+            $classificacaoMandante->addGolsMarcados($jogo->getNumeroGolsMandante());
+            $classificacaoMandante->addGolsSofridos($jogo->getNumeroGolsVisitante());
+
+            $classificacaoVisitante->addCartaoAmarelo($jogo->getNumeroCartoesAmarelosVisitante());
+            $classificacaoVisitante->addCartaoVermelho($jogo->getNumeroCartoesVermelhosVisitante());
+            $classificacaoVisitante->addGolsMarcados($jogo->getNumeroGolsVisitante());
+            $classificacaoVisitante->addGolsSofridos($jogo->getNumeroGolsMandante());
+        }
         
         foreach ($tabela as $classificacao) {
             /* @var $classificacao Classificacao */
             $classificacao->setGolsSaldo($classificacao->getGolsMarcados()-$classificacao->getGolsSofridos());
             $classificacao->setPontos(($classificacao->getVitorias()*3)+$classificacao->getEmpates());
         }
-        
-        $iterator = $tabela->getIterator();
-        $iterator->uasort(function (Classificacao $first, Classificacao $second) use ($campeonato) {
-            return $this->regraDesempate($first, $second, $campeonato, 1);
-        });
-        
-        $tabela = new ArrayCollection(iterator_to_array($iterator));
 
-        
-        return $tabela;
-        
     }
     
     private function regraDesempate(Classificacao $first, Classificacao $second, EdicaoCampeonato $campeonato, $nivel)
@@ -645,5 +688,15 @@ class EdicaoCampeonatoService
         $classificacao = new Classificacao($equipe);
         $tabela->add($classificacao);
         return $classificacao;
+    }
+    
+    
+    /**
+     * 
+     * @return \DesportoBundle\Repository\JogoRepository
+     */
+    public function getjogoRepository()
+    {
+        return $this->em->getRepository(Jogo::class);
     }
 }
