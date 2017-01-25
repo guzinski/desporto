@@ -85,6 +85,7 @@
 
         function inscreverDiretor(idEquipe) {
             jQuery(".locked").fadeIn();
+            jQuery(".msgTreinador, .msgDiretor").addClass("hidden");
             var tipo = "{{ constant('DesportoBundle\\Entity\\InscricaoProfissional::DIRETOR') }}";
             jQuery.post("{{ path("campeonato_form_inscricao_profissional", {campeonato:  campeonato.id }) }}", {equipe: idEquipe, tipo: tipo})
                 .done(callBackInscreverDiretor).fail(defaultError);
@@ -92,6 +93,7 @@
         
         function inscreverTreinador(idEquipe) {
             jQuery(".locked").fadeIn();
+            jQuery(".msgTreinador, .msgDiretor").addClass("hidden");
             var tipo = "{{ constant('DesportoBundle\\Entity\\InscricaoProfissional::TREINADOR') }}"
             jQuery.post("{{ path("campeonato_form_inscricao_profissional", {campeonato:  campeonato.id }) }}", {equipe: idEquipe, tipo: tipo})
                 .done(callBackInscreverTreinador).fail(defaultError);
@@ -138,22 +140,22 @@
                 }
             });
             jQuery("#jogador").select2({
+                placeholder: "Procurar Jogador",
                 minimumInputLength: 1,
                 ajax: {
-                url: "{{ path('profissional_find_jogadores_disponiveis', {campeonato: campeonato.id}) }}",
-                dataType: 'json',
-                quietMillis: 250,
-                data: function (term, page) { // page is the one-based page number tracked by Select2
-                    return {
-                        busca: term, //search term
-                                campeonato:{{campeonato.id}},
-                                equipe: jQuery("#equipe").val(),
-                                inscritos: jQuery("input:hidden.inscritos").serializeArray()
+                    url: "{{ path('profissional_find_jogadores_disponiveis', {campeonato: campeonato.id}) }}",
+                    dataType: 'json',
+                    quietMillis: 250,
+                    data: function (term, page) { // page is the one-based page number tracked by Select2
+                        return {
+                            busca: term, //search term
+                                    campeonato:{{campeonato.id}},
+                                    equipe: jQuery("#equipe").val(),
+                                    inscritos: jQuery("input:hidden.inscritos").serializeArray()
                         };
                     },
                     results: function (data, page) {
                         var more = (page * 30) < data.total_count; // whether or not there are more results available
-
                         // notice we return the value of more so Select2 knows if more results can be loaded
                         return { results: data.items, more: more };
                     }
@@ -187,11 +189,12 @@
                                 bootbox.alert("Selecione o Diretor");
                             } else {
                                 jQuery(".locked").fadeIn();
-                                jQuery.post("{{ path("campeonato_inscrever_profissional", {"campeonato": campeonato.id} ) }}", jQuery("#formJogadores").serialize())
-                                        .done(function(html) {
+                                jQuery.post("{{ path("campeonato_inscrever_profissional", {"campeonato": campeonato.id} ) }}", jQuery("#formJogadores").serialize(), null, "json")
+                                        .done(function(json) {
+                                            jQuery("#btnDiretor"+json.idEquipe).hide().parent().append(json.profissional);
+                                            jQuery(".msgDiretor").removeClass("hidden");
                                             jQuery(".locked").fadeOut();
-                                            bootbox.alert("Diretor inscrito com sucesso");
-                                            location.href = "";
+{#                                            location.href = "";#}
                                         })
                                         .fail(defaultError);
                             }
@@ -250,11 +253,12 @@
                                 bootbox.alert("Selecione o Diretor");
                             } else {
                                 jQuery(".locked").fadeIn();
-                                jQuery.post("{{ path("campeonato_inscrever_profissional", {"campeonato": campeonato.id} ) }}", jQuery("#formJogadores").serialize())
-                                        .done(function(html) {
+                                jQuery.post("{{ path("campeonato_inscrever_profissional", {"campeonato": campeonato.id} ) }}", jQuery("#formJogadores").serialize(), null, "json")
+                                        .done(function(json) {
+                                            jQuery("#btnTreinador"+json.idEquipe).hide().parent().append(json.profissional);
+                                            jQuery(".msgTreinador").removeClass("hidden");
                                             jQuery(".locked").fadeOut();
-                                            bootbox.alert("Diretor inscrito com sucesso");
-                                            location.href = "";
+{#                                            location.href = "";#}
                                         })
                                         .fail(defaultError);
                             }
@@ -322,6 +326,17 @@
             <div class="col-sm-12 col-md-12 col-lg-12">
                 <h5 class="lg-title mb5">Convocação das equipes</h5>
                 <p class="">É necessário informar um número mínimo de jogadores para cada equipe, antes de começar o campeonato..</p>
+                
+                <div class="alert alert-success msgDiretor hidden">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                    Diretor inscrito com sucesso
+                </div>
+                <div class="alert alert-success msgTreinador hidden">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                    Treinador inscrito com sucesso
+                </div>
+
+                
                 <div class="table-responsive">
                     <table class="table ">
                         <thead>
@@ -337,22 +352,29 @@
                             {% for equipe in equipes %}
                                 <tr>
                                     <td><h5>{{ equipe.nome }}</h5></td>
+                                    <td>
                                     {% if equipe.getDiretor(campeonato) is null %}
-                                    <td><button onclick="inscreverDiretor({{ equipe.id }});" class="btn btn-default btn-sm">Inscrever Diretor</button></td>
+                                        <button onclick="inscreverDiretor({{ equipe.id }});" class="btn btn-default btn-sm" id="btnDiretor{{ equipe.id }}">Inscrever Diretor</button>
                                     {% else %}
-                                    <td>{{ equipe.getDiretor(campeonato).nome }}</td>
+                                        {{ equipe.getDiretor(campeonato).nome }}
                                     {% endif %}
+                                    </td>
+                                    <td>
                                     {% if equipe.getTreinador(campeonato) is null %}
-                                    <td><button onclick="inscreverTreinador({{ equipe.id }});" class="btn btn-default btn-sm">Inscrever Treinador</button></td>
+                                        <button onclick="inscreverTreinador({{ equipe.id }});" class="btn btn-default btn-sm" id="btnTreinador{{ equipe.id }}">Inscrever Treinador</button>
                                     {% else %}
-                                    <td>{{ equipe.getTreinador(campeonato).nome }}</td>
+                                        {{ equipe.getTreinador(campeonato).nome }}
                                     {% endif %}
+                                    </td>
                                     <td>{{ equipe.getJogadores(campeonato).count }}</td>
+                                    <td>
                                     {% if equipe.getJogadores(campeonato).count >= campeonato.quantidadeMaximaJogadores %}
-                                    <td><strong>Máximo de Jogadores Inscritos</strong></td>
+                                        <strong>Máximo de Jogadores Inscritos</strong>
                                     {% else %}
-                                    <td><button onclick="inscreverJogador({{ equipe.id }});" class="btn btn-default btn-sm">Inscrever jogadores</button></td>
+                                        <button onclick="inscreverJogador({{ equipe.id }});" class="btn btn-default btn-sm">Inscrever jogadores</button>
                                     {% endif %}
+                                    </td>
+                                    
                                 </tr>
                             {% endfor %}
                         </tbody>

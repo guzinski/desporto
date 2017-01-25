@@ -23,6 +23,8 @@
                 jQuery(this).val(valor.replace(/[^\d]/gi, ""));
             }).spinner({min: 0});
 
+            jQuery("#escalacaoMandante input[type='text']").addClass("profissionaisMandante");
+            jQuery("#escalacaoVisitante input[type='text']").addClass("profissionaisVisitante");
 
             jQuery("#jogo_numeroGolsMandante").on("spinchange", function (event, ui) {
                 adicionarGols(jQuery(this).val(), "#tableGolsMandante");
@@ -71,6 +73,11 @@
                 },
                 validClass: "",
                 submitHandler: function(form) {
+                    if (jQuery('input[type="checkbox"]:checked').length < 2) {
+                        bootbox.alert("Marque os capitões das duas equipes");
+                        return false;
+                    }
+                    
                     jQuery('button').hide();
                     jQuery('#loading').fadeIn(200);
                     form.submit();
@@ -84,6 +91,23 @@
             ajustaCampos(jQuery("#tableCartoesAmarelosVisitante tbody"), '{{ constant('DesportoBundle\\Entity\\Cartao::AMARELO') }}');
             ajustaCampos(jQuery("#tableCartoesVermelhosMandante tbody"), '{{ constant('DesportoBundle\\Entity\\Cartao::VERMELHO') }}');
             ajustaCampos(jQuery("#tableCartoesVermelhosVisitante tbody"), '{{ constant('DesportoBundle\\Entity\\Cartao::VERMELHO') }}');
+
+
+            jQuery.extend(jQuery.validator.messages, {
+                notEqualToGroup: "Número da Camisa já utilizado",
+            });
+
+            jQuery(".profissionaisMandante").each(function(index, element) {
+                jQuery(element).rules("add", {
+                    notEqualToGroup: ['.profissionaisMandante']
+                });
+            });
+            jQuery(".profissionaisVisitante").each(function(index, element) {
+                jQuery(element).rules("add", {
+                    notEqualToGroup: ['.profissionaisVisitante']
+                });
+            });
+
 
 
         });
@@ -163,24 +187,6 @@
             }
             
             ajustaCampos(tableBody, cor);
-{#            tableBody.find("tr").each(function () {
-                
-                jQuery(this).find("input[type='number']").keyup(function () {
-                    var valor = jQuery(this).val();
-                    jQuery(this).val(valor.replace(/[^\d]/gi, ""));
-                }).spinner({min: 0});
-                
-                if (table === "#tableCartoesAmarelosMandante" || table === "#tableCartoesVermelhosMandante") {
-                    {% for profissional in form.profissionalJogos if profissional.vars.data.inscricao.equipe == jogo.equipeMandante %}
-                    jQuery(this).find("td:first select").append(new Option('{{ profissional.vars.data.inscricao.profissional.nome }}', '{{ profissional.vars.data.inscricao.id }}'));
-                    {% endfor %}
-                } else if (table === "#tableCartoesAmarelosVisitante" || table === "#tableCartoesVermelhosVisitante") {
-                    {% for profissional in form.profissionalJogos if profissional.vars.data.inscricao.equipe == jogo.equipeVisitante %}
-                        jQuery(this).find("td:first select").append(new Option('{{ profissional.vars.data.inscricao.profissional.nome }}', '{{ profissional.vars.data.inscricao.id }}'));
-                    {% endfor %}
-                }
-            })
-#}
         }
     </script>
     <style>

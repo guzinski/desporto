@@ -104,11 +104,11 @@ class EdicaoCampeonatoController extends Controller
         }
         $tabela = $this->getService()->calculaTabela($campeonato);
         if ($campeonato->getTipo() == EdicaoCampeonato::PONTOS_CORRIDOS) {
-            return $this->render("DesportoBundle::EdicaoCampeonato\pontosCorridos.html.twig", ["campeonato"=>$campeonato, "tabela"=>$tabela]);
+            return $this->render("DesportoBundle::EdicaoCampeonato\pontosCorridosDetalhe.html.twig", ["campeonato"=>$campeonato, "tabela"=>$tabela]);
         } elseif ($campeonato->getTipo() == EdicaoCampeonato::TORNEIO) {
             return $this->render("DesportoBundle::EdicaoCampeonato\torneio.html.twig", ["campeonato"=>$campeonato, "tabela"=>$tabela]);
         } elseif ($campeonato->getTipo() == EdicaoCampeonato::CHAVE) {
-            return $this->render("DesportoBundle::EdicaoCampeonato\chave.html.twig", ["campeonato"=>$campeonato, "tabela"=>$tabela]);
+            return $this->render("DesportoBundle::EdicaoCampeonato\chaveDetalhe.html.twig", ["campeonato"=>$campeonato, "tabela"=>$tabela]);
         }
 
     }
@@ -312,8 +312,8 @@ class EdicaoCampeonatoController extends Controller
         $profissional = $request->get("profissional");
         $tipo = $request->get("tipo");
 
-        $this->getService()->inscreverProfissional($campeonato, $equipe, $profissional, $tipo); 
-        return new Response();
+        $retorno = $this->getService()->inscreverProfissional($campeonato, $equipe, $profissional, $tipo); 
+        return new Response(json_encode($retorno));
     }
 
 

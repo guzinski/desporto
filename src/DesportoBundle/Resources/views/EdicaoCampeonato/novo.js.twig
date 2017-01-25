@@ -144,11 +144,10 @@
                     });
                     
                     jQuery(".completeEquipe").select2({
-                        placeholder: "Procurar equipe",
+                        placeholder: "Procurar Equipe",
                         minimumInputLength: 1,
                         ajax: {
                             url: "{{ path('equipe_find') }}",
-                            //url: "https://api.github.com/search/repositories",
                             dataType: 'json',
                             quietMillis: 250,
                             data: function (term, page) { // page is the one-based page number tracked by Select2

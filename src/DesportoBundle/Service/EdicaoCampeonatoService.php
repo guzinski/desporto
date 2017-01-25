@@ -444,6 +444,8 @@ class EdicaoCampeonatoService
             throw new InvalidArgumentException;
         }
         
+        $retorno = [];
+        
         $equipe = $this->getEquipeRepository()->find($idEquipe);
         $profissional = $this->getProfissionaleRepository()->find($profissional);
         
@@ -452,6 +454,8 @@ class EdicaoCampeonatoService
         $this->em->persist($inscricao);
         
         $this->em->flush();
+
+        return ["idEquipe" => $equipe->getId(), "profissional" => $profissional->getNome()];
     }
 
     /**
@@ -579,7 +583,7 @@ class EdicaoCampeonatoService
     {
         $iterator = $tabela->getIterator();
         $iterator->uasort(function (Classificacao $first, Classificacao $second) use ($campeonato) {
-            return $this->regraDesempate($first, $second, $campeonato, 1);
+            return $this->regraOrdenacao($first, $second, $campeonato, 1);
         });
         
         return new ArrayCollection(iterator_to_array($iterator));
@@ -623,8 +627,15 @@ class EdicaoCampeonatoService
 
     }
     
-    private function regraDesempate(Classificacao $first, Classificacao $second, EdicaoCampeonato $campeonato, $nivel)
+    private function regraOrdenacao(Classificacao $first, Classificacao $second, EdicaoCampeonato $campeonato, $nivel)
     {
+        if ($first->getPontos() > $second->getPontos()) {
+            return -1;
+        }
+        if ($first->getPontos() < $second->getPontos()) {
+            return 1;
+        }
+        
         if ($nivel == 1) {
             $desempate = $campeonato->getDesempate1();
         } elseif ($nivel == 2) {
@@ -645,7 +656,7 @@ class EdicaoCampeonatoService
             } elseif ($first->getCartoesAmarelos() < $second->getCartoesAmarelos()) {
                 return -1;
             } else {
-                return $this->regraDesempate($first, $second, $campeonato, ++$nivel);
+                return $this->regraOrdenacao($first, $second, $campeonato, ++$nivel);
             }
         } elseif ($desempate == EdicaoCampeonato::VITORIA) {
             if ($first->getVitorias() > $second->getVitorias()) {
@@ -653,7 +664,7 @@ class EdicaoCampeonatoService
             } elseif ($first->getVitorias() < $second->getVitorias()) {
                 return 1;
             } else {
-                return $this->regraDesempate($first, $second, $campeonato, ++$nivel);
+                return $this->regraOrdenacao($first, $second, $campeonato, ++$nivel);
             }
         } elseif ($desempate == EdicaoCampeonato::SALDO_GOLS) {
             if ($first->getGolsSaldo() > $second->getGolsSaldo()) {
@@ -665,7 +676,7 @@ class EdicaoCampeonatoService
             } elseif ($first->getGolsMarcados() < $second->getGolsMarcados()) {
                 return 1;
             } else {
-                return $this->regraDesempate($first, $second, $campeonato, ++$nivel);
+                return $this->regraOrdenacao($first, $second, $campeonato, ++$nivel);
             }
         }
 
