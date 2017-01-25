@@ -208,7 +208,7 @@
                     <li><a href="{{ path('campeonato_detalhe', {campeonato: jogo.edicaoCampeonato.id}) }}">{{ jogo.edicaoCampeonato.campeonato.nome }} - {{ jogo.edicaoCampeonato.edicao }}</a></li>
                     <li>Detalhe Jogo</li>
                 </ul>
-                <h4>{{ jogo.equipeMandante.nome }} x {{ jogo.equipeVisitante.nome }} - {{ jogo.rodada.numero }}º Rodada</h4>
+                <h4>{{ jogo.equipeMandante.nome }} x {{ jogo.equipeVisitante.nome }} - {% if jogo.rodada %} {{ jogo.rodada.numero }}º Rodada {% endif %}</h4>
             </div>
         </div><!-- media -->
     </div><!-- pageheader -->

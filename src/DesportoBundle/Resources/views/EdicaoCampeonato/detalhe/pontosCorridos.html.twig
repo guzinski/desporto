@@ -157,13 +157,11 @@
                                         </td>
                                         <td>
                                             <h5>
-                                            <h5>
                                             {% if jogo.data is null %}
                                                 <a href="javascript:definirLocal({{ jogo.id }})">Definir local</a>
                                             {% else %}
                                                 {{ jogo.data.format("d/m/Y H:i") }}
                                             {% endif %}
-                                            </h5>
                                             </h5>
                                         </td>
                                         <td class="text-center"><span class="h4">{{ jogo.equipeMandante.apelido }}</span></td>

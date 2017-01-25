@@ -167,7 +167,42 @@ class FaseClassificatoria
         $this->equipes = $equipes;
         return $this;
     }
+    
+    /**
+     * 
+     * @return Jogo
+     */
+    public function getPrimeiroJogo()
+    {
+        return $this->primeiroJogo;
+    }
 
+    /**
+     * 
+     * @return Jogo
+     */
+    public function getSegundoJogo()
+    {
+        return $this->segundoJogo;
+    }
+
+        
+    public function __toString()
+    {
+        if ($this->getTipo() == self::OITAVAS) {
+            return "Oitavas";
+        }
+        if ($this->getTipo() == self::QUARTAS) {
+            return "Quartas";
+        }
+        if ($this->getTipo() == self::SEMIFINAL) {
+            return "SemiFinal";
+        }
+        if ($this->getTipo() == self::FINAL_) {
+            return "Final";
+        }
+        
+    }
 
     
 

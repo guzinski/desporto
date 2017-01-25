@@ -223,7 +223,8 @@ class EdicaoCampeonatoService
         foreach ($this->edicaoCampeonato->getFasesClassificatorias() as $fase) {
             /* @var $fase FaseClassificatoria */
             $equipes = $fase->getEquipes()->toArray();
-            
+            $this->edicaoCampeonato->getEquipes()->add($equipes[0]);
+            $this->edicaoCampeonato->getEquipes()->add($equipes[1]);
             $jogo = new Jogo($equipes[0], $equipes[1]);
             $jogo->setEdicaoCampeonato($this->edicaoCampeonato);
             $fase->setPrimeiroJogo($jogo);
@@ -236,7 +237,7 @@ class EdicaoCampeonatoService
                 ) {
                 $segundoJogo = new Jogo($jogo->getEquipeVisitante(), $jogo->getEquipeMandante());
                 $segundoJogo->setEdicaoCampeonato($this->edicaoCampeonato);
-                $fase->setPrimeiroJogo($segundoJogo);
+                $fase->setSegundoJogo($segundoJogo);
             }
         }
     }

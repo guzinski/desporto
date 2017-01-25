@@ -1,0 +1,95 @@
+{% extends "DesportoBundle::layout.html.twig" %}
+{% block title %}Desporto | Campeonato Detalhe{% endblock %}
+{% block head %}
+    <link href="{{ asset('bundles/desporto/css/slick/slick.css') }}" rel="stylesheet">
+    <link href="{{ asset('bundles/desporto/css/slick/slick-theme.css') }}" rel="stylesheet">
+
+    <script src="{{ asset('bundles/desporto/js/jquery.dataTables.min.js') }}"></script>
+    <script src="{{ asset('bundles/desporto/js/jquery-datatables.responsive.js') }}"></script>
+    <script src="//cdn.datatables.net/plug-ins/725b2a2115b/integration/bootstrap/3/dataTables.bootstrap.js"></script>
+    <script src="{{ asset('bundles/desporto/js/select2.min.js') }}"></script>
+    <script src="{{ asset('bundles/desporto/js/slick.min.js') }}"></script>
+    <script>
+        jQuery(document).ready(function () {
+            jQuery('.slick_demo_1').slick({
+                dots: true
+            });
+
+        });
+        
+        function definirData(id) {
+            alert(id);
+        }
+        function definirLocal(id) {
+            alert(id);
+        }
+        
+        
+
+    </script>
+    <style>
+        .slick-prev::before, .slick-next::before {
+            color: #1ab394 !important;
+        }
+    </style>
+{% endblock %}
+{% block mainpanel %}
+    <div class="pageheader">
+        <div class="media">
+            <div class="pageicon pull-left">
+                <i class="fa fa-th-list"></i>
+            </div>
+            <div class="media-body">
+                <ul class="breadcrumb">
+                    <li><a href="{{ path('index') }}"><i class="glyphicon glyphicon-home"></i></a></li>
+                    <li><a href="#">Campeonatos</a></li>
+                    <li>Detalhe Campeonato</li>
+                </ul>
+                <h4>{{ campeonato.campeonato.nome }} - {{ campeonato.edicao }}</h4>
+            </div>
+        </div><!-- media -->
+    </div><!-- pageheader -->
+    <div class="contentpanel">
+
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="pull-right">
+                    <a href=""><button class="btn btn-success " type="button"><i class="fa fa-print"></i>&nbsp;&nbsp;<span class="bold">Tabela</span></button></a>
+                    <a href=""><button class="btn btn-success " type="button"><i class="fa fa-calendar-o"></i>&nbsp;&nbsp;<span class="bold">Gerar Carnê</span></button></a>
+                    <a href="{{ path('campeonato_convocacao', {campeonato: campeonato.id}) }}"><button class="btn btn-success " type="button"><i class="fa fa-users"></i>&nbsp;&nbsp;<span class="bold">Editar Equipes</span></button></a>
+                    <a href=""><button class="btn btn-success " type="button"><i class="fa fa-bars"></i>&nbsp;&nbsp;<span class="bold">Ficha Equipe</span></button></a>
+                    <a href="campeonato-finais.html"><button class="btn btn-success " type="button"><i class="fa fa-share"></i>&nbsp;&nbsp;<span class="bold">Próxima Fase</span></button></a>
+                </div>
+            </div>
+        </div>
+        
+        <hr/>
+
+        <div class="row">
+            <div class="col-sm-12">
+                
+                <h5 class="lg-title mb10">Fases</h5>
+
+                <!-- Nav tabs -->
+                <ul class="nav nav-tabs">
+{#                    {% for fase in campeonato.fasesClassificatorias %}
+                    {% endfor %}
+#}
+                    <li class="active"><a href="#quartas" data-toggle="tab"><strong>Qaurtas</strong></a></li>
+                </ul>
+
+                
+                <div class="tab-content mb30">
+                    <div class="tab-pane active" id="quartas">
+                        {% for fase in campeonato.fasesClassificatorias %}
+                            
+                            {% include 'DesportoBundle::EdicaoCampeonato/detalhe/fase.html.twig' with {'fase': fase} %}
+                            
+                        {% endfor %}
+                    </div><!-- tab-pane -->
+                </div><!-- tab-content -->
+                
+            </div>
+        </div> <!-- row -->
+    </div><!-- contentpanel -->
+{% endblock %}

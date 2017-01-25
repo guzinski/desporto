@@ -1,0 +1,36 @@
+<div class="row text-center mb10 mt10">
+    <div class="col-sm-6">
+        {% if jogo.data is null %}
+            <a href="javascript:definirData({{ jogo.id }})">Definir data</a>
+        {% else %}
+            {{ jogo.data.format("d/m/Y H:i") }}
+        {% endif %}
+    </div>
+    <div class="col-sm-6">
+        {% if jogo.data is null %}
+            <a href="javascript:definirLocal({{ jogo.id }})">Definir local</a>
+        {% else %}
+            {{ jogo.data.format("d/m/Y H:i") }}
+        {% endif %}
+    </div>
+</div>
+<div class="row text-center mb10 mt10">
+
+    <div class="col-sm-4">
+        <span class="h4">{{ jogo.equipeMandante.apelido }}
+    </div>
+    <div class="col-sm-4">
+        <span class="h3">{{ jogo.numeroGolsMandante }}</span>
+        <span class="h4">X</span>
+        <span class="h3">{{ jogo.numeroGolsVisitante }}</span>
+    </div>
+    <div class="col-sm-4">
+        <span class="h4">{{ jogo.equipeVisitante.apelido }}</span>
+    </div>    
+
+</div>
+<div class="row text-center">
+    <div class="col-sm-12 mb10 mt10">
+        <a class="btn btn-default btn-sm" type="button" href="{{ path('jogo_detalhar', {jogo: jogo.id})  }}"><em class="fa fa-plus"></em></a> 
+    </div>
+</div>

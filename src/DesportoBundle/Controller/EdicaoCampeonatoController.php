@@ -102,13 +102,13 @@ class EdicaoCampeonatoController extends Controller
         if ($campeonato->getStatus()==EdicaoCampeonato::AGUARDANDO_CONVOCACAO) {
             return $this->redirectToRoute("campeonato_convocacao", array("campeonato"=>$campeonato->getId()));
         }
-        $tabela = $this->getService()->calculaTabela($campeonato);
+        
         if ($campeonato->getTipo() == EdicaoCampeonato::PONTOS_CORRIDOS) {
-            return $this->render("DesportoBundle::EdicaoCampeonato\pontosCorridosDetalhe.html.twig", ["campeonato"=>$campeonato, "tabela"=>$tabela]);
+            return $this->render("DesportoBundle::EdicaoCampeonato\detalhe/pontosCorridos.html.twig", ["campeonato"=>$campeonato, "tabela"=>$this->getService()->calculaTabela($campeonato)]);
         } elseif ($campeonato->getTipo() == EdicaoCampeonato::TORNEIO) {
-            return $this->render("DesportoBundle::EdicaoCampeonato\torneio.html.twig", ["campeonato"=>$campeonato, "tabela"=>$tabela]);
+            return $this->render("DesportoBundle::EdicaoCampeonato\detalhe/torneio.html.twig", ["campeonato"=>$campeonato]);
         } elseif ($campeonato->getTipo() == EdicaoCampeonato::CHAVE) {
-            return $this->render("DesportoBundle::EdicaoCampeonato\chaveDetalhe.html.twig", ["campeonato"=>$campeonato, "tabela"=>$tabela]);
+            return $this->render("DesportoBundle::EdicaoCampeonato\detalhe/chave.html.twig", ["campeonato"=>$campeonato, "tabela"=>$this->getService()->calculaTabela($campeonato)]);
         }
 
     }
@@ -121,15 +121,7 @@ class EdicaoCampeonatoController extends Controller
      */
     public function convocacaoAction(EdicaoCampeonato $campeonato)
     {
-//        $this
-//    ->get('doctrine')
-//    ->getConnection()
-//    ->getConfiguration()
-//    ->setSQLLogger(new \Doctrine\DBAL\Logging\EchoSQLLogger());
-
         $equipes = $this->getDoctrine()->getRepository(Equipe::class)->getEquipesCampeonato($campeonato, TRUE);
-//        var_dump($equipes);
-//        die();
         return array("campeonato"=>$campeonato, "equipes" => $equipes);
     }
 

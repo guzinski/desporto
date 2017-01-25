@@ -434,15 +434,21 @@ class Jogo
 
     public function getNumeroGolsMandante()
     {
-        $this->numeroGolsMandante = $this->getGolsMandante()->count();
-
+        if ($this->jogado) {
+            $this->numeroGolsMandante = $this->getGolsMandante()->count();
+        } else {
+            $this->numeroGolsMandante = "";
+        }
         return $this->numeroGolsMandante;
     }
 
     public function getNumeroGolsVisitante()
     {
-        $this->numeroGolsVisitante = $this->getGolsVisitante()->count();
-
+        if ($this->jogado) {
+            $this->numeroGolsVisitante = $this->getGolsVisitante()->count();
+        } else {
+            $this->numeroGolsVisitante = "";
+        }
         return $this->numeroGolsVisitante;
     }
 
