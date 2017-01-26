@@ -519,12 +519,33 @@ class EdicaoCampeonato extends BaseEntity
         return $this;
     }
 
-
-
-
-
-
-
     
+    public function getFasesOitavas()
+    {
+        return $this->getFasesPorTipo(FaseClassificatoria::OITAVAS);
+    }
+    public function getFasesQuartas()
+    {
+        return $this->getFasesPorTipo(FaseClassificatoria::QUARTAS);
+    }
+    public function getFasesSemifinal()
+    {
+        return $this->getFasesPorTipo(FaseClassificatoria::SEMIFINAL);
+    }
+    public function getFasesFinal()
+    {
+        return $this->getFasesPorTipo(FaseClassificatoria::FINAL_);
+    }
+    
+    private function getFasesPorTipo($tipo)
+    {
+        $fases = new ArrayCollection();
+        foreach ($this->fasesClassificatorias as $faseClassificatoria) {
+            if ($faseClassificatoria->getTipo() == $tipo) {
+                $fases->add($faseClassificatoria);
+            }
+        }
+        return $fases;
+    }    
     
 }

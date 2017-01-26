@@ -1,31 +1,16 @@
 {% extends "DesportoBundle::layout.html.twig" %}
 {% block title %}Desporto | Campeonato Detalhe{% endblock %}
 {% block head %}
-    <link href="{{ asset('bundles/desporto/css/slick/slick.css') }}" rel="stylesheet">
-    <link href="{{ asset('bundles/desporto/css/slick/slick-theme.css') }}" rel="stylesheet">
-
-    <script src="{{ asset('bundles/desporto/js/jquery.dataTables.min.js') }}"></script>
-    <script src="{{ asset('bundles/desporto/js/jquery-datatables.responsive.js') }}"></script>
-    <script src="//cdn.datatables.net/plug-ins/725b2a2115b/integration/bootstrap/3/dataTables.bootstrap.js"></script>
-    <script src="{{ asset('bundles/desporto/js/select2.min.js') }}"></script>
-    <script src="{{ asset('bundles/desporto/js/slick.min.js') }}"></script>
+    <script src="{{ asset('bundles/desporto/js/jquery.validate.min.js') }}"></script>
+    <script src="{{ asset('bundles/desporto/js/messages_ptbr.js') }}"></script>
+    <script src="{{ asset('bundles/desporto/js/validate/additional-methods.js') }}"></script>
+    <script src="{{ asset('bundles/desporto/js/jquery.maskedinput.min.js') }}"></script>
+    <script src="{{ asset('bundles/desporto/js/jquery-ui-1.10.3.min.js') }}"></script>
+    {% include 'DesportoBundle::EdicaoCampeonato/detalhe/localData.js.twig' %}
     <script>
         jQuery(document).ready(function () {
-            jQuery('.slick_demo_1').slick({
-                dots: true
-            });
 
         });
-        
-        function definirData(id) {
-            alert(id);
-        }
-        function definirLocal(id) {
-            alert(id);
-        }
-        
-        
-
     </script>
     <style>
         .slick-prev::before, .slick-next::before {
@@ -72,21 +57,57 @@
 
                 <!-- Nav tabs -->
                 <ul class="nav nav-tabs">
-{#                    {% for fase in campeonato.fasesClassificatorias %}
-                    {% endfor %}
-#}
+                    {% if campeonato.fasesOitavas.count > 0 %}
+                    <li class="active"><a href="#oitavas" data-toggle="tab"><strong>Oitavas</strong></a></li>
+                    {% endif %}
+                    
+                    {% if campeonato.fasesQuartas.count > 0 %}
                     <li class="active"><a href="#quartas" data-toggle="tab"><strong>Qaurtas</strong></a></li>
+                    {% endif %}
+                    
+                    {% if campeonato.fasesSemifinal.count > 0 %}
+                    <li class="active"><a href="#semifinal" data-toggle="tab"><strong>Semifinal</strong></a></li>
+                    {% endif %}
+                    
+                    {% if campeonato.fasesFinal.count > 0 %}
+                    <li class="active"><a href="#final" data-toggle="tab"><strong>Final</strong></a></li>
+                    {% endif %}
+
                 </ul>
 
                 
                 <div class="tab-content mb30">
+                    
+                    {% if campeonato.fasesOitavas.count > 0 %}
                     <div class="tab-pane active" id="quartas">
-                        {% for fase in campeonato.fasesClassificatorias %}
-                            
+                        {% for fase in campeonato.fasesOitavas %}
                             {% include 'DesportoBundle::EdicaoCampeonato/detalhe/fase.html.twig' with {'fase': fase} %}
-                            
                         {% endfor %}
                     </div><!-- tab-pane -->
+                    {% endif %}
+                    {% if campeonato.fasesQuartas.count > 0 %}
+                    <div class="tab-pane active" id="quartas">
+                        {% for fase in campeonato.fasesQuartas %}
+                            {% include 'DesportoBundle::EdicaoCampeonato/detalhe/fase.html.twig' with {'fase': fase} %}
+                        {% endfor %}
+                    </div><!-- tab-pane -->
+                    {% endif %}
+                    {% if campeonato.fasesSemifinal.count > 0 %}
+                    <div class="tab-pane active" id="quartas">
+                        {% for fase in campeonato.fasesSemifinal %}
+                            {% include 'DesportoBundle::EdicaoCampeonato/detalhe/fase.html.twig' with {'fase': fase} %}
+                        {% endfor %}
+                    </div><!-- tab-pane -->
+                    {% endif %}
+                    {% if campeonato.fasesFinal.count > 0 %}
+                    <div class="tab-pane active" id="quartas">
+                        {% for fase in campeonato.fasesFinal %}
+                            {% include 'DesportoBundle::EdicaoCampeonato/detalhe/fase.html.twig' with {'fase': fase} %}
+                        {% endfor %}
+                    </div><!-- tab-pane -->
+                    {% endif %}
+
+                    
                 </div><!-- tab-content -->
                 
             </div>

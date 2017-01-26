@@ -1,0 +1,82 @@
+<script type="text/javascript">
+
+    jQuery(document).ready(function () {
+
+
+    });
+
+    function defaultError(xhr, textStatus, errorThrown) {
+        jQuery(".locked").fadeOut();
+        bootbox.alert("Erro ao processar informação");
+    }
+
+
+    function definirData(id) {
+        jQuery(".locked").fadeIn();
+        jQuery.get("{{ path('jogo_form_definir_data') }}", {jogo: id})
+        .done(callBackDefinirData).fail(defaultError);
+    }
+    function definirLocal(id) {
+        console.log("Local");
+        console.log(id);
+    }
+    
+    
+    
+    function callBackDefinirData(html) {
+        jQuery(".locked").fadeOut();
+        bootbox.dialog({
+            title: "Definir Data",
+            size: "large",
+            message: html,
+            buttons: {
+                close: {
+                    label: "Cancelar",
+                    className: "btn-default",
+                },
+                success: {
+                    label: "Salvar",
+                    className: "btn-success",
+                    type: "submit",
+                    callback: function () {
+                        if (jQuery("#formData").valid()) {
+                            jQuery("#formData").submit();
+                        } else {
+                            return false;
+                        }
+                    }
+                },
+            }
+        });
+        
+        jQuery("#data").mask("99/99/9999").datepicker();;
+        jQuery("#horario").mask("99:99");
+
+        jQuery("#formData").validate({
+            rules: {
+                data:      {brazilianDate: true},
+            },
+            highlight: function(element) {
+                jQuery(element).closest('.form-group').removeClass('has-success').addClass('has-error');
+            },
+            success: function(element) {
+                jQuery(element).closest('.form-group').removeClass('has-error');
+            },
+            errorPlacement: function(error, element) {
+                jQuery(element).closest('.form-group').append(error);
+            },
+            validClass: "",
+            submitHandler: function(form) {
+                jQuery(".locked").fadeIn();
+                jQuery.post("{{ path('jogo_salvar_definir_data') }}", jQuery(form).serialize(), function() {
+                    jQuery(".locked").fadeOut();
+                    bootbox.alert("Data atualizada com sucesso");
+                    location.href = "";
+                });
+           }
+        });
+
+
+    }
+    
+</script>

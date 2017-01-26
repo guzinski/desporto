@@ -3,14 +3,14 @@
         {% if jogo.data is null %}
             <a href="javascript:definirData({{ jogo.id }})">Definir data</a>
         {% else %}
-            {{ jogo.data.format("d/m/Y H:i") }}
+            {{ jogo.data.format("d/m/Y") }} {{ jogo.horario.format("H:i") }}
         {% endif %}
     </div>
     <div class="col-sm-6 text-left">
-        {% if jogo.data is null %}
+        {% if jogo.local is null %}
             <a href="javascript:definirLocal({{ jogo.id }})">Definir local</a>
         {% else %}
-            {{ jogo.data.format("d/m/Y H:i") }}
+            {{ jogo.local }}
         {% endif %}
     </div>
 </div>
