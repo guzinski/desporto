@@ -100,15 +100,48 @@ class JogoController extends Controller
         
         return new Response();
     }
+    
+    /**
+     * @Route("/salvar/definir/local", name="jogo_salvar_definir_local")
+     */
+    public function salvarDefinirLocalAction(Request $request)
+    {
+        $jogo   = $request->get("jogo");
+        $local  = $request->get("local");
+        if (empty($jogo) || empty($local)) {
+            throw new InvalidArgumentException;
+        }
+        $jogo = $this->getDoctrine()->getRepository(Jogo::class)->find($jogo);
+        if (empty($jogo)) {
+            throw new NotFoundHttpException;
+        }
+                
+        $jogo->setLocal($local);
+        
+        $this->getDoctrine()->getManager()->persist($jogo);
+        $this->getDoctrine()->getManager()->flush();
+        
+        return new Response();
+    }
+
 
     
     /**
-     * @Route("/form/definir/local", name="campeonato_form_definir_local")
+     * @Route("/form/definir/local", name="jogo_form_definir_local")
      * @Template()
      */
-    public function formDefinirLocalAction()
+    public function formDefinirLocalAction(Request $request)
     {
-        return [];
+        $jogo = $request->get("jogo");
+        if (empty($jogo)) {
+            throw new InvalidArgumentException;
+        }
+        $jogo = $this->getDoctrine()->getRepository(Jogo::class)->find($jogo);
+        if (empty($jogo)) {
+            throw new NotFoundHttpException;
+        }
+
+        return ['jogo' => $jogo];
     }
 
 

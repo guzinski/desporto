@@ -1,16 +1,16 @@
 <div class="row text-center mb10 mt10">
     <div class="col-sm-6 text-right">
         {% if jogo.data is null %}
-            <a href="javascript:definirData({{ jogo.id }})">Definir data</a>
+            <button class="btn btn-default btn-sm" title="Definir Data" onclick="definirData({{ jogo.id }})">Definir data</button>
         {% else %}
-            {{ jogo.data.format("d/m/Y") }} {{ jogo.horario.format("H:i") }}
+            <h5><strong>{{ jogo.data.format("d/m/Y") }} {{ jogo.horario.format("H:i") }}</strong></h5>
         {% endif %}
     </div>
     <div class="col-sm-6 text-left">
         {% if jogo.local is null %}
-            <a href="javascript:definirLocal({{ jogo.id }})">Definir local</a>
+            <button class="btn btn-default btn-sm" title="Definir Local" onclick="definirLocal({{ jogo.id }})">Definir local</button>
         {% else %}
-            {{ jogo.local }}
+            <h5><strong>{{ jogo.local }}</strong></h5>
         {% endif %}
     </div>
 </div>
@@ -31,6 +31,9 @@
 </div>
 <div class="row text-center">
     <div class="col-sm-12 mb10 mt10">
-        <a class="btn btn-default btn-sm" type="button" href="{{ path('jogo_detalhar', {jogo: jogo.id})  }}">Detalhar</a> 
+        <div class="btn-group">
+            <a class="btn btn-info btn-sm" type="button" href="{{ path('jogo_detalhar', {jogo: jogo.id})  }}">Detalhar</a> 
+            <button class="btn btn-info btn-sm" ><i class="fa fa-print"></i></button>
+        </div>
     </div>
 </div>

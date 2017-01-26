@@ -17,8 +17,9 @@
         .done(callBackDefinirData).fail(defaultError);
     }
     function definirLocal(id) {
-        console.log("Local");
-        console.log(id);
+        jQuery(".locked").fadeIn();
+        jQuery.get("{{ path('jogo_form_definir_local') }}", {jogo: id})
+        .done(callBackDefinirLocal).fail(defaultError);
     }
     
     
@@ -68,15 +69,65 @@
             validClass: "",
             submitHandler: function(form) {
                 jQuery(".locked").fadeIn();
-                jQuery.post("{{ path('jogo_salvar_definir_data') }}", jQuery(form).serialize(), function() {
+                jQuery.post("{{ path('jogo_salvar_definir_data') }}", jQuery(form).serialize()).done(function() {
                     jQuery(".locked").fadeOut();
                     bootbox.alert("Data atualizada com sucesso");
                     location.href = "";
-                });
+                }).fail(defaultError);
            }
         });
 
 
     }
+    
+    function callBackDefinirLocal(html) {
+        jQuery(".locked").fadeOut();
+        bootbox.dialog({
+            title: "Definir local",
+            size: "large",
+            message: html,
+            buttons: {
+                close: {
+                    label: "Cancelar",
+                    className: "btn-default",
+                },
+                success: {
+                    label: "Salvar",
+                    className: "btn-success",
+                    type: "submit",
+                    callback: function () {
+                        if (jQuery("#formLocal").valid()) {
+                            jQuery("#formLocal").submit();
+                        } else {
+                            return false;
+                        }
+                    }
+                },
+            }
+        });
+        jQuery("#formLocal").validate({
+            highlight: function(element) {
+                jQuery(element).closest('.form-group').removeClass('has-success').addClass('has-error');
+            },
+            success: function(element) {
+                jQuery(element).closest('.form-group').removeClass('has-error');
+            },
+            errorPlacement: function(error, element) {
+                jQuery(element).closest('.form-group').append(error);
+            },
+            validClass: "",
+            submitHandler: function(form) {
+                jQuery(".locked").fadeIn();
+                jQuery.post("{{ path('jogo_salvar_definir_local') }}", jQuery(form). serialize()).done(function() {
+                    jQuery(".locked").fadeOut();
+                    bootbox.alert("Data atualizada com sucesso");
+                    location.href = "";
+                }).fail(defaultError);
+           }
+        });
+
+
+    }
+
     
 </script>

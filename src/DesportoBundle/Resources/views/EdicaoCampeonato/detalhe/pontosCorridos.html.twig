@@ -4,28 +4,19 @@
     <link href="{{ asset('bundles/desporto/css/slick/slick.css') }}" rel="stylesheet">
     <link href="{{ asset('bundles/desporto/css/slick/slick-theme.css') }}" rel="stylesheet">
 
-    <script src="{{ asset('bundles/desporto/js/jquery.dataTables.min.js') }}"></script>
-    <script src="{{ asset('bundles/desporto/js/jquery-datatables.responsive.js') }}"></script>
-    <script src="//cdn.datatables.net/plug-ins/725b2a2115b/integration/bootstrap/3/dataTables.bootstrap.js"></script>
-    <script src="{{ asset('bundles/desporto/js/select2.min.js') }}"></script>
+    <script src="{{ asset('bundles/desporto/js/jquery.validate.min.js') }}"></script>
+    <script src="{{ asset('bundles/desporto/js/messages_ptbr.js') }}"></script>
+    <script src="{{ asset('bundles/desporto/js/validate/additional-methods.js') }}"></script>
+    <script src="{{ asset('bundles/desporto/js/jquery.maskedinput.min.js') }}"></script>
+    <script src="{{ asset('bundles/desporto/js/jquery-ui-1.10.3.min.js') }}"></script>
     <script src="{{ asset('bundles/desporto/js/slick.min.js') }}"></script>
+    {% include 'DesportoBundle::EdicaoCampeonato/detalhe/localData.js.twig' %}
     <script>
         jQuery(document).ready(function () {
             jQuery('.slick_demo_1').slick({
                 dots: true
             });
-
         });
-        
-        function definirData(id) {
-            alert(id);
-        }
-        function definirLocal(id) {
-            alert(id);
-        }
-        
-        
-
     </script>
     <style>
         .slick-prev::before, .slick-next::before {
@@ -135,42 +126,37 @@
                                     <th class="text-center">
                                         Visitante
                                     </th>
-                                    <th>
-                                        Detalhe
-                                    </th>
-                                    <th>
-                                        Súmula
-                                    </th>
+                                    <th></th>
                                 </tr>
                             </thead>
                             <tbody>
                                 {% for jogo in rodada.jogos %}
                                     <tr>
                                         <td>
-                                            <h5>
                                             {% if jogo.data is null %}
-                                                <a href="javascript:definirData({{ jogo.id }})">Definir data</a>
+                                                <button class="btn btn-default btn-sm" title="Definir Data" onclick="definirData({{ jogo.id }})">Definir data</button>
                                             {% else %}
-                                                {{ jogo.data.format("d/m/Y H:i") }}
+                                                <h5><strong>{{ jogo.data.format("d/m/Y") }} {{ jogo.horario.format("H:i") }}</strong></h5>
                                             {% endif %}
-                                            </h5>
                                         </td>
                                         <td>
-                                            <h5>
-                                            {% if jogo.data is null %}
-                                                <a href="javascript:definirLocal({{ jogo.id }})">Definir local</a>
-                                            {% else %}
-                                                {{ jogo.data.format("d/m/Y H:i") }}
-                                            {% endif %}
-                                            </h5>
+                                        {% if jogo.local is null %}
+                                            <button class="btn btn-default btn-sm" title="Definir Local" onclick="definirLocal({{ jogo.id }})">Definir local</button>
+                                        {% else %}
+                                            <h5><strong>{{ jogo.local }}</strong></h5>
+                                        {% endif %}
                                         </td>
                                         <td class="text-center"><span class="h4">{{ jogo.equipeMandante.apelido }}</span></td>
                                         <td class="text-center"><span class="h3">{{ jogo.numeroGolsMandante }}</span></td>
                                         <td class="text-center"><span class="h4">X</span></td>
                                         <td class="text-center"><span class="h3">{{ jogo.numeroGolsVisitante }}</span></td>
                                         <td class="text-center"><span class="h4">{{ jogo.equipeVisitante.apelido }}</span></td>
-                                        <td><a class="btn btn-default" type="button" href="{{ path('jogo_detalhar', {jogo: jogo.id})  }}" >Detalhar</a> </td>
-                                        <td><button class="btn btn-default" ><i class="fa fa-print"></i></button></td>
+                                        <td>        
+                                            <div class="btn-group">
+                                                <a class="btn btn-info btn-sm" type="button" href="{{ path('jogo_detalhar', {jogo: jogo.id})  }}">Detalhar</a> 
+                                                <button class="btn btn-info btn-sm" title="Súmula" ><i class="fa fa-print"></i></button>
+                                            </div>
+                                        </td>
                                     </tr>
                                 {% endfor %}
                             </tbody>
