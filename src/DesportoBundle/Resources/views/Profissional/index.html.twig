@@ -9,11 +9,14 @@
     <script>
         jQuery(document).ready(function(){
             jQuery('#profissionalTable').DataTable({
-                    responsive: true,
-                    "processing": true,
-                    "serverSide": true,
-                    "ajax": "{{ path('profissional_pagination') }}",
-                });
+                "drawCallback": function( settings ) {
+                    jQuery('#profissionalTable tbody .tooltips').tooltip({ container: 'body'});
+                },
+                responsive: true,
+                "processing": true,
+                "serverSide": true,
+                "ajax": "{{ path('profissional_pagination') }}",
+            });
 
                 // DataTables Length to Select2
                 jQuery('div.dataTables_length select').removeClass('form-control input-sm');
@@ -49,15 +52,27 @@
             </div>
         </div>
         <div class="panel panel-success-head">
-            <table id="profissionalTable" class="table table-striped table-bordered">
-                <thead>
+            
+            
+            <table class="table table-responsive table- msg-list" id="profissionalTable">
+
+                <thead class="msg-header">
                     <tr>
-                        <th>Nome</th>
-                        <th>Telefone</th>
-                        <th>Nascimento</th>
+                        <td>
+                            <div class="ckbox ckbox-default pull-left">
+                                <input id="checkbox3" type="checkbox">
+                                <label for="checkbox3"></label>
+                            </div>
+                            <button class="btn btn-white tooltips" type="button" data-toggle="tooltip" data-placement="top" title="Exportar"><i class="fa fa-download"></i></button>
+                            <button class="btn btn-white tooltips" type="button" data-toggle="tooltip" data-placement="top" title="Excluir"><i class="fa fa-trash-o"></i></button>
+                        </td>
                     </tr>
                 </thead>
+                <tbody class="list-group contact-group">
+                </tbody>
+
             </table>
+
         </div><!-- panel -->
      </div><!-- contentpanel -->
 {% endblock %}

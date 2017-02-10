@@ -47,9 +47,7 @@ class ProfissionalController extends Controller
         $dados = array();
         foreach ($profissionais as $profissional) {
             $dados[] = [
-                "<a href=\"".$this->generateUrl("profissional_form", array("id"=>$profissional->getId()))."\">". $profissional->getNome()."</a>",
-                $profissional->getTelefone(),
-                $profissional->getNascimento()->format('d/m/Y'),
+                $this->renderView("DesportoBundle::Profissional/pagination.html.twig", ['profissional' => $profissional]),
             ];
         }
         

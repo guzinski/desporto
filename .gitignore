@@ -50,7 +50,13 @@ nbdist/
 
 # Assets and user uploads
 /web/bundles/
-/web/uploads/
+
+/web/uploads/arquivos/*
+/web/uploads/temp/*
+!web/uploads/arquivos/.gitkeep
+!web/uploads/arquivos/user-man.jpg
+!web/uploads/arquivos/user-woman.jpg
+!web/uploads/temp/.gitkeep
 
 # PHPUnit
 /app/phpunit.xml

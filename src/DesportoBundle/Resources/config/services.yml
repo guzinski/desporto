@@ -1,4 +1,9 @@
 services:
+    app.twig_extension:
+        class: DesportoBundle\Twig\AppExtension
+        public: false
+        tags:
+            - { name: twig.extension }
     kernel.listener.access_denied.handler:
         class: DesportoBundle\DependencyInjection\AccessDeniedHandler
         arguments: ["@session", "@router"]

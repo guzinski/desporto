@@ -1,0 +1,29 @@
+<div>
+    <div class="ckbox ckbox-default pull-left">
+        <input id="profissionalcheck{{ profissional.id }}" type="checkbox" name="profissionais[]" value="{{ profissional.id }}">
+        <label for="profissionalcheck{{ profissional.id }}"></label>
+    </div>
+
+    <div class="media">
+        <div class="pull-right">
+            <div class="btn-group" role="group" aria-label="...">
+                <a class="btn btn-white btn-xs tooltips" title="Editar"><i class="fa fa-pencil"></i></a>
+                <a href="{{ path('profissional_form', {id: profissional.id}) }}" class="btn btn-white btn-xs tooltips" title="Perfil"><i class="fa fa-search"></i></a>
+            </div>
+        </div>
+
+        <div class="pull-left">
+            <img class="img-circle" src="{{ path('profissional_arquivo_download', {nome: profissional.publicFoto}) }}" alt="...">
+        </div>
+        <div class="media-body">
+            <h4 class="media-heading">{{ profissional.nome }} <small>{{ profissional.cpf|cpf }}</small></h4>
+            <div class="media-content">
+                <i class="fa fa-calendar"></i> {{ profissional.nascimento.format('d/m/Y') }}
+                <ul class="list-unstyled">
+                    <li><i class="fa fa-phone"></i> {{ profissional.telefone|telefone }}</li>
+                    <li><i class="fa fa-map-marker"></i> {{ profissional.endereco }}</li>
+                </ul>
+            </div>
+        </div>
+    </div><!-- media -->
+</div><!-- list-group -->   

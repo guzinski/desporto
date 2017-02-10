@@ -34,7 +34,7 @@ class Profissional extends BaseEntity
     /**
      * @var string
      * @Assert\NotBlank(message="Deve ser colocado uma foto para o profissional")
-     * @ORM\Column(type="string", length=50, nullable=false)
+     * @ORM\Column(type="string", length=255, nullable=false)
      */
     private $foto;
     
@@ -213,7 +213,7 @@ class Profissional extends BaseEntity
 
     public function setTelefone($telefone)
     {
-        $this->telefone = preg_replace("/[^0-9]/", "", $telefone);;
+        $this->telefone = preg_replace("/[^0-9]/", "", $telefone);
         return $this;
     }
 
@@ -284,6 +284,19 @@ class Profissional extends BaseEntity
         return $this;
     }
 
+    
+    public function getPublicFoto()
+    {
+        if (!empty($this->foto)) {
+            return $this->foto;
+        } else {
+            if ($this->sexo == \DesportoBundle\Doctrine\Type\EnumSexoType::MASCULINO) {
+                return "user-man.jpg";
+            } elseif ($this->sexo == \DesportoBundle\Doctrine\Type\EnumSexoType::FEMININO) {
+                return "user-woman.jpg";
+            }
+        }
+    }
 
     
 }
