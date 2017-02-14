@@ -1,0 +1,79 @@
+{% extends "DesportoBundle::layout.html.twig" %}
+{% block title %}Desporto | Perfil do Profissional{% endblock %}
+{% block head %}
+{% endblock %}
+
+{% block mainpanel %}
+    <div class="pageheader">
+        <div class="media">
+            <div class="pageicon pull-left">
+                <i class="fa fa-user"></i>
+            </div>
+            <div class="media-body">
+                <ul class="breadcrumb">
+                    <li><a href="{{ path('index') }}"><i class="glyphicon glyphicon-home"></i></a></li>
+                    <li><a href="{{ path('profissional_index') }}">Profissional</a></li>
+                    <li>Perfil do Profissional </li>
+                </ul>
+                <h4>Perfil do Profissional </h4>
+            </div>
+        </div><!-- media -->
+    </div><!-- pageheader -->
+
+    <div class="contentpanel">
+
+        <div class="row">
+            <div class="col-sm-12 col-md-3">
+                <div class="text-center">
+                    <img src="{{ path('profissional_arquivo_download', {nome: profissional.publicFoto}) }}" class="img-circle img-offline img-responsive img-profile" alt="" />
+                    <h4 class="profile-name mb5">{{ profissional.nome }}</h4>
+                    <div><i class="fa fa-map-marker"></i> {{ profissional.endereco }}</div>
+                    <div><i class="fa fa-calendar"></i> {{ profissional.nascimento.format("d/m/Y") }} </div>
+                    <div><i class="fa fa-phone"></i> {{ profissional.telefone|telefone }} </div>
+                </div><!-- text-center -->
+            </div><!-- col-sm-4 col-md-3 -->
+            <div class="col-sm-12 col-md-9">
+                <div class="row">
+                    <div class="col-sm-3">
+                        <h4>Gols</h4>
+                    </div>
+                    <div class="col-sm-9">
+                        <h4>{{ profissional.gols.count }}</h4>
+                    </div>
+                </div>
+                <hr/>
+            </div>
+        </div>
+        <hr/>
+        <div class="row">
+            <div class="col-sm-12   ">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th> Campeonato</th>
+                            <th> Equipe </th>
+                            <th class="text-center"> Gols </th>
+                            <th class="tooltips text-center" title="Cartões Amarelos"> CA </th>
+                            <th class="tooltips text-center" title="Cartões Vermelhos"> CV </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for inscricao in profissional.inscricoes %}
+                        <tr>
+                            <Td> {{ inscricao.edicaoCampeonato.campeonato.nome }} - {{ inscricao.edicaoCampeonato.edicao }} </Td>
+                            <Td> {{ inscricao.equipe.nome }} </Td>
+                            <Td class="text-center"> {{ inscricao.gols.count }} </Td>
+                            <Td class="tooltips text-center" title="Cartões Amarelos"> {{ inscricao.cartoesAmarelos.count }} </Td>
+                            <Td class="tooltips  text-center" title="Cartões Varmelhos" > {{ inscricao.cartoesVermelhos.count }} </Td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                    
+                </table>
+            </div>
+        </div>
+
+
+
+    </div><!-- contentpanel -->
+{% endblock %}

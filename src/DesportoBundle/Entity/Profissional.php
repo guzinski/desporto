@@ -33,8 +33,7 @@ class Profissional extends BaseEntity
     
     /**
      * @var string
-     * @Assert\NotBlank(message="Deve ser colocado uma foto para o profissional")
-     * @ORM\Column(type="string", length=255, nullable=false)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $foto;
     
@@ -296,6 +295,17 @@ class Profissional extends BaseEntity
                 return "user-woman.jpg";
             }
         }
+    }
+    
+    public function getGols()
+    {
+        $gols = new ArrayCollection();
+        foreach ($this->inscricoes as $inscricao) {
+            foreach ($inscricao->getGols() as $gol) {
+                $gols->add($gol);
+            }
+        }
+        return $gols;
     }
 
     

@@ -93,6 +93,15 @@ class ProfissionalController extends Controller
         
         return ['form'=>$form->createView(), 'profissional'=>$profissional];
     }
+    
+    /**
+     * @Route("/perfil/{id}", name="profissional_perfil")
+     * @Template()
+     */
+    public function perfilAction(Profissional $profissional) 
+    {
+        return ['profissional'=>$profissional];
+    }
 
  
     /**

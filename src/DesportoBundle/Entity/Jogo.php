@@ -410,26 +410,35 @@ class Jogo
     
     public function getGolsMandante()
     {
-        $this->golsMandante = new ArrayCollection();
-        foreach ($this->getGols() as $gol) {
-            /* @var $gol Gol  */
-            if ($gol->getInscricao()->getEquipe() == $this->getEquipeMandante()) {
-                $this->golsMandante->add($gol);
-            }
-        }
-        return $this->golsMandante;
+        $equipeMandante = $this->getEquipeMandante();
+        return $this->getGols()->filter(function (Gol $gol) use ($equipeMandante) {
+            return $gol->getInscricao()->getEquipe() == $equipeMandante;
+        });
+//        $this->golsMandante = new ArrayCollection();
+//        foreach ($this->getGols() as $gol) {
+//            /* @var $gol Gol  */
+//            if ($gol->getInscricao()->getEquipe() == $this->getEquipeMandante()) {
+//                $this->golsMandante->add($gol);
+//            }
+//        }
+//        return $this->golsMandante;
     }
 
     public function getGolsVisitante()
     {
-        $this->golsVisitante = new ArrayCollection();
-        foreach ($this->getGols() as $gol) {
-            /* @var $gol Gol  */
-            if ($gol->getInscricao()->getEquipe() == $this->getEquipeVisitante()) {
-                $this->golsVisitante->add($gol);
-            }
-        }
-        return $this->golsVisitante;
+        $equipeVisitante = $this->getEquipeVisitante();
+        return $this->getGols()->filter(function (Gol $gol) use ($equipeVisitante) {
+            return $gol->getInscricao()->getEquipe() == $equipeVisitante;
+        });
+
+//        $this->golsVisitante = new ArrayCollection();
+//        foreach ($this->getGols() as $gol) {
+//            /* @var $gol Gol  */
+//            if ($gol->getInscricao()->getEquipe() == $this->getEquipeVisitante()) {
+//                $this->golsVisitante->add($gol);
+//            }
+//        }
+//        return $this->golsVisitante;
     }
 
     public function getNumeroGolsMandante()

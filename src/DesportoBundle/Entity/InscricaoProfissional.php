@@ -170,6 +170,20 @@ class InscricaoProfissional
         $this->cartoes = $cartoes;
         return $this;
     }
+    
+    public function getCartoesAmarelos()
+    {
+        return $this->cartoes->filter(function (Cartao $cartao) {
+            return $cartao->getCor() == Cartao::AMARELO;
+        });
+    }
+    
+    public function getCartoesVermelhos()
+    {
+        return $this->cartoes->filter(function (Cartao $cartao) {
+            return $cartao->getCor() == Cartao::VERMELHO;
+        });
+    }
 
     
     public function __toString()
