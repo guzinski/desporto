@@ -49,9 +49,7 @@ class EquipeController extends Controller
         $dados = array();
         foreach ($equipes as $equipe) {
             $dados[] = [
-                "<a href=\"".$this->generateUrl("equipe_form", array("id"=>$equipe->getId()))."\">". $equipe->getNome()."</a>",
-                $equipe->getTelefone(),
-                $equipe->getResponsavel(),
+                $this->renderView("DesportoBundle::Equipe/pagination.html.twig", ['equipe' => $equipe]),
             ];
         }
         
@@ -146,6 +144,15 @@ class EquipeController extends Controller
         } else {
             throw new NotFoundHttpException;
         }
+    }
+
+    /**
+     * @Route("/perfil/{id}", name="equipe_perfil")
+     * @Template()
+     */
+    public function perfilAction(Equipe $equipe) 
+    {
+        return ['equipe'=>$equipe];
     }
 
 

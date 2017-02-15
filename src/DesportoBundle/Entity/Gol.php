@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Description of Gol
  * @ORM\Table(name="gol")
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="DesportoBundle\Repository\GolRepository")
  */
 class Gol extends BaseEntity
 {

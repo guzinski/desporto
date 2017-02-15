@@ -1,0 +1,27 @@
+<div>
+    <div class="ckbox ckbox-default pull-left">
+        <input id="equipecheck{{ equipe.id }}" type="checkbox" name="equipes[]" value="{{ equipe.id }}">
+        <label for="equipecheck{{ equipe.id }}"></label>
+    </div>
+
+    <div class="media">
+        <div class="pull-right">
+            <div class="btn-group" role="group" aria-label="...">
+                <a  href="{{ path('equipe_form', {id: equipe.id}) }}" class="btn btn-white btn-xs tooltips" title="Editar"><i class="fa fa-pencil"></i></a>
+                <a  href="{{ path('equipe_perfil', {id: equipe.id}) }}" class="btn btn-white btn-xs tooltips" title="Perfil"><i class="fa fa-search"></i></a>
+            </div>
+        </div>
+
+        <div class="pull-left">
+            <img class="" src="{{ path('equipe_arquivo_download', {nome: equipe.publicFoto}) }}" alt="...">
+        </div>
+        <div class="media-body">
+            <h4 class="media-heading">{{ equipe.nome }} <small class="tooltips" title="Responsável">{{ equipe.responsavel }}</small></h4>
+            <div class="media-content">
+                <i class="fa fa-phone"></i> {{ equipe.telefone|telefone }} <br/>
+                <i class="fa fa-map-marker"></i> {{ equipe.endereco }}
+                
+            </div>
+        </div>
+    </div><!-- media -->
+</div><!-- list-group -->   

@@ -103,12 +103,18 @@ class EdicaoCampeonatoController extends Controller
             return $this->redirectToRoute("campeonato_convocacao", array("campeonato"=>$campeonato->getId()));
         }
         
+        $retorno = [
+            "campeonato"=>$campeonato,
+            "artilharia" => $this->getService()->calculaArtilharia($campeonato),
+        ];
         if ($campeonato->getTipo() == EdicaoCampeonato::PONTOS_CORRIDOS) {
-            return $this->render("DesportoBundle::EdicaoCampeonato\detalhe/pontosCorridos.html.twig", ["campeonato"=>$campeonato, "tabela"=>$this->getService()->calculaTabela($campeonato)]);
+            $retorno["tabela"] = $this->getService()->calculaTabela($campeonato);
+            return $this->render("DesportoBundle::EdicaoCampeonato\detalhe/pontosCorridos.html.twig", $retorno);
         } elseif ($campeonato->getTipo() == EdicaoCampeonato::TORNEIO) {
-            return $this->render("DesportoBundle::EdicaoCampeonato\detalhe/torneio.html.twig", ["campeonato"=>$campeonato]);
+            return $this->render("DesportoBundle::EdicaoCampeonato\detalhe/torneio.html.twig", $retorno);
         } elseif ($campeonato->getTipo() == EdicaoCampeonato::CHAVE) {
-            return $this->render("DesportoBundle::EdicaoCampeonato\detalhe/chave.html.twig", ["campeonato"=>$campeonato, "tabela"=>$this->getService()->calculaTabela($campeonato)]);
+            $retorno["tabela"] = $this->getService()->calculaTabela($campeonato);
+            return $this->render("DesportoBundle::EdicaoCampeonato\detalhe/chave.html.twig", $retorno);
         }
 
     }

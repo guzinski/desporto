@@ -7,12 +7,15 @@ use DesportoBundle\Entity\Chave;
 use DesportoBundle\Entity\EdicaoCampeonato;
 use DesportoBundle\Entity\Equipe;
 use DesportoBundle\Entity\FaseClassificatoria;
+use DesportoBundle\Entity\Gol;
 use DesportoBundle\Entity\InscricaoProfissional;
 use DesportoBundle\Entity\Jogo;
 use DesportoBundle\Entity\Profissional;
 use DesportoBundle\Entity\Rodada;
 use DesportoBundle\Repository\EdicaoCampeonatoRepository;
 use DesportoBundle\Repository\EquipeRepository;
+use DesportoBundle\Repository\GolRepository;
+use DesportoBundle\Repository\JogoRepository;
 use DesportoBundle\Repository\ProfissionalRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -519,6 +522,38 @@ class EdicaoCampeonatoService
      * @param EdicaoCampeonato $campeonato
      * @return mixed
      */
+    public function calculaArtilharia(EdicaoCampeonato $campeonato)
+    {
+        $gols = $this->getGolRepository()->getGolsFromCampeonato($campeonato);
+        $artilharia = [];
+        foreach ($gols as $gol) {
+            /* @var $gol Gol  */
+            if (!array_key_exists($gol->getInscricao()->getId(), $artilharia)){
+                $artilharia[$gol->getInscricao()->getId()] = ['inscricao'=> $gol->getInscricao(), 'gols' => 1];
+            } else {
+                $artilharia[$gol->getInscricao()->getId()]['gols']++;
+            }
+        }
+        
+
+
+        uksort($artilharia, function ($a, $b) use($artilharia) {
+            if ($artilharia[$a]['gols'] < $artilharia[$b]['gols']) {
+                return 1;
+            } elseif ($artilharia[$a]['gols'] > $artilharia[$b]['gols']) {
+                return -1;
+            }
+        });
+
+
+        return $artilharia;
+    }
+    
+    /**
+     * 
+     * @param EdicaoCampeonato $campeonato
+     * @return mixed
+     */
     public function calculaTabela(EdicaoCampeonato $campeonato)
     {
         if ($campeonato->getTipo() == EdicaoCampeonato::PONTOS_CORRIDOS) {
@@ -705,10 +740,19 @@ class EdicaoCampeonatoService
     
     /**
      * 
-     * @return \DesportoBundle\Repository\JogoRepository
+     * @return JogoRepository
      */
     public function getjogoRepository()
     {
         return $this->em->getRepository(Jogo::class);
+    }
+    
+    /**
+     * 
+     * @return GolRepository
+     */
+    public function getGolRepository()
+    {
+        return $this->em->getRepository(Gol::class);
     }
 }

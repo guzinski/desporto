@@ -9,6 +9,9 @@
     <script>
         jQuery(document).ready(function(){
             jQuery('#equipeTable').DataTable({
+                    "drawCallback": function( settings ) {
+                        jQuery('#equipeTable tbody .tooltips').tooltip({ container: 'body'});
+                    },
                     responsive: true,
                     "processing": true,
                     "serverSide": true,
@@ -48,15 +51,24 @@
                 <a href="{{ path('equipe_form') }}" class="btn btn-primary">Cadastrar Equipe</a>
             </div>
         </div>
+        <hr/>
+        
         <div class="panel panel-success-head">
-            <table id="equipeTable" class="table table-striped table-bordered">
-                <thead>
+            <table id="equipeTable" class="table table-responsive table-hover msg-list">
+                <thead class="msg-header">
                     <tr>
-                        <th>Nome</th>
-                        <th>Telefone</th>
-                        <th>Responsável</th>
+                        <td>
+                            <div class="ckbox ckbox-default pull-left">
+                                <input id="checkbox3" type="checkbox">
+                                <label for="checkbox3"></label>
+                            </div>
+                            <button class="btn btn-white tooltips" type="button" data-toggle="tooltip" data-placement="top" title="Exportar"><i class="fa fa-download"></i></button>
+                            <button class="btn btn-white tooltips" type="button" data-toggle="tooltip" data-placement="top" title="Excluir"><i class="fa fa-trash-o"></i></button>
+                        </td>
                     </tr>
                 </thead>
+                <tbody class="list-group contact-group">
+                </tbody>
             </table>
         </div><!-- panel -->
      </div><!-- contentpanel -->

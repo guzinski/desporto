@@ -1,0 +1,34 @@
+
+<div class="panel panel-default mb20">
+    <div class="panel-heading">
+        <h4 class="panel-title">Artilharia</h4>
+    </div>
+    <div class="panel-body">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Equipe</th>
+                    <th>Nome</th>
+                    <th>Gols</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for artilheiro in artilharia %}
+                    <tr>
+                        <td>{{ artilheiro.inscricao.equipe.nome }}</td>
+                        <td>{{ artilheiro.inscricao.profissional.nome }}</td>
+                        <td>{{ artilheiro.gols }}</td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="3">Nenhum gol foi marcado neste campeonato</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+
+
+    </div>
+</div>
+
