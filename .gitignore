@@ -56,7 +56,7 @@ nbdist/
 !web/uploads/arquivos/.gitkeep
 !web/uploads/arquivos/user-man.jpg
 !web/uploads/arquivos/user-woman.jpg
-!web/uploads/arquivos/escudo.jpg
+!web/uploads/arquivos/escudo.png
 !web/uploads/temp/.gitkeep
 
 # PHPUnit
