@@ -42,6 +42,24 @@
                     </div>
                 </div>
                 <hr/>
+                <div class="row">
+                    <div class="col-sm-3">
+                        <h4>Cartões Amarelos</h4>
+                    </div>
+                    <div class="col-sm-9">
+                        <h4>{{ profissional.cartoesAmarelos.count }}</h4>
+                    </div>
+                </div>
+                <hr/>
+                <div class="row">
+                    <div class="col-sm-3">
+                        <h4>Cartões Vermelhos</h4>
+                    </div>
+                    <div class="col-sm-9">
+                        <h4>{{ profissional.cartoesvermelhos.count }}</h4>
+                    </div>
+                </div>
+                <hr/>
             </div>
         </div>
         <hr/>
@@ -60,12 +78,16 @@
                     <tbody>
                         {% for inscricao in profissional.inscricoes %}
                         <tr>
-                            <Td> {{ inscricao.edicaoCampeonato.campeonato.nome }} - {{ inscricao.edicaoCampeonato.edicao }} </Td>
-                            <Td> {{ inscricao.equipe.nome }} </Td>
-                            <Td class="text-center"> {{ inscricao.gols.count }} </Td>
-                            <Td class="tooltips text-center" title="Cartões Amarelos"> {{ inscricao.cartoesAmarelos.count }} </Td>
-                            <Td class="tooltips  text-center" title="Cartões Varmelhos" > {{ inscricao.cartoesVermelhos.count }} </Td>
+                            <td> {{ inscricao.edicaoCampeonato.campeonato.nome }} - {{ inscricao.edicaoCampeonato.edicao }} </td>
+                            <td> {{ inscricao.equipe.nome }} </td>
+                            <td class="text-center"> {{ inscricao.gols.count }} </td>
+                            <td class="tooltips text-center" title="Cartões Amarelos"> {{ inscricao.cartoesAmarelos.count }} </td>
+                            <td class="tooltips  text-center" title="Cartões Varmelhos" > {{ inscricao.cartoesVermelhos.count }} </td>
                         </tr>
+                        {% else %}
+                            <tr>
+                                <td colspan="5"> Ainda não disputou nenhum campeonato. </td>
+                            </tr>
                         {% endfor %}
                     </tbody>
                     

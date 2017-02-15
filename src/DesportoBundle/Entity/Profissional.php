@@ -297,6 +297,10 @@ class Profissional extends BaseEntity
         }
     }
     
+    /**
+     * 
+     * @return ArrayCollection
+     */
     public function getGols()
     {
         $gols = new ArrayCollection();
@@ -306,6 +310,36 @@ class Profissional extends BaseEntity
             }
         }
         return $gols;
+    }
+
+    /**
+     * 
+     * @return ArrayCollection
+     */
+    public function getCartoesAmarelos()
+    {
+        $cartoesAmarelos = new ArrayCollection();
+        foreach ($this->inscricoes as $inscricao) {
+            foreach ($inscricao->getCartoesAmarelos() as $cartao) {
+                $cartoesAmarelos->add($cartao);
+            }
+        }
+        return $cartoesAmarelos;
+    }
+    
+    /**
+     * 
+     * @return ArrayCollection
+     */
+    public function getCartoesVermelhos()
+    {
+        $cartoesVermelhos = new ArrayCollection();
+        foreach ($this->inscricoes as $inscricao) {
+            foreach ($inscricao->getCartoesVermelhos() as $cartao) {
+                $cartoesVermelhos->add($cartao);
+            }
+        }
+        return $cartoesVermelhos;
     }
 
     

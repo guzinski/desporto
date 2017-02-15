@@ -58,6 +58,7 @@ class ProfissionalController extends Controller
             $recordsFiltered = $recordsTotal;
         }
         
+        
         $return = [
             'draw' => $request->get("draw"),
             'recordsTotal' => $recordsTotal,

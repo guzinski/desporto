@@ -430,15 +430,6 @@ class Jogo
         return $this->getGols()->filter(function (Gol $gol) use ($equipeVisitante) {
             return $gol->getInscricao()->getEquipe() == $equipeVisitante;
         });
-
-//        $this->golsVisitante = new ArrayCollection();
-//        foreach ($this->getGols() as $gol) {
-//            /* @var $gol Gol  */
-//            if ($gol->getInscricao()->getEquipe() == $this->getEquipeVisitante()) {
-//                $this->golsVisitante->add($gol);
-//            }
-//        }
-//        return $this->golsVisitante;
     }
 
     public function getNumeroGolsMandante()
@@ -459,6 +450,29 @@ class Jogo
             $this->numeroGolsVisitante = "";
         }
         return $this->numeroGolsVisitante;
+    }
+
+    
+    public function getCartoesAmarelosMandante()
+    {
+        $equipeMandante = $this->getEquipeMandante();
+        return $this->getCartoes()->filter(function (Cartao $cartao) use ($equipeMandante) {
+            return $cartao->getInscricao()->getEquipe() == $equipeMandante && $cartao->getCor() == Cartao::AMARELO;
+        });
+    }
+
+    public function getNumeroCartoesAmarelosMandante()
+    {
+        $this->numeroCartoesAmarelosMandante = $this->getCartoesAmarelosMandante()->count();
+        return $this->numeroCartoesAmarelosMandante;
+    }
+    
+    public function getCartoesAmarelosVisitante()
+    {
+        $equipeVisitante = $this->getEquipeVisitante();
+        return $this->getCartoes()->filter(function (Cartao $cartao) use ($equipeVisitante) {
+            return $cartao->getInscricao()->getEquipe() == $equipeVisitante && $cartao->getCor() == Cartao::AMARELO;
+        });
     }
 
     public function setGolsMandante(Collection $golsMandante)
@@ -484,36 +498,6 @@ class Jogo
         $this->numeroGolsVisitante = $numeroGolsVisitante;
         return $this;
     }
-    
-    public function getCartoesAmarelosMandante()
-    {
-        $this->cartoesAmarelosMandante = new ArrayCollection();
-        foreach ($this->getCartoes() as $cartao) {
-            /* @var $cartao Cartao  */
-            if ($cartao->getInscricao()->getEquipe() == $this->getEquipeMandante() && $cartao->getCor() == Cartao::AMARELO) {
-                $this->cartoesAmarelosMandante->add($cartao);
-            }
-        }
-        return $this->cartoesAmarelosMandante;
-    }
-
-    public function getNumeroCartoesAmarelosMandante()
-    {
-        $this->numeroCartoesAmarelosMandante = $this->getCartoesAmarelosMandante()->count();
-        return $this->numeroCartoesAmarelosMandante;
-    }
-    
-    public function getCartoesAmarelosVisitante()
-    {
-        $this->cartoesAmarelosVisitante = new ArrayCollection();
-        foreach ($this->getCartoes() as $cartao) {
-            /* @var $cartao Cartao  */
-            if ($cartao->getInscricao()->getEquipe() == $this->getEquipeVisitante() && $cartao->getCor() == Cartao::AMARELO) {
-                $this->cartoesAmarelosVisitante->add($cartao);
-            }
-        }
-        return $this->cartoesAmarelosVisitante;
-    }
 
     public function getNumeroCartoesAmarelosVisitante()
     {
@@ -523,14 +507,10 @@ class Jogo
     
     public function getCartoesVermelhosMandante()
     {
-        $this->cartoesVermelhosMandante = new ArrayCollection();
-        foreach ($this->getCartoes() as $cartao) {
-            /* @var $cartao Cartao  */
-            if ($cartao->getInscricao()->getEquipe() == $this->getEquipeMandante() && $cartao->getCor() == Cartao::VERMELHO) {
-                $this->cartoesVermelhosMandante->add($cartao);
-            }
-        }
-        return $this->cartoesVermelhosMandante;
+        $equipeMandante = $this->getEquipeMandante();
+        return $this->getCartoes()->filter(function (Cartao $cartao) use ($equipeMandante) {
+            return $cartao->getInscricao()->getEquipe() == $equipeMandante && $cartao->getCor() == Cartao::VERMELHO;
+        });
     }
 
     public function getNumeroCartoesVermelhosMandante()
@@ -540,15 +520,11 @@ class Jogo
     }
     
     public function getCartoesVermelhosVisitante()
-    {
-        $this->cartoesVermelhosVisitante = new ArrayCollection();
-        foreach ($this->getCartoes() as $cartao) {
-            /* @var $cartao Cartao  */
-            if ($cartao->getInscricao()->getEquipe() == $this->getEquipeVisitante() && $cartao->getCor() == Cartao::VERMELHO) {
-                $this->cartoesVermelhosVisitante->add($cartao);
-            }
-        }
-        return $this->cartoesVermelhosVisitante;
+    {        
+        $equipeVisitante = $this->getEquipeVisitante();
+        return $this->getCartoes()->filter(function (Cartao $cartao) use ($equipeVisitante) {
+            return $cartao->getInscricao()->getEquipe() == $equipeVisitante && $cartao->getCor() == Cartao::VERMELHO;
+        });
     }
 
     public function getNumeroCartoesVermelhosVisitante()
