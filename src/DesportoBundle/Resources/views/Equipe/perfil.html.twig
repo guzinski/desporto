@@ -1,0 +1,91 @@
+{% extends "DesportoBundle::layout.html.twig" %}
+{% block title %}Desporto | Perfil da Equipe{% endblock %}
+{% block head %}
+{% endblock %}
+
+{% block mainpanel %}
+    <div class="pageheader">
+        <div class="media">
+            <div class="pageicon pull-left">
+                <i class="fa fa-soccer-ball-o"></i>
+            </div>
+            <div class="media-body">
+                <ul class="breadcrumb">
+                    <li><a href="{{ path('index') }}"><i class="glyphicon glyphicon-home"></i></a></li>
+                    <li><a href="{{ path('equipe_index') }}">Equipe</a></li>
+                    <li>Perfil da Equipe </li>
+                </ul>
+                <h4>Perfil do Profissional </h4>
+            </div>
+        </div><!-- media -->
+    </div><!-- pageheader -->
+
+    <div class="contentpanel">
+
+        <div class="row">
+            <div class="col-sm-12 col-md-3">
+                <div class="text-center">
+                    <img src="{{ path('equipe_arquivo_download', {nome: equipe.publicFoto}) }}" class=" img-offline img-responsive img-profile" alt="" />
+                    <h4 class="profile-name mb5">{{ equipe.nome }}</h4>
+                    <div><i class="fa fa-user"></i> {{ equipe.responsavel }} </div>
+                    <div><i class="fa fa-map-marker"></i> {{ equipe.endereco }}</div>
+                    <div><i class="fa fa-phone"></i> {{ equipe.telefone|telefone }} </div>
+                </div><!-- text-center -->
+            </div><!-- col-sm-4 col-md-3 -->
+            <div class="col-sm-12 col-md-9">
+                <div class="row">
+                    <div class="col-sm-3">
+                        <h4>Gols</h4>
+                    </div>
+                    <div class="col-sm-9">
+                        <h4>12</h4>
+                    </div>
+                </div>
+                <hr/>
+                <div class="row">
+                    <div class="col-sm-3">
+                        <h4>Cartões Amarelos</h4>
+                    </div>
+                    <div class="col-sm-9">
+                        <h4>10</h4>
+                    </div>
+                </div>
+                <hr/>
+                <div class="row">
+                    <div class="col-sm-3">
+                        <h4>Cartões Vermelhos</h4>
+                    </div>
+                    <div class="col-sm-9">
+                        <h4>15</h4>
+                    </div>
+                </div>
+                <hr/>
+            </div>
+        </div>
+        <hr/>
+        <div class="row">
+            <div class="col-sm-12   ">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th> Campeonato</th>
+                            <th> Equipe </th>
+                            <th class="text-center"> Gols </th>
+                            <th class="tooltips text-center" title="Cartões Amarelos"> CA </th>
+                            <th class="tooltips text-center" title="Cartões Vermelhos"> CV </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td colspan="5"> Ainda não disputou nenhum campeonato. </td>
+                        </tr>
+                    </tbody>
+                    
+                </table>
+            </div>
+        </div>
+
+
+
+    </div><!-- contentpanel -->
+{% endblock %}
