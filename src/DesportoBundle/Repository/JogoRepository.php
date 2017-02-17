@@ -10,6 +10,7 @@ namespace DesportoBundle\Repository;
 
 use DesportoBundle\Entity\Chave;
 use DesportoBundle\Entity\EdicaoCampeonato;
+use DesportoBundle\Entity\Equipe;
 use DesportoBundle\Entity\Rodada;
 use Doctrine\ORM\EntityRepository;
 
@@ -21,7 +22,7 @@ class JogoRepository extends EntityRepository
 {
     
     
-    public function getjogosJogados(EdicaoCampeonato $campeonato, Chave $chave = null, Rodada $rodada = null)
+    public function getjogosJogados(EdicaoCampeonato $campeonato, Chave $chave = null, Rodada $rodada = null, Equipe $equipe = null)
     {
         $query = $this->createQueryBuilder("J");
         
@@ -34,6 +35,11 @@ class JogoRepository extends EntityRepository
         if (!is_null($rodada)) {
             $query->andWhere($query->expr()->eq("J.rodada", ":rodada"))
                     ->setParameter("rodada", $rodada->getId());
+        }
+        if (!is_null($equipe)) {
+            $query->andWhere($query->expr()->orX(
+                            $query->expr()->eq("J.equipeMandante", $equipe->getId()), $query->expr()->eq("J.equipeVisitante", $equipe->getId())
+            ));
         }
         
         $query->setParameter("campeonato", $campeonato->getId());

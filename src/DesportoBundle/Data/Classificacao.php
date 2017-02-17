@@ -18,7 +18,6 @@ class Classificacao
      */
     private $equipe;
 
-    private $pontos = 0;
     private $vitorias = 0;
     private $empates = 0;
     private $derrotas = 0;
@@ -26,8 +25,6 @@ class Classificacao
     private $cartoesVermelhos  = 0;
     private $golsMarcados = 0;
     private $golsSofridos  = 0;
-    private $golsSaldo = 0;
-    private $aproveitamento = 0;
     
     
     public function __construct(Equipe $equipe)
@@ -43,7 +40,7 @@ class Classificacao
 
     public function getPontos()
     {
-        return $this->pontos;
+        return $this->pontos = $this->vitorias * 3 + $this->empates;
     }
 
     public function getVitorias()
@@ -83,18 +80,12 @@ class Classificacao
 
     public function getGolsSaldo()
     {
-        return $this->golsSaldo;
+        return $this->golsSaldo = $this->golsMarcados-$this->getGolsSofridos();
     }
 
     public function setEquipe(Equipe $equipe)
     {
         $this->equipe = $equipe;
-        return $this;
-    }
-
-    public function setPontos($pontos)
-    {
-        $this->pontos = $pontos;
         return $this;
     }
 
@@ -140,13 +131,6 @@ class Classificacao
         return $this;
     }
 
-    public function setGolsSaldo($golsSaldo)
-    {
-        $this->golsSaldo = $golsSaldo;
-        return $this;
-    }
-
-
     public function addVitoria()
     {
         $this->vitorias++;
@@ -184,10 +168,15 @@ class Classificacao
     
     public function getAproveitamento()
     {
-        if ($this->getVitorias()+$this->getDerrotas()+$this->getEmpates() == 0) {
+        if ($this->getTotalJogos() == 0) {
             return 0;
         }
-        return $this->getPontos() / (($this->getVitorias()+$this->getDerrotas()+$this->getEmpates()) *3) * 100;
+        return $this->getPontos() / ($this->getTotalJogos() *3) * 100;
+    }
+    
+    public function getTotalJogos()
+    {
+        return $this->vitorias+$this->empates+$this->derrotas;
     }
     
     

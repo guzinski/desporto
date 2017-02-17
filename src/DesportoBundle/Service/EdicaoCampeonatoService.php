@@ -654,13 +654,6 @@ class EdicaoCampeonatoService
             $classificacaoVisitante->addGolsMarcados($jogo->getNumeroGolsVisitante());
             $classificacaoVisitante->addGolsSofridos($jogo->getNumeroGolsMandante());
         }
-        
-        foreach ($tabela as $classificacao) {
-            /* @var $classificacao Classificacao */
-            $classificacao->setGolsSaldo($classificacao->getGolsMarcados()-$classificacao->getGolsSofridos());
-            $classificacao->setPontos(($classificacao->getVitorias()*3)+$classificacao->getEmpates());
-        }
-
     }
     
     private function regraOrdenacao(Classificacao $first, Classificacao $second, EdicaoCampeonato $campeonato, $nivel)

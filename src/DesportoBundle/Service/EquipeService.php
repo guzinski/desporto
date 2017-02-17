@@ -3,9 +3,14 @@
 namespace DesportoBundle\Service;
 
 use AppKernel;
+use DesportoBundle\Data\Classificacao;
+use DesportoBundle\Entity\EdicaoCampeonato;
 use DesportoBundle\Entity\Equipe;
+use DesportoBundle\Repository\JogoRepository;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\EntityManager;
+use InvalidArgumentException;
+use Proxies\__CG__\DesportoBundle\Entity\Jogo;
 use Symfony\Component\HttpFoundation\RequestStack;
 
 /**
@@ -80,9 +85,7 @@ class EquipeService
         $this->em->persist($equipe);
         $this->em->flush();
     }
-    
-    
-    
+        
     private function salvarBrasao(Equipe $equipe, $brasaoExcluido)
     {
         $pathTemp       = $this->kernel->getRootDir()."/../web/uploads/temp/";
@@ -98,5 +101,66 @@ class EquipeService
         }
     }
     
+    /**
+     * Retorna o histórico da equipe no campeonato
+     * 
+     * @param Equipe $equipe
+     * @param EdicaoCampeonato $campeonato
+     * @return Classificacao
+     * @throws InvalidArgumentException
+     */
+    public function getHistoricoEquipeCampeonato(Equipe $equipe, EdicaoCampeonato $campeonato)
+    {
+        if (is_null($campeonato) || is_null($equipe)) {
+            throw new InvalidArgumentException;
+        }
+        
+        $classificacao = new Classificacao($equipe);
+        
+        $jogos = $this->getjogoRepository()->getjogosJogados($campeonato, null, null, $equipe);
+        
+        
+        foreach ($jogos as $jogo) {
+            /* @var $jogo Jogo  */
+            
+            if ($equipe==$jogo->getEquipeMandante()) {
+                if ($jogo->getNumeroGolsMandante() > $jogo->getNumeroGolsVisitante()) {
+                    $classificacao->addVitoria();
+                } elseif ($jogo->getNumeroGolsMandante() === $jogo->getNumeroGolsVisitante()) {
+                    $classificacao->addEmpate();
+                } else {
+                    $classificacao->addDerrota();
+                }
+                $classificacao->addCartaoAmarelo($jogo->getNumeroCartoesAmarelosMandante());
+                $classificacao->addCartaoVermelho($jogo->getNumeroCartoesVermelhosMandante());
+                $classificacao->addGolsMarcados($jogo->getNumeroGolsMandante());
+                $classificacao->addGolsSofridos($jogo->getNumeroGolsVisitante());
+            } elseif ($equipe==$jogo->getEquipeVisitante()) {
+                if ($jogo->getNumeroGolsMandante() > $jogo->getNumeroGolsVisitante()) {
+                    $classificacao->addDerrota();
+                } elseif ($jogo->getNumeroGolsMandante() === $jogo->getNumeroGolsVisitante()) {
+                    $classificacao->addEmpate();
+                } else {
+                    $classificacao->addVitoria();
+                }
+                $classificacao->addCartaoAmarelo($jogo->getNumeroCartoesAmarelosVisitante());
+                $classificacao->addCartaoVermelho($jogo->getNumeroCartoesVermelhosVisitante());
+                $classificacao->addGolsMarcados($jogo->getNumeroGolsVisitante());
+                $classificacao->addGolsSofridos($jogo->getNumeroGolsMandante());
+            }
+        }
+        
+        return $classificacao;
+    }
+
+    /**
+     * 
+     * @return JogoRepository
+     */
+    private function getjogoRepository()
+    {
+        return $this->em->getRepository(Jogo::class);
+    }
+
     
 }

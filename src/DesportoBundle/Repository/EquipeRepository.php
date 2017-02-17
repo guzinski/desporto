@@ -3,6 +3,8 @@
 namespace DesportoBundle\Repository;
 
 use DesportoBundle\Entity\EdicaoCampeonato;
+use DesportoBundle\Entity\Equipe;
+use DesportoBundle\Entity\Gol;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\Expr\Join;
 
@@ -13,6 +15,48 @@ use Doctrine\ORM\Query\Expr\Join;
  */
 class EquipeRepository extends EntityRepository
 {
+    
+    
+    /**
+     * Retorna a qauntidade total de gols feitos pela Equipe
+     * 
+     * @param Equipe $equipe
+     * @return int
+     */
+    public function getTotalGolsEquipe(Equipe $equipe)
+    {
+        $query = $this->getEntityManager()->createQueryBuilder();        
+        $query->select($query->expr()->count("G"))
+                ->from(Gol::class, "G")
+                ->leftJoin("G.inscricao", "I")
+                ->andWhere($query->expr()->eq("I.equipe", $equipe->getId()));
+        
+        return $query->getQuery()->getSingleScalarResult();
+    }
+    
+    /**
+     * Retorna a qauntidade total de cartões feitos pela Equipe
+     * 
+     * @param Equipe $equipe
+     * @param string $cor
+     * @return int
+     */
+    public function getTotalCartoesEquipe(Equipe $equipe, $cor = null)
+    {
+        $query = $this->getEntityManager()->createQueryBuilder();        
+        $query->select($query->expr()->count("C"))
+                ->from(\DesportoBundle\Entity\Cartao::class, "C")
+                ->leftJoin("C.inscricao", "I")
+                ->andWhere($query->expr()->eq("I.equipe", $equipe->getId()));
+        
+        if (!is_null($cor)) {
+            $query->andWhere($query->expr()->eq("C.cor", ":cor"))
+                    ->setParameter("cor", $cor);
+        }
+        
+        return $query->getQuery()->getSingleScalarResult();
+    }
+
     
     /**
      * @param string $busca

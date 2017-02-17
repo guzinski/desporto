@@ -118,7 +118,7 @@ class EquipeController extends Controller
         $form = $this->createForm(EquipeType::class, $equipe);
         $form->handleRequest($request);
         if ($form->isValid()) {
-            $this->get("equipe")->salvarEquipe($equipe, $arquivos);                        
+            $this->getEquipeService()->salvarEquipe($equipe, $arquivos);                        
             return new RedirectResponse($this->generateUrl('equipe_index'));
         }
         
@@ -152,8 +152,29 @@ class EquipeController extends Controller
      */
     public function perfilAction(Equipe $equipe) 
     {
-        return ['equipe'=>$equipe];
+        $equipeRepo = $this->getDoctrine()->getRepository(Equipe::class);
+        $numGols = $equipeRepo->getTotalGolsEquipe($equipe);
+        $numCartoesAmarelos = $equipeRepo->getTotalCartoesEquipe($equipe, \DesportoBundle\Entity\Cartao::AMARELO);
+        $numCartoesVermelhos = $equipeRepo->getTotalCartoesEquipe($equipe, \DesportoBundle\Entity\Cartao::VERMELHO);
+        
+        $historicos = [];
+        foreach ($equipe->getEdicoesCampeonatos() as $campeonato) {
+            $historicos[] = [
+                'historico' => $this->getEquipeService()->getHistoricoEquipeCampeonato($equipe, $campeonato),
+                'campeonato' => $campeonato,
+            ];            
+        }
+        
+        return ['equipe'=>$equipe, 'numGols'=>$numGols, "numCartoesAmarelos"=> $numCartoesAmarelos, "numCartoesVermelhos"=>$numCartoesVermelhos, 'historicos' => $historicos];
     }
 
+    /**
+     * 
+     * @return \DesportoBundle\Service\EquipeService
+     */
+    private function getEquipeService()
+    {
+        return $this->get("equipe");
+    }
 
 }
