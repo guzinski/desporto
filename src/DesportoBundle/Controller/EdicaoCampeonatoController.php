@@ -35,6 +35,16 @@ class EdicaoCampeonatoController extends Controller
     }
     
     /**
+     * @Route("/encerrados", name="campeonato_encerrados")
+     * @Template()
+     * @return type
+     */
+    public function encerradosAction()
+    {
+        return [];
+    }
+    
+    /**
      * @Route("/pagination", name="campeonato_pagination")
      */
     public function paginationAction(Request $request)
@@ -42,10 +52,11 @@ class EdicaoCampeonatoController extends Controller
         $firstResult    = $request->query->getInt("start");
         $maxResults     = $request->query->getInt("length");
         $busca          = $request->get("search");
+        $encerrados    = $request->get("encerrados");
         
         $repCampeonatos = $this->getDoctrine()
                             ->getRepository(EdicaoCampeonato::class);
-        $campeonatos = $repCampeonatos->getCampeonatos($busca['value'], $maxResults, $firstResult);
+        $campeonatos = $repCampeonatos->getCampeonatos($busca['value'], $maxResults, $firstResult, $encerrados);
         $dados = array();
         foreach ($campeonatos as $campeonato) {
             $dados[] = [
@@ -55,9 +66,9 @@ class EdicaoCampeonatoController extends Controller
             ];
         }
         
-        $recordsTotal = $repCampeonatos->count();
+        $recordsTotal = $repCampeonatos->count($encerrados);
         if (!empty($busca['value'])) {
-            $recordsFiltered = $repCampeonatos->count($busca['value']);
+            $recordsFiltered = $repCampeonatos->count($encerrados, $busca['value']);
         } else {
             $recordsFiltered = $recordsTotal;
         }

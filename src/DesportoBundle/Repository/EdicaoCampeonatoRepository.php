@@ -19,9 +19,17 @@ class EdicaoCampeonatoRepository extends EntityRepository
      * @param int $firstResult
      * @return array
      */
-    public function getCampeonatos($busca, $maxResults = 0, $firstResult = 0)
+    public function getCampeonatos($busca, $maxResults = 0, $firstResult = 0, $encerrados = 0)
     {
         $query = $this->createQueryBuilder("EC");
+        
+        if ($encerrados) {
+            $query->andWhere($query->expr()->eq("EC.status", ":status"))
+                ->setParameter("status", \DesportoBundle\Entity\EdicaoCampeonato::ENCERRADO);
+        } else {
+            $query->andWhere($query->expr()->neq("EC.status", ":status"))
+                ->setParameter("status", \DesportoBundle\Entity\EdicaoCampeonato::ENCERRADO);
+        }
         
         if (!empty($busca)) {
             $query->leftJoin("EC.campeonato", "C")
@@ -42,11 +50,20 @@ class EdicaoCampeonatoRepository extends EntityRepository
      * 
      * @return array
      */
-    public function count($busca = "")
+    public function count($encerrados = 0, $busca = "")
     {
         $query = $this->createQueryBuilder("EC");
         
         $query->select("COUNT(EC.id)");
+        
+        if ($encerrados) {
+            $query->andWhere($query->expr()->eq("EC.status", ":status"))
+                ->setParameter("status", \DesportoBundle\Entity\EdicaoCampeonato::ENCERRADO);
+        } else {
+            $query->andWhere($query->expr()->neq("EC.status", ":status"))
+                ->setParameter("status", \DesportoBundle\Entity\EdicaoCampeonato::ENCERRADO);
+        }
+
         
         if (!empty($busca)) {
             $query->leftJoin("EC.campeonato", "C")

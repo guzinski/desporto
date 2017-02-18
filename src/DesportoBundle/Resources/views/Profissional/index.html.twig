@@ -12,20 +12,53 @@
                 "drawCallback": function( settings ) {
                     jQuery('#profissionalTable tbody .tooltips').tooltip({ container: 'body'});
                 },
+                "ordering": false,
                 responsive: true,
                 "processing": true,
                 "serverSide": true,
                 "ajax": "{{ path('profissional_pagination') }}",
             });
 
-                // DataTables Length to Select2
-                jQuery('div.dataTables_length select').removeClass('form-control input-sm');
-                jQuery('div.dataTables_length select').css({width: '60px'});
-                jQuery('div.dataTables_length select').select2({
-                    minimumResultsForSearch: -1
-                });
-
+            // DataTables Length to Select2
+            jQuery('div.dataTables_length select').removeClass('form-control input-sm');
+            jQuery('div.dataTables_length select').css({width: '60px'});
+            jQuery('div.dataTables_length select').select2({
+                minimumResultsForSearch: -1
+            });
+            
+            jQuery("#checkall").change(function() {
+               jQuery(this).closest("#profissionalTable ").find("tbody input[type='checkbox']").prop('checked', jQuery(this).prop("checked"));
+            });
+            jQuery("#profissionalTable tbody").on("change", "input[type='checkbox']",function() {
+                if(false == jQuery(this).prop("checked")) { 
+                    jQuery("#checkall").prop('checked', false); 
+                }
+                if (jQuery("#profissionalTable tbody input[type='checkbox']:checked").length == jQuery("#profissionalTable tbody input[type='checkbox']").length ){
+                    jQuery("#checkall").prop('checked', true);
+                }
+            });
         });
+        
+        function exportar() {
+            if (jQuery("#profissionalTable tbody input[type='checkbox']:checked").length > 0 ){
+                jQuery("form").attr("action", "{{ path('profissional_exportar') }}").submit();
+            } else {
+                bootbox.alert("Nenhum profissional Selecionado");
+            }
+        }
+        
+        function excluir() {
+            if (jQuery("#profissionalTable tbody input[type='checkbox']:checked").length > 0 ){
+                bootbox.confirm("Tem certeza que deseja excluir esses profissionais? Os Profissionais excluídos não poderão mais ser inscritos em novos campeonatos, porém em campeonatos que já estão inscritos seguem normalmente.", 
+                function(c) {
+                    if (c) {
+                        jQuery("form").attr("action", "{{ path('profissional_excluir') }}").submit();
+                    }
+                });
+            } else {
+                bootbox.alert("Nenhum profissional Selecionado");
+            }
+        }
        
     </script>
 {% endblock %}
@@ -54,18 +87,19 @@
         <hr/>
         <div class="panel panel-success-head">
             
-            
+            <form method="POST">
+                
             <table class="table table-responsive table-hover msg-list" id="profissionalTable">
 
                 <thead class="msg-header">
                     <tr>
                         <td>
                             <div class="ckbox ckbox-default pull-left">
-                                <input id="checkbox3" type="checkbox">
-                                <label for="checkbox3"></label>
+                                <input id="checkall" type="checkbox">
+                                <label for="checkall"></label>
                             </div>
-                            <button class="btn btn-white tooltips" type="button" data-toggle="tooltip" data-placement="top" title="Exportar"><i class="fa fa-download"></i></button>
-                            <button class="btn btn-white tooltips" type="button" data-toggle="tooltip" data-placement="top" title="Excluir"><i class="fa fa-trash-o"></i></button>
+                            <button onclick="exportar()" class="btn btn-white tooltips" type="button" data-toggle="tooltip" data-placement="top" title="Exportar"><i class="fa fa-download"></i></button>
+                            <button onclick="excluir()" class="btn btn-white tooltips" type="button" data-toggle="tooltip" data-placement="top" title="Excluir"><i class="fa fa-trash-o"></i></button>
                         </td>
                     </tr>
                 </thead>
@@ -73,6 +107,7 @@
                 </tbody>
 
             </table>
+            </form>
 
         </div><!-- panel -->
      </div><!-- contentpanel -->

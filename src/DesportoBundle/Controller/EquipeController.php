@@ -2,9 +2,12 @@
 
 namespace DesportoBundle\Controller;
 
+use DateTime;
+use DesportoBundle\Entity\Cartao;
 use DesportoBundle\Entity\Equipe;
 use DesportoBundle\Form\EquipeType;
 use DesportoBundle\Repository\EquipeRepository;
+use DesportoBundle\Service\EquipeService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -12,6 +15,7 @@ use Symfony\Component\Asset\Exception\InvalidArgumentException;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
@@ -154,8 +158,8 @@ class EquipeController extends Controller
     {
         $equipeRepo = $this->getDoctrine()->getRepository(Equipe::class);
         $numGols = $equipeRepo->getTotalGolsEquipe($equipe);
-        $numCartoesAmarelos = $equipeRepo->getTotalCartoesEquipe($equipe, \DesportoBundle\Entity\Cartao::AMARELO);
-        $numCartoesVermelhos = $equipeRepo->getTotalCartoesEquipe($equipe, \DesportoBundle\Entity\Cartao::VERMELHO);
+        $numCartoesAmarelos = $equipeRepo->getTotalCartoesEquipe($equipe, Cartao::AMARELO);
+        $numCartoesVermelhos = $equipeRepo->getTotalCartoesEquipe($equipe, Cartao::VERMELHO);
         
         $historicos = [];
         foreach ($equipe->getEdicoesCampeonatos() as $campeonato) {
@@ -167,10 +171,66 @@ class EquipeController extends Controller
         
         return ['equipe'=>$equipe, 'numGols'=>$numGols, "numCartoesAmarelos"=> $numCartoesAmarelos, "numCartoesVermelhos"=>$numCartoesVermelhos, 'historicos' => $historicos];
     }
+    
+    
+        /**
+     * @Route("/exportar", name="equipe_exportar")
+     * @param Request $request
+     * @return StreamedResponse
+     */
+    public function exportarAction(Request $request)
+    {        
+        $response = new StreamedResponse();
+        $response->setCallback(function() use ($request) {
+            $handle = fopen('php://output', 'w+');
+
+            // Add the header of the CSV file
+            fputcsv($handle, array('Nome', 'Responsável', 'Telefone', 'Endereço'),';');
+            
+            $equipes = $this->getDoctrine()->getRepository(Equipe::class)->findBy(['id' => array_values($request->get("equipes"))]);
+            foreach ($equipes as $equipe) {
+                fputcsv(
+                    $handle,
+                    array($equipe->getNome(), $equipe->getResponsavel(),  $this->get('string_filters')->telefone($equipe->getTelefone()), $equipe->getEndereco()),
+                    ';'
+                );                
+            }
+
+            fclose($handle);
+        });
+
+        $response->setStatusCode(200);
+        $response->headers->set('Content-Type', 'text/csv; charset=utf-8');
+        $response->headers->set('Content-Disposition', 'attachment; filename="equipes.csv"');
+        
+        return $response;
+    }
+
+    /**
+     * @Route("/excluir", name="equipe_excluir")
+     * @param Request $request
+     * @return RedirectResponse
+     */
+    public function excluirAction(Request $request)
+    {
+        $equipes = $this->getDoctrine()->getRepository(Equipe::class)->findBy(['id' => array_values($request->get("equipes"))]);
+
+        $dataExclusao = new DateTime("now"); 
+        foreach ($equipes as $equipe) {
+             /* @var $equipe Equipe */
+             $equipe->setDataExclusao($dataExclusao);
+             $equipe->setUsuarioExclusao($this->getUser());
+             $this->getDoctrine()->getManager()->persist($equipe);
+         }
+         $this->getDoctrine()->getManager()->flush();
+         
+         return new RedirectResponse($this->generateUrl('equipe_index'));
+    }
+
 
     /**
      * 
-     * @return \DesportoBundle\Service\EquipeService
+     * @return EquipeService
      */
     private function getEquipeService()
     {

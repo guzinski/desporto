@@ -21,6 +21,8 @@ services:
     jogo:
         class:  DesportoBundle\Service\JogoService
         arguments: ["@doctrine.orm.entity_manager" ]
+    string_filters:
+        class:  DesportoBundle\Service\StringFilters
         
     edicao_campeonato:
         class:  DesportoBundle\Service\EdicaoCampeonatoService

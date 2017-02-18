@@ -1,5 +1,5 @@
 {% extends "DesportoBundle::layout.html.twig" %}
-{% block title %}Desporto | Campeonatos em Andamento{% endblock %}
+{% block title %}Desporto | Campeonatos Encerrados{% endblock %}
 {% block head %}
     <link href="{{ asset('bundles/desporto/css/style.datatables.css') }}" rel="stylesheet">
     <script src="{{ asset('bundles/desporto/js/jquery.dataTables.min.js') }}"></script>
@@ -15,7 +15,7 @@
                     "ajax": {
                         "url": "{{ path('campeonato_pagination') }}",
                         "data": function ( d ) {
-                            d.encerrados = 0;
+                            d.encerrados = 1;
                         }
 
                     } ,
@@ -41,9 +41,9 @@
             <div class="media-body">
                 <ul class="breadcrumb">
                     <li><a href="{{ path('index') }}"><i class="glyphicon glyphicon-home"></i></a></li>
-                    <li>Campeonatos em Andamento</li>
+                    <li>Campeonatos Encerrados</li>
                 </ul>
-                <h4>Campeonatos em Andamento</h4>
+                <h4>Campeonatos Encerrados</h4>
             </div>
         </div><!-- media -->
     </div><!-- pageheader -->

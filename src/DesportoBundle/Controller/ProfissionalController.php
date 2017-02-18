@@ -11,6 +11,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
@@ -104,28 +105,6 @@ class ProfissionalController extends Controller
         return ['profissional'=>$profissional];
     }
 
- 
-    /**
-     * @Route("/excluir", name="profissional_excluir")
-     */
-    public function excluirAction(Request $resquest) 
-    {
-        return new Response();;
-//        $respone = array();
-//        $id = $resquest->request->getInt("id", null);
-//        if (null != $id) {
-//            $em = $this->getDoctrine()->getManager();
-//            $usuario = $em->find(Usuario::class, $id);
-//            $em->remove($usuario);
-//            $em->flush();
-//            $respone['ok'] = 1;
-//        } else {
-//            $respone['ok'] = 0;
-//            $respone['error'] = "Erro ao exclui usuário";
-//        }
-//        return new Response(json_encode($respone));
-    }
-
     
     /**
      * @Route("/download/{nome}", name="profissional_arquivo_download")
@@ -205,7 +184,7 @@ class ProfissionalController extends Controller
             $items[] = [
                 'id' => $profissional->getId(),
                 'nome' => $profissional->getNome(),
-                'cpf' => $profissional->getCpf()
+                'cpf' => $this->get("string_filters")->cpf($profissional->getCpf())
             ];
         }
 
@@ -214,6 +193,61 @@ class ProfissionalController extends Controller
         $return['incomplete_results'] = false;
 
         return $return;
+    }
+    
+    /**
+     * @Route("/exportar", name="profissional_exportar")
+     * @param Request $request
+     * @return StreamedResponse
+     */
+    public function exportarAction(Request $request)
+    {        
+        $response = new StreamedResponse();
+        $response->setCallback(function() use ($request) {
+            $handle = fopen('php://output', 'w+');
+
+            // Add the header of the CSV file
+            fputcsv($handle, array('Nome', 'CPF', 'Telefone', 'Endereço', 'Sexo', 'Nascimento'),';');
+            
+            $profissionais = $this->getDoctrine()->getRepository(Profissional::class)->findBy(['id' => array_values($request->get("profissionais"))]);
+            
+            foreach ($profissionais as $profissional) {
+                fputcsv(
+                    $handle, 
+                    array($profissional->getNome(), $this->get('string_filters')->cpf($profissional->getCpf()), $this->get('string_filters')->telefone($profissional->getTelefone()), $profissional->getEndereco(), $profissional->getSexo(), $profissional->getNascimento()->format("d/m/Y")),
+                    ';' 
+                );                
+            }
+
+            fclose($handle);
+        });
+
+        $response->setStatusCode(200);
+        $response->headers->set('Content-Type', 'text/csv; charset=utf-8');
+        $response->headers->set('Content-Disposition', 'attachment; filename="profissionais.csv"');
+        
+        return $response;
+    }
+
+    /**
+     * @Route("/excluir", name="profissional_excluir")
+     * @param Request $request
+     * @return RedirectResponse
+     */
+    public function excluirAction(Request $request)
+    {
+        $profissionais = $this->getDoctrine()->getRepository(Profissional::class)->findBy(['id' => array_values($request->get("profissionais"))]);
+
+        $dataExclusao = new \DateTime("now"); 
+        foreach ($profissionais as $profissional) {
+             /* @var $profissional Profissional */
+             $profissional->setDataExclusao($dataExclusao);
+             $profissional->setUsuarioExclusao($this->getUser());
+             $this->getDoctrine()->getManager()->persist($profissional);
+         }
+         $this->getDoctrine()->getManager()->flush();
+         
+         return new RedirectResponse($this->generateUrl('profissional_index'));
     }
 
     

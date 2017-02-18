@@ -35,6 +35,9 @@ class ProfissionalRepository extends EntityRepository
             $query->setParameter("busca", "%{$busca}%");
         }
         
+        $query->andWhere($query->expr()->isNull("P.dataExclusao"))
+                ->andWhere($query->expr()->isNull("P.usuarioExclusao"));
+        
         if (($maxResults+$firstResult)>0) {
             $query->setFirstResult($firstResult)
                     ->setMaxResults($maxResults);
@@ -51,7 +54,10 @@ class ProfissionalRepository extends EntityRepository
     {
         $query = $this->createQueryBuilder("P");
         
-        $query->select("COUNT(P.id)");
+        $query->select("COUNT(P.id)")
+                ->andWhere($query->expr()->isNull("P.dataExclusao"))
+                ->andWhere($query->expr()->isNull("P.usuarioExclusao"));
+
         
         if (!empty($busca)) {
             $query->andWhere($query->orWhere($query->expr()->like("P.nome", ":busca"))
@@ -73,6 +79,8 @@ class ProfissionalRepository extends EntityRepository
             if (empty($param['cpf'])) {
                 return array();;
             } else {
+                $param['dataExclusao'] = null;
+                $param['usuarioExclusao'] = null;
                 return $this->findBy($param);
             }
         }
@@ -199,8 +207,11 @@ class ProfissionalRepository extends EntityRepository
                     ->setParameter("sexo", $sexo);
         }
         
+        
         return $query->select("J")
                         ->andWhere($query->expr()->notIn("J.id", $subQuery->getDQL()))
+                        ->andWhere($query->expr()->isNull("J.dataExclusao"))
+                        ->andWhere($query->expr()->isNull("J.usuarioExclusao"))
                         
                         ->setParameter("campeonato", $campeonato->getId())
                         

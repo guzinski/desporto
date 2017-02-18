@@ -4,6 +4,19 @@ namespace DesportoBundle\Twig;
 
 class AppExtension extends \Twig_Extension
 {
+    
+    /**
+     *
+     * @var \DesportoBundle\Service\StringFilters 
+     */
+    private $filters;
+
+
+    public function __construct()
+    {
+        $this->filters = new \DesportoBundle\Service\StringFilters();
+    }
+    
     public function getFilters()
     {
         return array(
@@ -15,48 +28,17 @@ class AppExtension extends \Twig_Extension
 
     public function cpfFilter($cpf) 
     {
-        $cpf = preg_replace("/[^0-9]/", "", $cpf);
-
-        $mascara = '###.###.###/##'; 
-
-        $indice = 0;
-        for ($i=0; $i < strlen($mascara); $i++) {
-                if ($mascara[$i]=='#') $mascara[$i] = $cpf[$indice++];
-        }
-
-        return $mascara;
+        return $this->filters->cpf($cpf);
     }
     
     public function cnpjFilter($cnpj) 
     {
-        $cnpj = preg_replace("/[^0-9]/", "", $cnpj);
-
-        $mascara = '##.###.###/####-##'; 
-
-        $indice = 0;
-        for ($i=0; $i < strlen($mascara); $i++) {
-                if ($mascara[$i]=='#') $mascara[$i] = $cnpj[$indice++];
-        }
-
-        return $mascara;
+        return $this->filters->cnpj($cnpj);
     }
     
     public function telefoneFilter($telefone) 
     {
-        $telefone = preg_replace("/[^0-9]/", "", $telefone);
-
-        if (strlen($telefone) == 10) {
-            $mascara = '(##) ####-####'; 
-        } elseif (strlen($telefone) == 11) {
-            $mascara = '(##) #####-####'; 
-        }
-
-        $indice = 0;
-        for ($i=0; $i < strlen($mascara); $i++) {
-                if ($mascara[$i]=='#') $mascara[$i] = $telefone[$indice++];
-        }
-
-        return $mascara;
+        return $this->filters->telefone($telefone);
     }
 
 

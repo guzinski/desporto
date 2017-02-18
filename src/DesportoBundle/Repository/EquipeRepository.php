@@ -68,13 +68,17 @@ class EquipeRepository extends EntityRepository
     {
         $query = $this->createQueryBuilder("E");
         
-        $query->select("E");
+        $query->select("E")
+            ->andWhere($query->expr()->isNull("E.dataExclusao"))
+            ->andWhere($query->expr()->isNull("E.usuarioExclusao"));
         if (!empty($busca)) {
-            $query->andWhere($query->orWhere($query->expr()->like("E.nome", ":busca"))
-                                    ->orWhere($query->expr()->like("E.apelido", ":busca"))
-                                    ->getDQLPart("where"));
+            $query->andWhere(
+                $query->expr()->orX($query->expr()->like("E.nome", ":busca"), $query->expr()->like("E.apelido", ":busca"))
+            );
             $query->setParameter("busca", "%{$busca}%");
         }
+        
+
         
         if (($maxResults+$firstResult)>0) {
             $query->setFirstResult($firstResult)
@@ -93,12 +97,13 @@ class EquipeRepository extends EntityRepository
     {
         $query = $this->createQueryBuilder("E");
         
-        $query->select("COUNT(E.id)");
-        
+        $query->select("COUNT(E.id)")
+            ->andWhere($query->expr()->isNull("E.dataExclusao"))
+            ->andWhere($query->expr()->isNull("E.usuarioExclusao"));
         if (!empty($busca)) {
-            $query->andWhere($query->orWhere($query->expr()->like("E.nome", ":busca"))
-                                    ->orWhere($query->expr()->like("E.responsavel", ":busca"))
-                                    ->getDQLPart("where"));
+            $query->andWhere(
+                $query->expr()->orX($query->expr()->like("E.nome", ":busca"), $query->expr()->like("E.apelido", ":busca"))
+            );
             $query->setParameter("busca", "%{$busca}%");
         }
         

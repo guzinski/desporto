@@ -20,7 +20,7 @@
             <ul class="children" >
                 <li {% if app.request.get('_route') == 'campeonato_novo' %} class="active"{% endif %}><a href="{{ path('campeonato_novo') }}">Novo</a></li>
                 <li {% if app.request.get('_route') == 'campeonato_index' %} class="active"{% endif %}><a href="{{ path('campeonato_index') }}">Em Andamento</a></li>
-                <li><a href="#">Finalizados</a></li>
+                <li {% if app.request.get('_route') == 'campeonato_encerrados' %} class="active"{% endif %}><a href="{{ path('campeonato_encerrados') }}">Encerrados</a></li>
             </ul>
         </li>
         {% endif  %}

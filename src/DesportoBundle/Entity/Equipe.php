@@ -86,7 +86,7 @@ class Equipe extends BaseEntity
      *
      * @ORM\ManyToOne(targetEntity="Usuario", inversedBy="equipesCadastradas")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="usuario", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="usuario_cadastro", referencedColumnName="id")
      * })
      */
     private $usuarioCadastro;
@@ -96,7 +96,7 @@ class Equipe extends BaseEntity
      *
      * @ORM\ManyToOne(targetEntity="Usuario", inversedBy="equipesExcluidas")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="usuario", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="usuario_exclusao", referencedColumnName="id")
      * })
      */
     private $usuarioExclusao;
