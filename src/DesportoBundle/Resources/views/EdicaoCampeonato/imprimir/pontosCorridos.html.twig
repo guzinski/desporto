@@ -1,0 +1,15 @@
+{% extends "DesportoBundle::layoutPrint.html.twig" %}
+{% block title %}Desporto | Classificação {{ campeonato.campeonato.nome }} - {{ campeonato.edicao }}{% endblock %}
+{% block mainpanel %}
+<div class="row">
+    <div class="col-sm-12">
+        <h2>Classificação {{ campeonato.campeonato.nome }} - {{ campeonato.edicao }}</h2>
+    </div>
+</div>
+    <hr/>
+<div class="row">
+    <div class="col-sm-12">
+        {% include 'DesportoBundle::EdicaoCampeonato/detalhe/tabela.html.twig' with {'tabela': tabela} %}
+    </div>
+</div>
+{% endblock %}

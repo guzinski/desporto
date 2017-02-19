@@ -1,0 +1,25 @@
+<form target="_blank" method="POST" action="{{ path("campeonato_imprimir_ficha_equipe", {"campeonato": campeonato.id} ) }}">
+<div class="row">
+    <div class="col-sm-12">
+        <select name="equipe" class="fichaEquipeSelect width100p">
+            <option value="">Selecione a Equipe</option>
+            {% for equipe in campeonato.equipes %}
+                <option value="{{ equipe.id }}">{{ equipe.nome }}</option>
+            {% endfor %} 
+        </select>
+    </div>
+</div>
+<div class="row imprimirFichaEquipe" style="display: none;">
+    <div class="col-sm-12">
+        <hr/>
+        <button type="submit" class="btn btn-block btn-info">Imprimir</button>
+        <hr/>
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-12">
+        <div id="fichaEquipe">
+        </div>
+    </div>
+</div>
+</form>

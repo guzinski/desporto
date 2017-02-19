@@ -1,0 +1,42 @@
+<script>
+    
+var htmlFichaEquipe;
+jQuery(document).ready(function () {
+    jQuery.post("{{ path('campeonato_html_ficha_equipe', {campeonato: campeonato.id} ) }}", function(html) {
+        htmlFichaEquipe = html;
+    })
+});
+
+
+function fichaEquipe() {
+    bootbox.dialog({
+        title: "Ficha da Equipe",
+        size: "large",
+        message: htmlFichaEquipe,
+        buttons: {
+            close: {
+                label: "Fechar",
+                className: "btn-default",
+            },
+        }
+    });
+
+    jQuery(".fichaEquipeSelect").select2().change(function(){
+        if (jQuery(this).val() != "") {
+            jQuery(".locked").fadeIn();
+            jQuery.post("{{ path('campeonato_ficha_equipe', {campeonato: campeonato.id }) }}", {equipe: jQuery(this).val()}, function(html){
+                jQuery("#fichaEquipe").html(html);
+                jQuery(".locked").fadeOut();
+                jQuery(".imprimirFichaEquipe").fadeIn();
+            }).fail(defaultError);
+        } else {
+            jQuery("#fichaEquipe").html("");
+            jQuery(".imprimirFichaEquipe").fadeOut();
+        }
+        
+    });
+
+}
+
+
+</script>

@@ -1,0 +1,52 @@
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Diretor
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+                {{ equipe.getDiretor().nome }}
+            </td>
+        </tr>
+    </tbody>
+</table>
+            <hr/>            
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Treinador
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+                {{ equipe.getTreinador().nome }}
+            </td>
+        </tr>
+    </tbody>
+</table>
+                <hr/>            
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Jogadores
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for jogador in  equipe.getJogadores()%}
+        <tr>
+            <td>
+                {{ jogador.profissional.nome }}
+            </td>
+        </tr>
+        {% endfor%}
+    </tbody>
+</table>

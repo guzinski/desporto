@@ -337,6 +337,84 @@ class EdicaoCampeonatoController extends Controller
         return new Response(json_encode($retorno));
     }
     
+    
+    /**
+     * @Route("/imprimir/tabela/{campeonato}", name="campeonato_imprimir_tabela")
+     * @param Campeonato $campeonato
+     */
+    public function imprimirTabelaAction(EdicaoCampeonato $campeonato)
+    {
+        $retorno["tabela"] = $this->getService()->calculaTabela($campeonato);
+        $retorno["campeonato"] = $campeonato;
+        if ($campeonato->getTipo() == EdicaoCampeonato::PONTOS_CORRIDOS) {
+            return $this->render("DesportoBundle::EdicaoCampeonato\imprimir/pontosCorridos.html.twig", $retorno);
+        } elseif ($campeonato->getTipo() == EdicaoCampeonato::CHAVE) {
+            return $this->render("DesportoBundle::EdicaoCampeonato\imprimir/chave.html.twig", $retorno);
+        }
+
+    }
+    /**
+     * @Route("/imprimir/artilharia/{campeonato}", name="campeonato_imprimir_artilharia")
+     * @param Campeonato $campeonato
+     */
+    public function imprimirArtilhariaAction(EdicaoCampeonato $campeonato)
+    {
+        $retorno["artilharia"] = $this->getService()->calculaArtilharia($campeonato);
+        $retorno["campeonato"] = $campeonato;
+        return $this->render("DesportoBundle::EdicaoCampeonato\imprimir/artilharia.html.twig", $retorno);
+    }
+
+    /**
+     * @Route("/html/ficha/equipe/{campeonato}", name="campeonato_html_ficha_equipe")
+     * @Template()
+     * @param EdicaoCampeonato $campeonato
+     * @return array
+     */
+    public function htmlFichaEquipeAction(EdicaoCampeonato $campeonato)
+    {
+        return ['campeonato'=>$campeonato];
+    }
+    
+    /**
+     * @Route("/imprimir/ficha/equipe/{campeonato}", name="campeonato_imprimir_ficha_equipe")
+     * @param Campeonato $campeonato
+     */
+    public function imprimirFichaEquipeAction(EdicaoCampeonato $campeonato, Request $request)
+    {
+        $idEquipe = $request->get("equipe");
+        if (is_null($campeonato) || is_null($idEquipe)) {
+            throw new \InvalidArgumentException;
+        }
+        $equipe = $this->getDoctrine()->getRepository(Equipe::class)->getEquipeCampeonato($campeonato, $idEquipe, TRUE);
+        if (is_null($equipe)) {
+            throw new \InvalidArgumentException;
+        }
+        return $this->render("DesportoBundle::EdicaoCampeonato\imprimir/fichaEquipe.html.twig", ['campeonato'=>$campeonato, 'equipe'=>$equipe]);
+    }
+
+    
+    /**
+     * @Route("/ficha/equipe/{campeonato}", name="campeonato_ficha_equipe")
+     * @Template()
+     * @param Request $request
+     * @return array
+     */
+    public function fichaEquipeAction(EdicaoCampeonato $campeonato, Request $request)
+    {
+        $idEquipe = $request->get("equipe");
+        if (is_null($campeonato) || is_null($idEquipe)) {
+            throw new \InvalidArgumentException;
+        }
+        $equipe = $this->getDoctrine()->getRepository(Equipe::class)->getEquipeCampeonato($campeonato, $idEquipe, TRUE);
+        if (is_null($equipe)) {
+            throw new \InvalidArgumentException;
+        }
+        return ['campeonato'=>$campeonato, 'equipe'=>$equipe];
+    }
+
+    
+    
+    
     /**
      * 
      * @return EdicaoCampeonatoService

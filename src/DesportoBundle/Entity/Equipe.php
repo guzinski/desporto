@@ -306,7 +306,7 @@ class Equipe extends BaseEntity
      * @param \DesportoBundle\Entity\EdicaoCampeonato $campeonato
      * @return Profissional
      */
-    public function getDiretor(EdicaoCampeonato $campeonato)
+    public function getDiretor()
     {        
         foreach ($this->getInscricoes() as $inscricao) {
             if ($inscricao->getTipo() == InscricaoProfissional::DIRETOR) {
@@ -321,9 +321,8 @@ class Equipe extends BaseEntity
      * @param \DesportoBundle\Entity\EdicaoCampeonato $campeonato
      * @return Profissional
      */
-    public function getTreinador(EdicaoCampeonato $campeonato)
+    public function getTreinador()
     {
-        
         foreach ($this->getInscricoes() as $inscricao) {
             if ($inscricao->getTipo() == InscricaoProfissional::TREINADOR) {
                 return $inscricao->getProfissional();
@@ -337,7 +336,7 @@ class Equipe extends BaseEntity
      * @param \DesportoBundle\Entity\EdicaoCampeonato $campeonato
      * @return ArrayCollection
      */
-    public function getJogadores(EdicaoCampeonato $campeonato)
+    public function getJogadores()
     {
         return $this->getInscricoes()->filter(function(InscricaoProfissional $inscricao) {
             return $inscricao->getTipo() == InscricaoProfissional::JOGADOR;

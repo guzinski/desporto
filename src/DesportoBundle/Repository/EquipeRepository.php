@@ -129,6 +129,30 @@ class EquipeRepository extends EntityRepository
         
         return $queri->getQuery()->getResult();
     }
+    
+    /**
+     * 
+     * @param EdicaoCampeonato $campeonato
+     * @param Equipe $equipe
+     * @param boolean $inscricoes
+     * @return Equipe
+     */
+    public function getEquipeCampeonato(EdicaoCampeonato $campeonato, $idEquipe, $inscricoes = FALSE)
+    {
+        $queri = $this->createQueryBuilder("E");
+        if ($inscricoes) {
+            $queri->select("E, I, P");
+            $queri->leftJoin("E.inscricoes", "I", Join::WITH, "I.edicaoCampeonato = :campeonato");
+            $queri->leftJoin("I.profissional", "P");
+        }
+        $queri->innerJoin("E.edicoesCampeonatos", "EC", Join::WITH, "EC.id = :campeonato");
+        $queri->andWhere($queri->expr()->eq("EC.id", ":campeonato"))
+                ->andWhere($queri->expr()->eq("E.id", ":equipe"))
+                ->setParameter("campeonato", $campeonato->getId())
+                ->setParameter("equipe", $idEquipe);
+        
+        return $queri->getQuery()->getSingleResult();
+    }
 
     
 }

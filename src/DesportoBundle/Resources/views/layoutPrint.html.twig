@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="br">
+    <head>
+
+        <title>{% block title %}{% endblock %}</title>
+        <link href="{{ asset('bundles/desporto/css/style.default.css') }}" rel="stylesheet">
+        <script>
+            window.print();
+        </script>
+        {% block head %}{% endblock %}
+    </head>
+    <body>
+        <section>
+            <div>
+                {% block mainpanel %}{% endblock %}
+            </div>
+        </section>
+        
+    </body>
+</html>

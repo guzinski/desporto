@@ -7,7 +7,12 @@
 
     function defaultError(xhr, textStatus, errorThrown) {
         jQuery(".locked").fadeOut();
-        bootbox.alert("Erro ao processar informação");
+        jQuery(".modal-body .bootbox-body").prepend("\n\
+            <div class=\"alert alert-danger\">\n\
+                <button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-hidden=\"true\">×</button>\n\
+                Erro ao processar informação\n\
+            </div>\n\
+        ");
     }
 
 

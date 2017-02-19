@@ -1,0 +1,15 @@
+{% extends "DesportoBundle::layoutPrint.html.twig" %}
+{% block title %}Desporto | Ficha da Equipe {{ equipe.nome }} | {{ campeonato.campeonato.nome }} - {{ campeonato.edicao }}{% endblock %}
+{% block mainpanel %}
+<div class="row">
+    <div class="col-sm-12">
+        <h2>Ficha da Equipe {{ equipe.nome }} | {{ campeonato.campeonato.nome }} - {{ campeonato.edicao }}</h2>
+    </div>
+</div>
+    <hr/>
+<div class="row">
+    <div class="col-sm-12">
+        {% include 'DesportoBundle::EdicaoCampeonato/fichaEquipe.html.twig' with {'equipe': equipe, 'campeonato': campeonato} %}
+    </div>
+</div>
+{% endblock %}

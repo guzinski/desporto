@@ -6,7 +6,11 @@
     <script src="{{ asset('bundles/desporto/js/validate/additional-methods.js') }}"></script>
     <script src="{{ asset('bundles/desporto/js/jquery.maskedinput.min.js') }}"></script>
     <script src="{{ asset('bundles/desporto/js/jquery-ui-1.10.3.min.js') }}"></script>
+    <script src="{{ asset('bundles/desporto/js/select2.min.js') }}"></script>
+    <script src="{{ asset('bundles/desporto/js/bootstrap.min.js') }}"></script>
     {% include 'DesportoBundle::EdicaoCampeonato/detalhe/localData.js.twig' %}
+    {% include 'DesportoBundle::EdicaoCampeonato/detalhe/fichaEquipe.js.twig' with {'campeonato': campeonato} %}
+
     <script>
         jQuery(document).ready(function () {
 
@@ -39,10 +43,10 @@
         <div class="row">
             <div class="col-sm-12">
                 <div class="pull-right">
-                    <a href=""><button class="btn btn-success " type="button"><i class="fa fa-print"></i>&nbsp;&nbsp;<span class="bold">Tabela</span></button></a>
-                    <a href=""><button class="btn btn-success " type="button"><i class="fa fa-calendar-o"></i>&nbsp;&nbsp;<span class="bold">Gerar Carnê</span></button></a>
+                    <a href="{{ path('campeonato_imprimir_artilharia', {campeonato: campeonato.id}) }}" target="_blank"><button class="btn btn-success tooltips" title="Imprimir Artilharia" type="button"><i class="fa fa-print"></i>&nbsp;&nbsp;<span class="bold">Artilharia</span></button></a>
+                    <button class="btn btn-success " type="button"><i class="fa fa-calendar-o"></i>&nbsp;&nbsp;<span class="bold">Gerar Carnê</span></button>
                     <a href="{{ path('campeonato_convocacao', {campeonato: campeonato.id}) }}"><button class="btn btn-success " type="button"><i class="fa fa-users"></i>&nbsp;&nbsp;<span class="bold">Editar Equipes</span></button></a>
-                    <a href=""><button class="btn btn-success " type="button"><i class="fa fa-bars"></i>&nbsp;&nbsp;<span class="bold">Ficha Equipe</span></button></a>
+                    <button class="btn btn-success" onclick="fichaEquipe()" type="button"><i class="fa fa-bars"></i>&nbsp;&nbsp;<span class="bold">Ficha Equipe</span></button>
                     <a href="campeonato-finais.html"><button class="btn btn-success " type="button"><i class="fa fa-share"></i>&nbsp;&nbsp;<span class="bold">Próxima Fase</span></button></a>
                 </div>
             </div>
