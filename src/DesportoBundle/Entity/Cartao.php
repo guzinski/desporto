@@ -51,6 +51,15 @@ class Cartao extends BaseEntity
      */
     protected $tempo;
 
+    
+    /**
+     * @var Suspensao
+     *
+     * @ORM\ManyToOne(targetEntity="Suspensao", inversedBy="cartoes")
+     * @ORM\JoinColumn(name="suspensao", referencedColumnName="id", nullable=true)
+     */
+    private $suspensao;
+
 
     public function getCor()
     {
@@ -107,13 +116,22 @@ class Cartao extends BaseEntity
         return $this;
     }
 
-    
+    public function getSuspensao()
+    {
+        return $this->suspensao;
+    }
 
-        
+    public function setSuspensao(Suspensao $suspensao)
+    {
+        $this->suspensao = $suspensao;
+        return $this;
+    }
+
     public function getLabel()
     {
         return $this->inscricao->getProfissional()->getNome(). " "  .$this->cor;
     }
 
+    
     
 }

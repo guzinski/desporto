@@ -77,6 +77,12 @@ class InscricaoProfissional
      * @ORM\OneToMany(targetEntity="ProfissionalJogo", mappedBy="jogo")
      **/
     private $profissionalJogos;
+    
+    /**
+     * @var Collection
+     * @ORM\OneToMany(targetEntity="Suspensao", cascade={"all"}, mappedBy="inscricaoprofissional")
+     **/
+    private $suspensoes;
 
     
     public function __construct(EdicaoCampeonato $edicaoCampeonato, Equipe $equipe, Profissional $profissional, $tipo)
@@ -87,6 +93,7 @@ class InscricaoProfissional
         $this->setTipo($tipo);
         $this->setGols(new ArrayCollection());
         $this->setCartoes(new ArrayCollection());
+        $this->setSuspensoes(new ArrayCollection());
     }
 
     public function getId()
@@ -184,7 +191,19 @@ class InscricaoProfissional
             return $cartao->getCor() == Cartao::VERMELHO;
         });
     }
+    
+    public function getSuspensoes()
+    {
+        return $this->suspensoes;
+    }
 
+    public function setSuspensoes(Collection $suspensoes)
+    {
+        $this->suspensoes = $suspensoes;
+        return $this;
+    }
+
+    
     
     public function __toString()
     {

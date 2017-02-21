@@ -143,6 +143,12 @@ class Jogo
      **/
     private $profissionalJogos;
     
+    /**
+     * @var Collection
+     * @ORM\ManyToMany(targetEntity="Suspensao", mappedBy="jogos")
+     **/
+    private $jogosCumpridos;
+    
     
     /**
      * @var Collection
