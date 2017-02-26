@@ -8,9 +8,13 @@
 
 namespace DesportoBundle\Controller;
 
+use DesportoBundle\Entity\Suspensao;
+use DesportoBundle\Form\JulgamentoType;
+use InvalidArgumentException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -52,16 +56,17 @@ class JulgamentoController extends Controller
         $julgado         = $request->get("julgada");
         
         $repSuspensao = $this->getDoctrine()
-                            ->getRepository(\DesportoBundle\Entity\Suspensao::class);
+                            ->getRepository(Suspensao::class);
         $suspensoes = $repSuspensao->getJulgamentos($julgado, $busca['value'], $firstResult, $maxResults);
         
         $dados = array();
         foreach ($suspensoes as $suspensao) {
-            /* @var $suspensao \DesportoBundle\Entity\Suspensao */
+            /* @var $suspensao Suspensao */
             $dados[] = [
-                    $suspensao->getInscricao()->getEdicaoCampeonato()->getCampeonato()->getNome(). " - ". $suspensao->getInscricao()->getEdicaoCampeonato()->getEdicao(),
-                    $suspensao->getInscricao()->getEquipe()->getNome(),
-                    $suspensao->getInscricao()->getProfissional()->getNome(),
+                $suspensao->getInscricao()->getProfissional()->getNome(),
+                $suspensao->getInscricao()->getEquipe()->getNome(),
+                $suspensao->getInscricao()->getEdicaoCampeonato()->getCampeonato()->getNome(). " - ". $suspensao->getInscricao()->getEdicaoCampeonato()->getEdicao(),
+                $julgado ? "<a class='btn btn-default' href='". $this->generateUrl("julgamento_visualizar", ['suspensao'=>$suspensao->getId()]) ."'>Ver Punição</a>" : "<a class='btn btn-default' href='". $this->generateUrl("julgamento_julgar", ['suspensao'=>$suspensao->getId()]) ."'>Julgar</a>",
             ];
         }
         
@@ -80,6 +85,44 @@ class JulgamentoController extends Controller
             'data' => $dados,
         ];
         return new Response(json_encode($return));
+    }
+
+    
+    /**
+     * @Route("/julgar/{suspensao}", name="julgamento_julgar")
+     * @Template()
+     * 
+     * @param Request $request
+     * @return RedirectResponse
+     */
+    public function julgarAction(Suspensao $suspensao,  Request $request) 
+    {
+        if ($suspensao->isJulgada()) {
+            throw new InvalidArgumentException;
+        }
+        $em = $this->getDoctrine()->getManager();
+        $form = $this->createForm(JulgamentoType::class, $suspensao);
+        $form->handleRequest($request);
+        if ($form->isValid() && $form->isSubmitted()) {
+            $suspensao->setJulgada(TRUE);
+            $em->persist($suspensao);
+            $em->flush();
+            return $this->redirect($this->generateUrl('julgamento_index'));
+        }
+        
+        return ['form'=>$form->createView(), 'suspensao'=>$suspensao];
+    }
+    
+    /**
+     * @Route("/visualizar/{suspensao}", name="julgamento_visualizar")
+     * @Template()
+     * 
+     * @param Request $request
+     * @return RedirectResponse
+     */
+    public function visualizarAction(Suspensao $suspensao) 
+    {        
+        return ['suspensao'=>$suspensao];
     }
 
     

@@ -1,0 +1,101 @@
+{% extends "DesportoBundle::layout.html.twig" %}
+{% block title %}Desporto | Visualizar Julgamento{% endblock %}
+{% block head %}
+    <link href="{{ asset('bundles/desporto/css/dropzone.css') }}" rel="stylesheet" />
+    <script src="{{ asset('bundles/desporto/js/select2.min.js') }}"></script>
+    <script src="{{ asset('bundles/desporto/js/jquery.validate.min.js') }}"></script>
+    <script src="{{ asset('bundles/desporto/js/messages_ptbr.js') }}"></script>
+    <script src="{{ asset('bundles/desporto/js/validate/additional-methods.js') }}"></script>
+    <script src="{{ asset('bundles/desporto/js/jquery.maskedinput.min.js') }}"></script>
+    <script src="{{ asset('bundles/desporto/js/jquery-ui-1.10.3.min.js') }}"></script>
+    <script>
+        jQuery(document).ready(function(){
+
+            
+           
+        });
+    </script>
+{% endblock %}
+
+{% block mainpanel %}
+<div class="pageheader">
+    <div class="media">
+        <div class="pageicon pull-left">
+            <i class="fa fa-balance-scale"></i>
+        </div>
+        <div class="media-body">
+            <ul class="breadcrumb">
+                <li><a href="{{ path('index') }}"><i class="glyphicon glyphicon-home"></i></a></li>
+                <li><a href="{{ path('julgamento_index') }}">Julgamentos</a></li>
+                <li>Visualizar Julgamento </li>
+            </ul>
+            <h4>Visualizar Julgamento </h4>
+        </div>
+    </div><!-- media -->
+</div><!-- pageheader -->
+
+<div class="contentpanel">
+                
+        <div class="row">
+            <div class="col-sm-12 col-md-3">
+                <div class="text-center">
+                    <img src="{{ path('profissional_arquivo_download', {nome: suspensao.inscricao.profissional.publicFoto}) }}" class="img-circle img-offline img-responsive img-profile" alt="" />
+                    <h4 class="profile-name mb5">{{ suspensao.inscricao.profissional.nome }}</h4>
+                    <div><i class="fa fa-map-marker"></i> {{ suspensao.inscricao.profissional.endereco }}</div>
+                    <div><i class="fa fa-calendar"></i> {{ suspensao.inscricao.profissional.nascimento.format("d/m/Y") }} </div>
+                    <div><i class="fa fa-phone"></i> {{ suspensao.inscricao.profissional.telefone|telefone }} </div>
+                </div><!-- text-center -->
+            </div><!-- col-sm-4 col-md-3 -->
+            <div class="col-sm-12 col-md-9">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h5 class="panel-title">Dados</h5>
+                    </div>
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="form-group  ">
+                                <label class="col-sm-5 col-md-4 col-lg-3 control-label">Campeonato</label>
+                                <div class="col-sm-7 col-md-8 col-lg-5">
+                                    <h5>{{ suspensao.inscricao.edicaoCampeonato.campeonato.nome }} - {{ suspensao.inscricao.edicaoCampeonato.edicao }}</h5>
+                                </div>
+                            </div>
+                                <hr/>
+                            <div class="form-group  ">
+                                <label class="col-sm-5 col-md-4 col-lg-3 control-label">Equipe</label>
+                                <div class="col-sm-7 col-md-8 col-lg-5">
+                                    <h5>{{ suspensao.inscricao.equipe.nome }}</h5>
+                                </div>
+                            </div>
+                                <hr/>
+                            <div class="form-group  ">
+                                <label class="col-sm-5 col-md-4 col-lg-3 control-label">Quantidade de Jogos</label>
+                                <div class="col-sm-7 col-md-8 col-lg-5">
+                                    <h5>{{ suspensao.quantidadeJogos }}</h5>
+                                </div>
+                            </div>
+                                <hr/>
+                            <div class="form-group  ">
+                                <label class="col-sm-5 col-md-4 col-lg-3 control-label">Data</label>
+                                <div class="col-sm-7 col-md-8 col-lg-5">
+                                    <h5>{{ suspensao.data|format('d/m/Y') }}</h5>
+                                </div>
+                            </div>
+                                <hr/>
+                            <div class="form-group  ">
+                                <label class="col-sm-5 col-md-4 col-lg-3 control-label">Observações</label>
+                                <div class="col-sm-7 col-md-8 col-lg-5">
+                                    {{ suspensao.observacoes }}
+                                </div>
+                            </div>                            
+                        </div><!-- row -->
+                    </div><!-- panel-body -->
+                    <div class="panel-footer">
+                        <div class="row">
+                            <a class="btn btn-default" href="javascript:history.back();">Voltar</a>
+                        </div>
+                    </div>
+                </div><!-- panel -->
+        </div><!-- col-md-12 -->
+    </div><!-- row -->
+</div><!-- contentpanel -->
+{% endblock %}

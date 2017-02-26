@@ -67,6 +67,13 @@ class Suspensao extends BaseEntity
      * @ORM\Column(type="date", nullable=true)
      */
     private $data;
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $observacoes;
 
     public function __construct()
     {
@@ -130,7 +137,7 @@ class Suspensao extends BaseEntity
         return $this;
     }
 
-    public function setData(DateTime $data)
+    public function setData(DateTime $data = null)
     {
         $this->data = $data;
         return $this;
@@ -174,6 +181,19 @@ class Suspensao extends BaseEntity
         $this->getCartoes()->add($cartao);
     }
     
+    
+    public function getObservacoes()
+    {
+        return $this->observacoes;
+    }
+
+    public function setObservacoes($observacoes)
+    {
+        $this->observacoes = $observacoes;
+        return $this;
+    }
+
+
     
     
 }
