@@ -16,6 +16,7 @@
         var iCartao = {{ form.cartoes|length  }};
         var selectGolMandante;
         jQuery(document).ready(function () {
+            
             jQuery("#jogo_gols, #jogo_cartoes, #loading, #escalacaoMandante select, #escalacaoVisitante select").hide();
         
             jQuery("input[type='number'], #escalacaoMandante input[type='text'], #escalacaoVisitante input[type='text'], #jogo_numeroGolsMandante, #jogo_numeroGolsVisitante, #jogo_numeroCartoesAmarelosMandante, #jogo_numeroCartoesAmarelosVisitante, #jogo_numeroCartoesVermelhosMandante, #jogo_numeroCartoesVermelhosVisitante").keyup(function () {
@@ -108,8 +109,8 @@
                 });
             });
 
-
-
+            
+            
         });
 
 
@@ -254,6 +255,16 @@
                                         </td>
                                     </tr>
                                 {% endfor %}
+                                {% for suspensao in form.vars.data.suspensoes if suspensao.inscricao.equipe == jogo.equipeMandante %}
+                                    <tr class="danger">
+                                        <td class="table-danger">
+                                            Suspenso
+                                        </td>
+                                        <td colspan="2" class="table-danger">
+                                            <h5>{{ suspensao.inscricao.profissional.nome }}</h5>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
                             </tbody>
                         </table>
 
@@ -288,6 +299,16 @@
                                                 {{ form_widget(profissional.capitao) }}
                                                 <label for="{{ profissional.capitao.vars.id }}"></label>
                                             </div>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                                {% for suspensao in form.vars.data.suspensoes if suspensao.inscricao.equipe == jogo.equipeVisitante %}
+                                    <tr class="danger">
+                                        <td class="table-danger">
+                                            Suspenso
+                                        </td>
+                                        <td colspan="2" class="table-danger">
+                                            <h5>{{ suspensao.inscricao.profissional.nome }}</h5>
                                         </td>
                                     </tr>
                                 {% endfor %}
@@ -587,7 +608,7 @@
                 <div class="row">
                     <button class="btn btn-primary mr5">Salvar</button>
                     <img  src="{{ asset('bundles/desporto/images/loading.gif') }}" id="loading" alt="Carregando" />
-                    <a class="btn btn-default" href="javascript:history.back()">Voltar</a>
+                    <a class="btn btn-default" href="{{ path("campeonato_detalhe", {campeonato: jogo.edicaoCampeonato.id}) }}">Voltar</a>
                 </div>
             </div>
         </div><!-- panel -->

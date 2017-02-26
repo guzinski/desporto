@@ -38,6 +38,18 @@
             <th>
                 Jogadores
             </th>
+            <th>
+                Gols
+            </th>
+            <th>
+                CA
+            </th>
+            <th>
+                CV
+            </th>
+            <th>
+                S
+            </th>
         </tr>
     </thead>
     <tbody>
@@ -45,6 +57,18 @@
         <tr>
             <td>
                 {{ jogador.profissional.nome }}
+            </td>
+            <td>
+                {{ jogador.gols.count }}
+            </td>
+            <td>
+                {{ jogador.cartoesAmarelos.count }}
+            </td>
+            <td>
+                {{ jogador.cartoesvermelhos.count }}
+            </td>
+            <td>
+                {{ jogador.suspensoes.count }}
             </td>
         </tr>
         {% endfor%}

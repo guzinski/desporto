@@ -311,6 +311,22 @@ class Profissional extends BaseEntity
         }
         return $gols;
     }
+    
+    /**
+     * 
+     * @return ArrayCollection
+     */
+    public function getSuspensoes()
+    {
+        $suspensoes = new ArrayCollection();
+        foreach ($this->inscricoes as $inscricao) {
+            /* @var $inscricao InscricaoProfissional */
+            foreach ($inscricao->getSuspensoes() as $suspensao) {
+                $suspensoes->add($suspensao);
+            }
+        }
+        return $suspensoes;
+    }
 
     /**
      * 

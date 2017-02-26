@@ -60,12 +60,21 @@
                     </div>
                 </div>
                 <hr/>
+                <div class="row">
+                    <div class="col-sm-3">
+                        <h4>Suspensões</h4>
+                    </div>
+                    <div class="col-sm-9">
+                        <h4>{{ profissional.suspensoes.count }}</h4>
+                    </div>
+                </div>
+                <hr/>
             </div>
         </div>
         <hr/>
         <div class="row">
             <div class="col-sm-12   ">
-                <table class="table table-hover">
+                <table class="table table-hover table-lg">
                     <thead>
                         <tr>
                             <th> Campeonato</th>
@@ -73,6 +82,7 @@
                             <th class="text-center"> Gols </th>
                             <th class="tooltips text-center" title="Cartões Amarelos"> CA </th>
                             <th class="tooltips text-center" title="Cartões Vermelhos"> CV </th>
+                            <th class="tooltips text-center" title="Suspensões"> S </th>
                         </tr>
                     </thead>
                     <tbody>
@@ -83,6 +93,7 @@
                             <td class="text-center"> {{ inscricao.gols.count }} </td>
                             <td class="tooltips text-center" title="Cartões Amarelos"> {{ inscricao.cartoesAmarelos.count }} </td>
                             <td class="tooltips  text-center" title="Cartões Varmelhos" > {{ inscricao.cartoesVermelhos.count }} </td>
+                            <td class="tooltips  text-center" title="Suspensões" > {{ inscricao.suspensoes.count }} </td>
                         </tr>
                         {% else %}
                             <tr>

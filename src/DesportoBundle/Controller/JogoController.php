@@ -34,16 +34,15 @@ class JogoController extends Controller
     public function detalharAction(Jogo $jogo, Request $request)
     {
 
-        $inscricoes = $this->getDoctrine()->getRepository(InscricaoProfissional::class)
-                ->getJogadoresPorJogo($jogo);
-
+       
         $jogo = $this->getJogoService()->getParaEdicao($jogo);
-        $form = $this->createForm(JogoType::class, $jogo, ['inscricoes'=>$inscricoes]);
+        $form = $this->createForm(JogoType::class, $jogo, ['inscricoes'=>$jogo->getInscricoes()]);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $jogo->setJogado(TRUE);
             $this->getDoctrine()->getManager()->persist($jogo);
             $this->getDoctrine()->getManager()->flush();
+            $this->getJogoService()->aplicarSuspensao($jogo);
             return new RedirectResponse($this->generateUrl('campeonato_detalhe', array('campeonato' => $jogo->getEdicaoCampeonato()->getId())));
         }
 

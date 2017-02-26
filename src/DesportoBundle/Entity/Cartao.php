@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Description of Cartao
  * @ORM\Table(name="cartao")
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="DesportoBundle\Repository\CartaoRepository")
  */
 class Cartao extends BaseEntity
 {

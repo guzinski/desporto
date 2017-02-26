@@ -80,7 +80,7 @@ class InscricaoProfissional
     
     /**
      * @var Collection
-     * @ORM\OneToMany(targetEntity="Suspensao", cascade={"all"}, mappedBy="inscricaoprofissional")
+     * @ORM\OneToMany(targetEntity="Suspensao", cascade={"all"}, mappedBy="inscricao")
      **/
     private $suspensoes;
 

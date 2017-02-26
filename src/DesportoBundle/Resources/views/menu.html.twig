@@ -32,6 +32,14 @@
             </ul>
         </li>
         {% endif  %}
+        {% if is_granted('ROLE_CAMPEONATO') %}
+        <li class="parent {% if 'julgamento' in app.request.get('_route')  %} active{% endif %}"><a href=""><i class="fa fa-balance-scale"></i> <span>Julgamentos</span></a>
+            <ul class="children" >
+                <li {% if app.request.get('_route') == 'julgamento_index' %} class="active"{% endif %}><a href="{{ path('julgamento_index') }}">Pendentes</a></li>
+                <li {% if app.request.get('_route') == 'julgamento_julgados' %} class="active"{% endif %}><a href="{{ path('julgamento_julgados') }}">Julgados</a></li>
+            </ul>
+        </li>
+        {% endif  %}
     </ul>
 
 </div><!-- leftpanel -->

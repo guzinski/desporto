@@ -29,7 +29,8 @@ class InscricaoProfissionalRepository extends EntityRepository
     public function getJogadoresPorJogo(Jogo $jogo)
     {
         $query = $this->createQueryBuilder("IP");
-        $query->andWhere($query->expr()->eq("IP.tipo", $query->expr()->literal(InscricaoProfissional::JOGADOR)))
+        $query->leftJoin("IP.suspensoes", "S", \Doctrine\ORM\Query\Expr\Join::ON)
+                ->andWhere($query->expr()->eq("IP.tipo", $query->expr()->literal(InscricaoProfissional::JOGADOR)))
                 ->andWhere($query->expr()->eq("IP.edicaoCampeonato", $jogo->getEdicaoCampeonato()->getId()))
                 ->andWhere(
                         $query->expr()->orX(

@@ -4,20 +4,20 @@ namespace DesportoBundle\Entity;
 
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
-use Symfony\Component\Validator\Constraints\Collection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Description of Suspensao
  * @ORM\Table(name="suspensao")
- * @ORM\Entity)
+ * @ORM\Entity(repositoryClass="DesportoBundle\Repository\SuspensaoRepository")
  */
 class Suspensao extends BaseEntity
 {
     
     /**
      * @var Collection
-     * @ORM\OneToMany(targetEntity="Cartao", mappedBy="suspensao")
+     * @ORM\OneToMany(targetEntity="Cartao", mappedBy="suspensao", cascade={"persist"})
      **/
     private $cartoes;
     
@@ -27,7 +27,7 @@ class Suspensao extends BaseEntity
      * @ORM\ManyToOne(targetEntity="InscricaoProfissional", inversedBy="suspensoes")
      * @ORM\JoinColumn(name="inscricao_profissional", referencedColumnName="id", nullable=false)
      */
-    private $inscricaoprofissional;    
+    private $inscricao;    
 
     /**
      * @var Collection Description
@@ -46,6 +46,20 @@ class Suspensao extends BaseEntity
      * @ORM\Column(name="quantidade_jogos", type="integer", nullable=false)
      */
     private $quantidadeJogos;
+    
+    /**
+     * @var boolean
+     * 
+     * @ORM\Column(name="julgamento", type="boolean", nullable=false)
+     */
+    private $julgamento = FALSE;
+    
+    /**
+     * @var boolean
+     * 
+     * @ORM\Column(name="julgada", type="boolean", nullable=true)
+     */
+    private $julgada;
 
     /**
      * @var DateTime
@@ -58,17 +72,23 @@ class Suspensao extends BaseEntity
     {
         parent::__construct();
         $this->jogosCumpridos = new ArrayCollection();
+        $this->cartoes = new ArrayCollection();
     }
-
     
+    
+
+    /**
+     * 
+     * @return \Doctrine\Common\Collections\Collection
+     */
     public function getCartoes()
     {
         return $this->cartoes;
     }
 
-    public function getInscricaoprofissional()
+    public function getInscricao()
     {
-        return $this->inscricaoprofissional;
+        return $this->inscricao;
     }
 
     public function getJogosCumpridos()
@@ -92,9 +112,9 @@ class Suspensao extends BaseEntity
         return $this;
     }
 
-    public function setInscricaoprofissional(InscricaoProfissional $inscricaoprofissional)
+    public function setInscricao(InscricaoProfissional $inscricaoprofissional)
     {
-        $this->inscricaoprofissional = $inscricaoprofissional;
+        $this->inscricao = $inscricaoprofissional;
         return $this;
     }
 
@@ -116,12 +136,43 @@ class Suspensao extends BaseEntity
         return $this;
     }
 
+    public function setJulgamento($julgamento)
+    {
+        $this->julgamento = $julgamento;
+        return $this;
+    }
+
+    public function setJulgada($julgada)
+    {
+        $this->julgada = $julgada;
+        return $this;
+    }
+    
+    public function isJulgada()
+    {
+        return $this->julgada;
+    }
+    
+    public function isJulgamento()
+    {
+        return $this->julgamento;
+    }
+
+
+    
+    
         
     public function getLabel()
     {
         return $this->id;
     }
 
+    
+    public function addCartao(Cartao $cartao)
+    {
+        $cartao->setSuspensao($this);
+        $this->getCartoes()->add($cartao);
+    }
     
     
     

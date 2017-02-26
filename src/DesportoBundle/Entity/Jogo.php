@@ -145,9 +145,9 @@ class Jogo
     
     /**
      * @var Collection
-     * @ORM\ManyToMany(targetEntity="Suspensao", mappedBy="jogos")
+     * @ORM\ManyToMany(targetEntity="Suspensao", mappedBy="jogosCumpridos")
      **/
-    private $jogosCumpridos;
+    private $suspensoes;
     
     
     /**
@@ -200,6 +200,7 @@ class Jogo
         $this->cartoesAmarelosVisitante = new ArrayCollection();
         $this->cartoesVermelhosMandante = new ArrayCollection();
         $this->cartoesVermelhosVisitante = new ArrayCollection();
+        $this->suspensoes = new ArrayCollection();
     }
 
     public function getId()
@@ -590,5 +591,30 @@ class Jogo
         return $this;
     }
 
+    public function getSuspensoes()
+    {
+        return $this->suspensoes;
+    }
+
+    public function setSuspensoes(Collection $suspensoes)
+    {
+        $this->suspensoes = $suspensoes;
+        return $this;
+    }
+    
+    /**
+     * Retorna um array collectio napenas com as inscrições que participaram do jogo
+     * 
+     * @return ArrayCollection
+     */
+    public function getInscricoes()
+    {
+        $inscricoes = new ArrayCollection();
+        foreach ($this->profissionalJogos as $profissionalJogo) {
+            /* @var $profissionalJogo ProfissionalJogo */
+            $inscricoes->add($profissionalJogo->getInscricao());
+        }
+        return $inscricoes;
+    }
 
 }
