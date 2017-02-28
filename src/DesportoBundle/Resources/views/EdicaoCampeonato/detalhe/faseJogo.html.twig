@@ -1,12 +1,12 @@
 <div class="row text-center mb10 mt10">
-    <div class="col-sm-6 text-right">
+    <div class="col-xs-6 text-right">
         {% if jogo.data is null %}
             <button class="btn btn-default btn-sm" title="Definir Data" onclick="definirData({{ jogo.id }})">Definir data</button>
         {% else %}
             <h5><strong>{{ jogo.data.format("d/m/Y") }} {{ jogo.horario.format("H:i") }}</strong></h5>
         {% endif %}
     </div>
-    <div class="col-sm-6 text-left">
+    <div class="col-xs-6 text-left">
         {% if jogo.local is null %}
             <button class="btn btn-default btn-sm" title="Definir Local" onclick="definirLocal({{ jogo.id }})">Definir local</button>
         {% else %}
@@ -16,16 +16,18 @@
 </div>
 <div class="row text-center mb10 mt10">
 
-    <div class="col-sm-4 text-right">
+    <div class="col-xs-4 text-right">
+        <img style="width: 30px;" src="{{ path('equipe_arquivo_download', {nome: jogo.equipeMandante.publicFoto}) }}" class="" alt="" />
         <span class="h4">{{ jogo.equipeMandante.apelido }}
     </div>
-    <div class="col-sm-4">
+    <div class="col-xs-4">
         <span class="h3">{{ jogo.numeroGolsMandante }}</span>
         <span class="h4">X</span>
         <span class="h3">{{ jogo.numeroGolsVisitante }}</span>
     </div>
-    <div class="col-sm-4 text-left">
-        <span class="h4">{{ jogo.equipeVisitante.apelido }}</span>
+    <div class="col-xs-4 text-left">
+        <span  class="h4">{{ jogo.equipeVisitante.apelido }}</span>
+        <img style="width: 30px;"  src="{{ path('equipe_arquivo_download', {nome: jogo.equipeVisitante.publicFoto}) }}" class="" alt="" />
     </div>    
 
 </div>
