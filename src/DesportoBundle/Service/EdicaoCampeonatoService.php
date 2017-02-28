@@ -145,7 +145,7 @@ class EdicaoCampeonatoService
         } elseif ($numeroEquipes == 4) {
             $result = [
               "label" =>  "Semifinal",
-              "tipo" => FaseClassificatoria::SEMIFINALL,
+              "tipo" => FaseClassificatoria::SEMIFINAL,
             ];
         } elseif ($numeroEquipes == 8) {
             $result = [
@@ -188,6 +188,17 @@ class EdicaoCampeonatoService
         $this->salvar();
     }
     
+    
+    /**
+     * @param EdicaoCampeonato $campeonato
+     */
+    public function salvarFases(EdicaoCampeonato $campeonato, $tipo)
+    {
+        $this->edicaoCampeonato = $campeonato;
+        $this->gerarJogosFasesClassificatorias($tipo);
+        $this->salvar();
+    }
+    
     /**
      * @param EdicaoCampeonato $campeonato
      */
@@ -225,23 +236,54 @@ class EdicaoCampeonatoService
     {
         foreach ($this->edicaoCampeonato->getFasesClassificatorias() as $fase) {
             /* @var $fase FaseClassificatoria */
-            $equipes = $fase->getEquipes()->toArray();
-            $this->edicaoCampeonato->getEquipes()->add($equipes[0]);
-            $this->edicaoCampeonato->getEquipes()->add($equipes[1]);
-            $jogo = new Jogo($equipes[0], $equipes[1]);
-            $jogo->setEdicaoCampeonato($this->edicaoCampeonato);
-            $fase->setPrimeiroJogo($jogo);
-            $fase->setEdicaoCampeonato($this->edicaoCampeonato);
-            if (
-                ($fase->getTipo() == FaseClassificatoria::OITAVAS && $this->edicaoCampeonato->getOitavas()=="I") ||
-                ($fase->getTipo() == FaseClassificatoria::QUARTAS && $this->edicaoCampeonato->getQuartas()=="I") ||
-                ($fase->getTipo() == FaseClassificatoria::SEMIFINAL && $this->edicaoCampeonato->getSemiFinal()=="I") ||
-                ($fase->getTipo() == FaseClassificatoria::FINAL_ && $this->edicaoCampeonato->getFinal()=="I") 
-                ) {
-                $segundoJogo = new Jogo($jogo->getEquipeVisitante(), $jogo->getEquipeMandante());
-                $segundoJogo->setEdicaoCampeonato($this->edicaoCampeonato);
-                $fase->setSegundoJogo($segundoJogo);
-            }
+            $this->edicaoCampeonato->getEquipes()->add($fase->getEquipes()->get(0));
+            $this->edicaoCampeonato->getEquipes()->add($fase->getEquipes()->get(1));
+            $this->geraJogoFase($fase);
+        }
+    }
+    
+    /**
+     * Gera os primerios jogos do torneio
+     */
+    private function gerarJogosFasesClassificatorias($tipo)
+    {
+        $fases;
+        if ($tipo == FaseClassificatoria::FINAL_) {
+            $fases = $this->edicaoCampeonato->getFasesFinal();
+        } elseif ($tipo == FaseClassificatoria::SEMIFINAL) {
+            $fases = $this->edicaoCampeonato->getFasesSemifinal();
+        } elseif ($tipo == FaseClassificatoria::QUARTAS) {
+            $fases = $this->edicaoCampeonato->getFasesQuartas();
+        } elseif ($tipo == FaseClassificatoria::OITAVAS) {
+            $fases = $this->edicaoCampeonato->getFasesOitavas();
+        }
+        
+        foreach ($fases as $fase) {
+            /* @var $fase FaseClassificatoria */
+            $this->geraJogoFase($fase);
+            
+        }
+    }
+    
+    /**
+     * 
+     * @param FaseClassificatoria $fase
+     */
+    private function geraJogoFase(FaseClassificatoria $fase)
+    {
+        $jogo = new Jogo($fase->getEquipes()->get(0), $fase->getEquipes()->get(1));
+        $jogo->setEdicaoCampeonato($this->edicaoCampeonato);
+        $fase->setPrimeiroJogo($jogo);
+        $fase->setEdicaoCampeonato($this->edicaoCampeonato);
+        if (
+            ($fase->getTipo() == FaseClassificatoria::OITAVAS && $this->edicaoCampeonato->getOitavas() == EdicaoCampeonato::IDA_VOLTA) ||
+            ($fase->getTipo() == FaseClassificatoria::QUARTAS && $this->edicaoCampeonato->getQuartas() == EdicaoCampeonato::IDA_VOLTA) ||
+            ($fase->getTipo() == FaseClassificatoria::SEMIFINAL && $this->edicaoCampeonato->getSemiFinal()== EdicaoCampeonato::IDA_VOLTA) ||
+            ($fase->getTipo() == FaseClassificatoria::FINAL_ && $this->edicaoCampeonato->getFinal() == EdicaoCampeonato::IDA_VOLTA) 
+            ) {
+            $segundoJogo = new Jogo($jogo->getEquipeVisitante(), $jogo->getEquipeMandante());
+            $segundoJogo->setEdicaoCampeonato($this->edicaoCampeonato);
+            $fase->setSegundoJogo($segundoJogo);
         }
     }
     
@@ -710,6 +752,90 @@ class EdicaoCampeonatoService
         }
 
     }
+    
+    /**
+     * 
+     * @param EdicaoCampeonato $campeonato
+     * @return array
+     * @throws Exception
+     */
+    public function proximaFase(EdicaoCampeonato $campeonato)
+    {
+        if (!$this->verificaJogosConcluidos($campeonato)) {
+            throw new \Exception("É necessário que todos os jogos dessa fase tenham sido concluídos para passar a próxima fase.");
+        }
+        if ($campeonato->getFasesClassificatorias()->isEmpty() && $campeonato->getChaves()) {
+            return $this->getClassificadosChave($campeonato);
+        }
+        if ($campeonato->getFasesQuartas()->isEmpty()) {
+            return $this->getClassificadosFases($campeonato->getFasesOitavas());
+        }
+        if ($campeonato->getFasesSemifinal()->isEmpty()) {
+            return $this->getClassificadosFases($campeonato->getFasesQuartas());
+        }
+        if ($campeonato->getFasesFinal()->isEmpty()) {
+            return $this->getClassificadosFases($campeonato->getFasesSemifinal());
+        }
+        if ($campeonato->getFasesOitavas()->isEmpty()) {
+            throw new \Exception("Ocorreu um erro ao gerar a Próxima Fase");
+        }
+        if (!$campeonato->getFasesFinal()->isEmpty()) {
+            throw new \Exception("O campeonato já está na fase Final.");
+        }
+    }
+    
+    
+    /**
+     * 
+     * @param ArrayCollection $fases
+     * @return array
+     * @throws Exception
+     */
+    private function getClassificadosFases(ArrayCollection $fases)
+    {
+        $equipes = [];
+        // Verifica se todos os classificados foram definidos
+        foreach ($fases as $fase) {
+            /* @var $fase FaseClassificatoria */
+            if (is_null($fase->getClassificado())) {
+                throw new \Exception("É necessário selecionar quais as equipes classificadas para passar a próxima fase.");
+            }
+            $equipes[] = $fase->getClassificado();
+        }
+        return $equipes;
+    }
+
+    
+    /**
+     * 
+     * @param EdicaoCampeonato $campeonato
+     * @return array
+     */
+    private function getClassificadosChave(EdicaoCampeonato $campeonato)
+    {
+        $tabela = $this->calculaTabelaChave($campeonato);
+        $equipes = [];
+        foreach ($tabela as $tabelaChave) {
+            /* @var $tabelaChave ArrayCollection */
+            foreach ($tabelaChave->slice(0, $campeonato->getQuantidadeClassificadosChave()) as $classificacao) { 
+                /* @var $classificacao Classificacao */
+                $equipes[] = $classificacao->getEquipe();
+            }
+        }
+        return $equipes;
+    }
+    
+    /**
+     * 
+     * @param EdicaoCampeonato $campeonato
+     * @return boolean
+     */
+    public function verificaJogosConcluidos(EdicaoCampeonato $campeonato)
+    {
+        return empty($this->getjogoRepository()->countJogosNaoJogados($campeonato));
+    }
+    
+    
     
     /**
      * 

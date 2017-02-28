@@ -26,7 +26,10 @@ class JogoRepository extends EntityRepository
     {
         $query = $this->createQueryBuilder("J");
         
-        $query->andWhere($query->expr()->eq("J.edicaoCampeonato", ":campeonato"))
+        $query->select("J, G, C")
+                ->leftJoin("J.gols", "G")
+                ->leftJoin("J.cartoes", "C")
+                ->andWhere($query->expr()->eq("J.edicaoCampeonato", ":campeonato"))
                 ->andWhere($query->expr()->eq("J.jogado", ":jogado"));
         if (!is_null($chave)) {
             $query->andWhere($query->expr()->eq("J.chave", ":chave"))
@@ -46,6 +49,25 @@ class JogoRepository extends EntityRepository
         $query->setParameter("jogado", TRUE);
         
         return $query->getQuery()->getResult();
+    }
+    
+    /**
+     * 
+     * @param EdicaoCampeonato $campeonato
+     * @return int
+     */
+    public function countJogosNaoJogados(EdicaoCampeonato $campeonato)
+    {
+        $query = $this->createQueryBuilder("J");
+        
+        $query->select($query->expr()->count("J"))
+                ->andWhere($query->expr()->eq("J.edicaoCampeonato", ":campeonato"))
+                ->andWhere($query->expr()->eq("J.jogado", ":jogado"));
+        
+        $query->setParameter("campeonato", $campeonato->getId());
+        $query->setParameter("jogado", FALSE);
+        
+        return $query->getQuery()->getSingleScalarResult();
     }
     
     

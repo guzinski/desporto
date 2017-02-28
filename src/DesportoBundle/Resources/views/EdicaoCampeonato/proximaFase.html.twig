@@ -1,0 +1,134 @@
+{% extends "DesportoBundle::layout.html.twig" %}
+{% block title %}Desporto | Próxima Fase{% endblock %}
+{% block head %}
+    <link href="{{ asset('bundles/desporto/css/slick/slick.css') }}" rel="stylesheet">
+    <link href="{{ asset('bundles/desporto/css/slick/slick-theme.css') }}" rel="stylesheet">
+
+    <script src="{{ asset('bundles/desporto/js/jquery.validate.min.js') }}"></script>
+    <script src="{{ asset('bundles/desporto/js/messages_ptbr.js') }}"></script>
+    <script src="{{ asset('bundles/desporto/js/validate/additional-methods.js') }}"></script>
+    <script src="{{ asset('bundles/desporto/js/jquery.maskedinput.min.js') }}"></script>
+    <script src="{{ asset('bundles/desporto/js/jquery-ui-1.10.3.min.js') }}"></script>
+    <script src="{{ asset('bundles/desporto/js/slick.min.js') }}"></script>
+    <script src="{{ asset('bundles/desporto/js/bootstrap.min.js') }}"></script>
+    <script src="{{ asset('bundles/desporto/js/select2.min.js') }}"></script>
+
+    <script>
+        jQuery(document).ready(function () {
+            jQuery("#proxima_fase_fasesClassificatorias").hide();
+            jQuery("form").validate({
+                highlight: function(element) {
+                    jQuery(element).closest('.form-group').removeClass('has-success').addClass('has-error');
+                },
+                success: function(element) {
+                    jQuery(element).closest('.form-group').removeClass('has-error');
+                },
+                errorPlacement: function(error, element) {
+                    jQuery(element).closest('.form-group').append(error);
+                },
+                ignore: ".ignore",
+                validClass: "",
+                submitHandler: function(form) {
+                    jQuery('button').hide();
+                    jQuery(".locked").fadeIn();
+                    form.submit();
+               }
+            });
+
+            
+            
+            jQuery(".completeEquipe").each(function(index, element) {
+                jQuery(element).rules("add", {
+                    notEqualToGroup: ['.completeEquipe']
+                });
+            });
+            
+            var data = [];
+            {% for equipe in equipes %}
+                    var equipe = {
+                        'id': {{ equipe.id }},
+                        'text': '{{ equipe.apelido }}',
+                    };
+                    data.push(equipe);
+{#                data.push({ id: {{ equipe.id }}, text: '{{ equipe.apelido }}' });#}
+            {% endfor %}
+
+            
+            jQuery(".completeEquipe").select2({
+                placeholder: "Selecionar Equipe",
+                data: data,
+            });
+
+
+            
+        });
+    </script>
+{% endblock %}
+{% block mainpanel %}
+    <div class="pageheader">
+        <div class="media">
+            <div class="pageicon pull-left">
+                <i class="fa fa-th-list"></i>
+            </div>
+            <div class="media-body">
+                <ul class="breadcrumb">
+                    <li><a href="{{ path('index') }}"><i class="glyphicon glyphicon-home"></i></a></li>
+                    <li><a href="#">Campeonatos</a></li>
+                    <li>Próxima Fase</li>
+                </ul>
+                <h4>{{ campeonato.campeonato.nome }} - {{ campeonato.edicao }} | Próxima Fase</h4>
+            </div>
+        </div><!-- media -->
+    </div><!-- pageheader -->
+    <div class="contentpanel">
+        <p>No caso de jogos com ida e volta, a equipe selecionada a esquerda, jogará a primeira partida em casa.</p>
+        <p>Somente estão listados as equipes classificadas na fase anterior.</p>
+        {{ form_start(form) }}
+        {% for i in 1..total %}
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4 class="panel-title">{{ label }} {{ loop.index }}</h4>
+                    <p>Selecione as equipes.</p>
+                </div><!-- panel-heading -->
+                <div class="panel-body">
+                    <div class="row">
+                        <input value="{{ tipo }}" type="hidden" name="proxima_fase[fasesClassificatorias][{{ campeonato.fasesClassificatorias.count + i }}][tipo]" />
+                        <div class="col-lg-5" >
+                            <div class="form-group">
+                                <div class="row">
+                                    <input required="required" type="hidden" class=" completeEquipe col-sm-12" id="proxima_fase_fasesClassificatorias_{{ campeonato.fasesClassificatorias.count + i }}_equipes_0" name="proxima_fase[fasesClassificatorias][{{ campeonato.fasesClassificatorias.count + i }}][equipes][0]" />                        
+                                </div>
+                            </div>                        
+                        </div>
+                        <div class="col-sm-2 ">
+                            <h2 class="text-center">X</h2>
+                        </div>
+                        <div class="col-lg-5" >
+                            <div class="form-group">
+                                <div class="row">
+                                    <input required="required" type="hidden" class=" completeEquipe col-sm-12" id="proxima_fase_fasesClassificatorias_{{ campeonato.fasesClassificatorias.count + i }}_equipes_1" name="proxima_fase[fasesClassificatorias][{{ campeonato.fasesClassificatorias.count + i }}][equipes][1]" />
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div><!-- panel-body -->
+            </div>
+
+        {% endfor %}
+        
+        <div class="panel panel-default mb20">
+            <div class="panel-body">
+                <div class="row">
+                    <button class="btn btn-primary mr5">Salvar</button>
+                    <a class="btn btn-default" href="javascript:history.back();">Voltar</a>
+                </div>
+            </div>
+        </div>
+
+
+        {{ form_end(form) }}
+
+
+    </div><!-- contentpanel -->
+{% endblock %}

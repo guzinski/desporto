@@ -3,11 +3,14 @@
 
 namespace DesportoBundle\Controller;
 
+use DesportoBundle\Doctrine\Type\EnumSexoType;
 use DesportoBundle\Entity\Campeonato;
 use DesportoBundle\Entity\EdicaoCampeonato;
 use DesportoBundle\Entity\Equipe;
 use DesportoBundle\Entity\FaseClassificatoria;
+use DesportoBundle\Entity\Profissional;
 use DesportoBundle\Form\EdicaoCampeonatoType;
+use DesportoBundle\Form\ProximaFaseType;
 use DesportoBundle\Service\EdicaoCampeonatoService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -62,7 +65,7 @@ class EdicaoCampeonatoController extends Controller
             $dados[] = [
                 "<a href=\"".$this->generateUrl("campeonato_detalhe", array("campeonato"=>$campeonato->getId()))."\">". $campeonato->getCampeonato()->getNome()."</a>",
                 $campeonato->getEdicao(),
-                $campeonato->getModalidade() == \DesportoBundle\Doctrine\Type\EnumSexoType::MASCULINO ? "Masculino" : "Feminino",
+                $campeonato->getModalidade() == EnumSexoType::MASCULINO ? "Masculino" : "Feminino",
             ];
         }
         
@@ -104,17 +107,85 @@ class EdicaoCampeonatoController extends Controller
         return ['form'=>$form->createView()];
     }
     
+        
+    /**
+     * @Route("/proxima/fase/{campeonato}", name="campeonato_proxima_fase")
+     * @Template()
+     * @param Campeonato $campeonato
+     */
+    public function proximaFaseAction(EdicaoCampeonato $campeonato, Request $request)
+    {
+        if ($campeonato->getTipo() == EdicaoCampeonato::PONTOS_CORRIDOS) {
+            $request->getSession()->getFlashBag()->add("error", "O campeonato não tem próximas fases");
+            return $this->redirectToRoute("campeonato_detalhe", ['campeonato' => $campeonato->getId()]);
+        } 
+        try {
+            $equipesClassificadas = $this->getService()->proximaFase($campeonato);
+            
+            $return = $this->getService()->getTipoTorneioByNumeroEquipes(count($equipesClassificadas));
+        } catch (\Exception $ex) {
+            $request->getSession()->getFlashBag()->add("error", $ex->getMessage());
+            return $this->redirectToRoute("campeonato_detalhe", ['campeonato' => $campeonato->getId()]);                
+        }
+        
+        $form = $this->createForm(ProximaFaseType::class, $campeonato);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->getService()->salvarFases($campeonato, $return['tipo']);
+            return $this->redirectToRoute("campeonato_detalhe", ['campeonato' => $campeonato->getId()]);
+        }
+        return array_merge($return, [
+            'equipes' => $equipesClassificadas,
+            'campeonato' => $campeonato,
+            'total' =>count($equipesClassificadas)/2,
+            'form' => $form->createView(),
+        ]);
+    }
+    
+
+    /**
+     * @Route("/classificado/fase/{fase}/{equipe}", name="campeonato_classificado_equipe")
+     * @param FaseClassificatoria $fase
+     * @param \DesportoBundle\Controller\DesportoBundle\Entity\Equipe $equipe
+     */
+    public function classificadoFaseAction(FaseClassificatoria $fase, Equipe $equipe, Request $request)
+    {
+        if ($fase->getPrimeiroJogo()->getJogado() && (is_null($fase->getSegundoJogo()) || $fase->getSegundoJogo()->getJogado())) {
+            if ($fase->getEquipes()->contains($equipe)) {
+                $fase->setClassificado($equipe);
+                $this->getDoctrine()->getManager()->persist($fase);
+                $this->getDoctrine()->getManager()->flush();
+            } else {
+                $request->getSession()->getFlashBag()->add("error", "Ocorreu um erro ao selecionar  o Classificado");
+            }
+        } else {
+            $request->getSession()->getFlashBag()->add("error", "É necessário que todas as partidas tenham sido concluídas para selecionar o classificado.");
+        }
+        
+        return $this->redirectToRoute("campeonato_detalhe", ['campeonato' => $fase->getEdicaoCampeonato()->getId()]);
+    }
+
+    
     /**
      * @Route("/detalhe/{campeonato}", name="campeonato_detalhe")
      * @param Campeonato $campeonato
      */
-    public function detalheAction(EdicaoCampeonato $campeonato)
+    public function detalheAction(EdicaoCampeonato $campeonato, Request $request)
     {
         if ($campeonato->getStatus()==EdicaoCampeonato::AGUARDANDO_CONVOCACAO) {
             return $this->redirectToRoute("campeonato_convocacao", array("campeonato"=>$campeonato->getId()));
         }
         
+        $error = "";
+        if ($request->getSession()->getFlashBag()->has("error")) {
+            $error = $request->getSession()->getFlashBag()->get("error");
+            $request->getSession()->getFlashBag()->clear();
+        }
+        
+        $campeonato = $this->getDoctrine()->getRepository(EdicaoCampeonato::class)->carregaCampeonatoComJogos($campeonato);
+        
         $retorno = [
+            "error" => $error,
             "campeonato"=>$campeonato,
             "artilharia" => $this->getService()->calculaArtilharia($campeonato),
         ];
@@ -253,10 +324,10 @@ class EdicaoCampeonatoController extends Controller
         }
         
         $equipe = $this->getDoctrine()
-                ->getRepository(\DesportoBundle\Entity\Equipe::class)->findOneBy(['id'=> $idEquipe]);
+                ->getRepository(Equipe::class)->findOneBy(['id'=> $idEquipe]);
         
         $jogadores = $this->getDoctrine()
-                ->getRepository(\DesportoBundle\Entity\Profissional::class)
+                ->getRepository(Profissional::class)
                 ->getJogadoresInscritos($campeonato, $idEquipe);
 
         return array("jogadores" => $jogadores, "equipe" => $equipe);
@@ -277,7 +348,7 @@ class EdicaoCampeonatoController extends Controller
         }
         
         $equipe = $this->getDoctrine()
-                ->getRepository(\DesportoBundle\Entity\Equipe::class)->findOneBy(['id'=> $idEquipe]);
+                ->getRepository(Equipe::class)->findOneBy(['id'=> $idEquipe]);
 
         return array("equipe" => $equipe, 'tipo'=>$tipo);
     }
@@ -293,7 +364,7 @@ class EdicaoCampeonatoController extends Controller
         $idCampeonato = $request->get("campeonato");
         $idJogador = $request->get("jogador");
         
-        $jogador  = $this->getDoctrine()->getEntityManager()->find(\DesportoBundle\Entity\Profissional::class, $idJogador);
+        $jogador  = $this->getDoctrine()->getEntityManager()->find(Profissional::class, $idJogador);
         
         return array("jogador"=>$jogador, );
     }

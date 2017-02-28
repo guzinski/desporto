@@ -34,9 +34,9 @@ class EquipeTransformer implements DataTransformerInterface
         
         foreach ($data as $value) {
             if (is_numeric($value)) {
-                $parameters = array('id' => $value, 'dataExclusao' => null);
+                $parameters = array('id' => $value);
             } else {
-                $parameters = array('nome' => $value, 'dataExclusao' => null);
+                $parameters = array('nome' => $value);
             }
             $equipe = $this->em
                 ->getRepository(Equipe::class)

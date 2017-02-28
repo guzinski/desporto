@@ -82,6 +82,15 @@ class FaseClassificatoria
      * @ORM\JoinTable(name="fase_classificatoria_equipe")
      */
     private $equipes;
+    
+    /**
+     * @var Equipe
+     *
+     * @ORM\ManyToOne(targetEntity="Equipe")
+     * @ORM\JoinColumn(name="classificado", referencedColumnName="id")
+     */
+    private $classificado;
+
 
 
     public function getId()
@@ -203,6 +212,19 @@ class FaseClassificatoria
         }
         
     }
+    
+    public function getClassificado()
+    {
+        return $this->classificado;
+    }
+
+    public function setClassificado(Equipe $classificado)
+    {
+        $this->classificado = $classificado;
+        return $this;
+    }
+
+
 
     
 

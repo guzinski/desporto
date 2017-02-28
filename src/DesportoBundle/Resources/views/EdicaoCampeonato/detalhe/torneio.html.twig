@@ -13,7 +13,8 @@
 
     <script>
         jQuery(document).ready(function () {
-
+            jQuery(".tab-content-info .tab-pane:last").addClass("active")
+            jQuery(".nav-info li:last").addClass("active")
         });
     </script>
     <style>
@@ -39,15 +40,24 @@
         </div><!-- media -->
     </div><!-- pageheader -->
     <div class="contentpanel">
-
+        {% for msg in error %}
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="alert alert-danger">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                        {{ msg|raw }}
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
         <div class="row">
             <div class="col-sm-12">
                 <div class="pull-right">
-                    <a href="{{ path('campeonato_imprimir_artilharia', {campeonato: campeonato.id}) }}" target="_blank"><button class="btn btn-success tooltips" title="Imprimir Artilharia" type="button"><i class="fa fa-print"></i>&nbsp;&nbsp;<span class="bold">Artilharia</span></button></a>
-                    <button class="btn btn-success " type="button"><i class="fa fa-calendar-o"></i>&nbsp;&nbsp;<span class="bold">Gerar Carnê</span></button>
-                    <a href="{{ path('campeonato_convocacao', {campeonato: campeonato.id}) }}"><button class="btn btn-success " type="button"><i class="fa fa-users"></i>&nbsp;&nbsp;<span class="bold">Editar Equipes</span></button></a>
-                    <button class="btn btn-success" onclick="fichaEquipe()" type="button"><i class="fa fa-bars"></i>&nbsp;&nbsp;<span class="bold">Ficha Equipe</span></button>
-                    <a href="campeonato-finais.html"><button class="btn btn-success " type="button"><i class="fa fa-share"></i>&nbsp;&nbsp;<span class="bold">Próxima Fase</span></button></a>
+                    <a href="{{ path('campeonato_imprimir_artilharia', {campeonato: campeonato.id}) }}" title="Imprimir Artilharia" class="btn btn-success tooltips" target="_blank"><i class="fa fa-print"></i>Artilharia</a>
+                    <a href="#" class="btn btn-success"><i class="fa fa-calendar-o"></i>Gerar Carnê</a>
+                    <a href="{{ path('campeonato_convocacao', {campeonato: campeonato.id}) }}" class="btn btn-success tooltips" title="Editar Equipes"  ><i class="fa fa-users"></i>Editar Equipes</a>
+                    <button class="btn btn-success" onclick="fichaEquipe()" type="button"><i class="fa fa-bars"></i>Ficha Equipe</button>
+                    <a href="{{ path('campeonato_proxima_fase', {campeonato: campeonato.id}) }}" class="btn btn-success tooltips" title="Próxima Fase" ><i class="fa fa-share"></i>Próxima Fase</a>
                 </div>
             </div>
         </div>
@@ -60,51 +70,51 @@
                 <h5 class="lg-title mb10">Fases</h5>
 
                 <!-- Nav tabs -->
-                <ul class="nav nav-tabs">
+                <ul class="nav nav-tabs nav-info">
                     {% if campeonato.fasesOitavas.count > 0 %}
-                    <li class="active"><a href="#oitavas" data-toggle="tab"><strong>Oitavas</strong></a></li>
+                    <li><a href="#oitavas" data-toggle="tab"><strong>Oitavas de Final</strong></a></li>
                     {% endif %}
                     
                     {% if campeonato.fasesQuartas.count > 0 %}
-                    <li class="active"><a href="#quartas" data-toggle="tab"><strong>Qaurtas</strong></a></li>
+                    <li><a href="#quartas" data-toggle="tab"><strong>Quartas de Final</strong></a></li>
                     {% endif %}
                     
                     {% if campeonato.fasesSemifinal.count > 0 %}
-                    <li class="active"><a href="#semifinal" data-toggle="tab"><strong>Semifinal</strong></a></li>
+                    <li><a href="#semifinal" data-toggle="tab"><strong>Semifinal</strong></a></li>
                     {% endif %}
                     
                     {% if campeonato.fasesFinal.count > 0 %}
-                    <li class="active"><a href="#final" data-toggle="tab"><strong>Final</strong></a></li>
+                    <li><a href="#final" data-toggle="tab"><strong>Final</strong></a></li>
                     {% endif %}
 
                 </ul>
 
                 
-                <div class="tab-content mb30">
+                <div class="tab-content tab-content-info mb30">
                     
                     {% if campeonato.fasesOitavas.count > 0 %}
-                    <div class="tab-pane active" id="quartas">
+                    <div class="tab-pane" id="oitavas">
                         {% for fase in campeonato.fasesOitavas %}
                             {% include 'DesportoBundle::EdicaoCampeonato/detalhe/fase.html.twig' with {'fase': fase} %}
                         {% endfor %}
                     </div><!-- tab-pane -->
                     {% endif %}
                     {% if campeonato.fasesQuartas.count > 0 %}
-                    <div class="tab-pane active" id="quartas">
+                    <div class="tab-pane" id="quartas">
                         {% for fase in campeonato.fasesQuartas %}
                             {% include 'DesportoBundle::EdicaoCampeonato/detalhe/fase.html.twig' with {'fase': fase} %}
                         {% endfor %}
                     </div><!-- tab-pane -->
                     {% endif %}
                     {% if campeonato.fasesSemifinal.count > 0 %}
-                    <div class="tab-pane active" id="quartas">
+                    <div class="tab-pane" id="semifinal">
                         {% for fase in campeonato.fasesSemifinal %}
                             {% include 'DesportoBundle::EdicaoCampeonato/detalhe/fase.html.twig' with {'fase': fase} %}
                         {% endfor %}
                     </div><!-- tab-pane -->
                     {% endif %}
                     {% if campeonato.fasesFinal.count > 0 %}
-                    <div class="tab-pane active" id="quartas">
+                    <div class="tab-pane" id="final">
                         {% for fase in campeonato.fasesFinal %}
                             {% include 'DesportoBundle::EdicaoCampeonato/detalhe/fase.html.twig' with {'fase': fase} %}
                         {% endfor %}

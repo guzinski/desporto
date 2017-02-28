@@ -27,7 +27,7 @@ services:
     edicao_campeonato:
         class:  DesportoBundle\Service\EdicaoCampeonatoService
         arguments: ["@doctrine.orm.entity_manager" ]
-        
+               
     desporto.form.profissional:
         class: DesportoBundle\Form\ProfissionalType
         arguments: ["@doctrine.orm.entity_manager"]
@@ -40,6 +40,11 @@ services:
             - { name: form.type }
     desporto.form.edicaoCampeonato:
         class: DesportoBundle\Form\EdicaoCampeonatoType
+        arguments: ["@doctrine.orm.entity_manager"]
+        tags:
+            - { name: form.type }
+    desporto.form.proximaFase:
+        class: DesportoBundle\Form\ProximaFaseType
         arguments: ["@doctrine.orm.entity_manager"]
         tags:
             - { name: form.type }

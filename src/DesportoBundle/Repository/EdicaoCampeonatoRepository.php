@@ -2,7 +2,9 @@
 
 namespace DesportoBundle\Repository;
 
+use DesportoBundle\Entity\EdicaoCampeonato;
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\NoResultException;
 
 /**
  * Description of EdicaoCampeonatoRepository
@@ -25,10 +27,10 @@ class EdicaoCampeonatoRepository extends EntityRepository
         
         if ($encerrados) {
             $query->andWhere($query->expr()->eq("EC.status", ":status"))
-                ->setParameter("status", \DesportoBundle\Entity\EdicaoCampeonato::ENCERRADO);
+                ->setParameter("status", EdicaoCampeonato::ENCERRADO);
         } else {
             $query->andWhere($query->expr()->neq("EC.status", ":status"))
-                ->setParameter("status", \DesportoBundle\Entity\EdicaoCampeonato::ENCERRADO);
+                ->setParameter("status", EdicaoCampeonato::ENCERRADO);
         }
         
         if (!empty($busca)) {
@@ -58,10 +60,10 @@ class EdicaoCampeonatoRepository extends EntityRepository
         
         if ($encerrados) {
             $query->andWhere($query->expr()->eq("EC.status", ":status"))
-                ->setParameter("status", \DesportoBundle\Entity\EdicaoCampeonato::ENCERRADO);
+                ->setParameter("status", EdicaoCampeonato::ENCERRADO);
         } else {
             $query->andWhere($query->expr()->neq("EC.status", ":status"))
-                ->setParameter("status", \DesportoBundle\Entity\EdicaoCampeonato::ENCERRADO);
+                ->setParameter("status", EdicaoCampeonato::ENCERRADO);
         }
 
         
@@ -74,6 +76,24 @@ class EdicaoCampeonatoRepository extends EntityRepository
         }
         
         return $query->getQuery()->getSingleScalarResult();
+    }
+    
+    public function carregaCampeonatoComJogos(EdicaoCampeonato $campeonato)
+    {
+        $query = $this->createQueryBuilder("EC");
+        $query->select("EC, R, J, G, C")
+                ->leftJoin("EC.rodadas", "R")
+                ->leftJoin("EC.jogos", "J")
+                ->leftJoin("J.gols", "G")
+                ->leftJoin("J.cartoes", "C")
+                ->andWhere($query->expr()->eq("EC.id", $campeonato->getId()));
+                
+                
+        try {
+            return $query->getQuery()->getSingleResult();
+        } catch (NoResultException $exc) {
+            return null;
+        }
     }
 
 

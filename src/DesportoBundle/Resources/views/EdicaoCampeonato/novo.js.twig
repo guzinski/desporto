@@ -104,7 +104,7 @@
                     } else if (tipo=="P") {
                         console.log("Entrou");
                         var totalEquipes = jQuery("#edicao_campeonato_quantidadeEquipes").val();
-                        var html = '{% include 'DesportoBundle::EdicaoCampeonato/inputEqiope.html.twig' %}';
+                        var html = '{% include 'DesportoBundle::EdicaoCampeonato/inputEquipe.html.twig' %}';
                         var tab2Html = "<div class='row'>";
                         for (var i=1; i<=totalEquipes; i++) {
                             if (i%2==0) {

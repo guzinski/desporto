@@ -8,9 +8,27 @@
                 {% include 'DesportoBundle::EdicaoCampeonato/detalhe/faseJogo.html.twig' with {'jogo': fase.segundojogo} %}
             </div>
         {% else %}
-            <div class="col-sm-12">
-                {% include 'DesportoBundle::EdicaoCampeonato/detalhe/faseJogo.html.twig' with {'jogo': fase.primeiroJogo} %}
+            <div class="row">
+                <div class="col-sm-12">
+                    {% include 'DesportoBundle::EdicaoCampeonato/detalhe/faseJogo.html.twig' with {'jogo': fase.primeiroJogo} %}
+                </div>
             </div>
         {%  endif %}
     </div>
+
+    <div class="row">
+        {% if fase.classificado is null  %}
+        <div class="col-sm-6 " style="border-right: 1px solid #ccc;">
+            <a href="{{ path('campeonato_classificado_equipe', {fase: fase.id, equipe: fase.equipes.get(0).id}) }}" class="btn btn-default btn-sm pull-right">Definir <strong>{{ fase.equipes.get(0).apelido }}</strong> classificado</a>
+        </div>
+        <div class="col-sm-6 ">
+            <a href="{{ path('campeonato_classificado_equipe', {fase: fase.id, equipe: fase.equipes.get(1).id}) }}" class="btn btn-default btn-sm pull-left">Definir <strong>{{ fase.equipes.get(1).apelido }}</strong> classificado</a>
+        </div>
+        {% else  %}
+        <div class="col-sm-12 text-center">
+            <h4>Classficado {{ fase.classificado.nome }}</h4>
+        </div>
+        {% endif  %}
+    </div>
+
 </div>

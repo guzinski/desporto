@@ -46,14 +46,26 @@
     </div><!-- pageheader -->
     <div class="contentpanel">
 
+        {% for msg in error %}
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="alert alert-danger">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                        {{ msg|raw }}
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+
+        
         <div class="row">
             <div class="col-sm-12">
                 <div class="pull-right">
-                    <a href="{{ path('campeonato_imprimir_tabela', {campeonato: campeonato.id}) }}" target="_blank"><button class="btn btn-success tooltips" title="Imprimir Classificação" type="button"><i class="fa fa-print"></i>&nbsp;&nbsp;<span class="bold">Tabela</span></button></a>
-                    <a href="{{ path('campeonato_imprimir_artilharia', {campeonato: campeonato.id}) }}" target="_blank"><button class="btn btn-success tooltips" title="Imprimir Artilharia" type="button"><i class="fa fa-print"></i>&nbsp;&nbsp;<span class="bold">Artilharia</span></button></a>
-                    <a href=""><button class="btn btn-success " type="button"><i class="fa fa-calendar-o"></i>&nbsp;&nbsp;<span class="bold">Gerar Carnê</span></button></a>
-                    <a href="{{ path('campeonato_convocacao', {campeonato: campeonato.id}) }}"><button class="btn btn-success " type="button"><i class="fa fa-users"></i>&nbsp;&nbsp;<span class="bold">Editar Equipes</span></button></a>
-                    <button class="btn btn-success" onclick="fichaEquipe()" type="button"><i class="fa fa-bars"></i>&nbsp;&nbsp;<span class="bold">Ficha Equipe</span></button>
+                    <a href="{{ path('campeonato_imprimir_tabela', {campeonato: campeonato.id}) }}" class="btn btn-success tooltips" title="Imprimir Tabela" target="_blank"><i class="fa fa-print"></i>Tabela</a>
+                    <a href="{{ path('campeonato_imprimir_artilharia', {campeonato: campeonato.id}) }}" title="Imprimir Artilharia" class="btn btn-success tooltips" target="_blank"><i class="fa fa-print"></i>Artilharia</a>
+                    <a href="#" class="btn btn-success"><i class="fa fa-calendar-o"></i>Gerar Carnê</a>
+                    <a href="{{ path('campeonato_convocacao', {campeonato: campeonato.id}) }}" class="btn btn-success tooltips" title="Editar Equipes"  ><i class="fa fa-users"></i>Editar Equipes</a>
+                    <button class="btn btn-success" onclick="fichaEquipe()" type="button"><i class="fa fa-bars"></i>Ficha Equipe</button>
                 </div>
             </div>
         </div>

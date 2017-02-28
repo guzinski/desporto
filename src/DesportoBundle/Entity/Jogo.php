@@ -69,7 +69,7 @@ class Jogo
      *
      * @ORM\ManyToOne(targetEntity="EdicaoCampeonato", inversedBy="jogos")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="edicao_campeonato", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="edicao_campeonato", referencedColumnName="id", nullable=false)
      * })
      */
     private $edicaoCampeonato;

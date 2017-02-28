@@ -32,6 +32,10 @@ class EdicaoCampeonato extends BaseEntity
     const EM_ANDAMENTO = "EA";
     const ENCERRADO = "E";
     
+    
+    const SOMENTE_IDA = "S";
+    const IDA_VOLTA = "I";
+    
     /**
      * @var string
      *
@@ -179,14 +183,43 @@ class EdicaoCampeonato extends BaseEntity
      * @ORM\OneToMany(targetEntity="Jogo", mappedBy="edicaoCampeonato")
      **/
     private $jogos;
+    
+    /**
+     * @var Equipe
+     *
+     * @ORM\ManyToOne(targetEntity="Equipe", inversedBy="titulos")
+     * @ORM\JoinColumn(name="campeao", referencedColumnName="id")
+     */
+    private $campeao;
+    
+    /**
+     * @var Equipe
+     *
+     * @ORM\ManyToOne(targetEntity="Equipe", inversedBy="vices")
+     * @ORM\JoinColumn(name="vice_campeao", referencedColumnName="id")
+     */
+    private $viceCampeao;
+
+    /**
+     *  @ORM\Column(type="string", columnDefinition="ENUM('I', 'S')", nullable=true)
+     */
+    private $oitavas;
+    /**
+     *  @ORM\Column(type="string", columnDefinition="ENUM('I', 'S')", nullable=true)
+     */
+    private $quartas;
+    /**
+     *  @ORM\Column(type="string", columnDefinition="ENUM('I', 'S')", nullable=true)
+     */
+    private $semiFinal;
+    /**
+     *  @ORM\Column(type="string", columnDefinition="ENUM('I', 'S')", nullable=true)
+     */
+    private $final;
 
 
     private $pontosCorridos;
     private $faseDeGrupos;
-    private $oitavas;
-    private $quartas;
-    private $semiFinal;
-    private $final;
 
     
     public function __construct(Usuario $usuario = null)
@@ -539,13 +572,33 @@ class EdicaoCampeonato extends BaseEntity
     
     private function getFasesPorTipo($tipo)
     {
-        $fases = new ArrayCollection();
-        foreach ($this->fasesClassificatorias as $faseClassificatoria) {
-            if ($faseClassificatoria->getTipo() == $tipo) {
-                $fases->add($faseClassificatoria);
-            }
-        }
-        return $fases;
+        return $this->fasesClassificatorias->filter(function(FaseClassificatoria $fase) use ($tipo) {
+            return $fase->getTipo() == $tipo;
+        });
     }    
+    
+    public function getCampeao()
+    {
+        return $this->campeao;
+    }
+
+    public function getViceCampeao()
+    {
+        return $this->viceCampeao;
+    }
+
+    public function setCampeao(Equipe $campeao)
+    {
+        $this->campeao = $campeao;
+        return $this;
+    }
+
+    public function setViceCampeao(Equipe $viceCampeao)
+    {
+        $this->viceCampeao = $viceCampeao;
+        return $this;
+    }
+
+
     
 }

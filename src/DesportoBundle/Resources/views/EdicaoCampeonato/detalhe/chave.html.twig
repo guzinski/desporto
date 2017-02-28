@@ -17,6 +17,8 @@
     {% include 'DesportoBundle::EdicaoCampeonato/detalhe/fichaEquipe.js.twig' with {'campeonato': campeonato} %}
     <script>
         jQuery(document).ready(function () {
+            jQuery(".tab-content-info .tab-pane:last").addClass("active")
+            jQuery(".nav-info li:last").addClass("active")
             jQuery('.slick_demo_1').slick({
                 dots: true
             });
@@ -46,118 +48,194 @@
     </div><!-- pageheader -->
     <div class="contentpanel">
 
+
+        {% for msg in error %}
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="alert alert-danger">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                        {{ msg|raw }}
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+
+
         <div class="row">
             <div class="col-sm-12">
                 <div class="pull-right">
-                    <a href="{{ path('campeonato_imprimir_tabela', {campeonato: campeonato.id}) }}" target="_blank"><button class="btn btn-success " type="button"><i class="fa fa-print"></i>&nbsp;&nbsp;<span class="bold">Tabela</span></button></a>
-                    <a href="{{ path('campeonato_imprimir_artilharia', {campeonato: campeonato.id}) }}" target="_blank"><button class="btn btn-success tooltips" title="Imprimir Artilharia" type="button"><i class="fa fa-print"></i>&nbsp;&nbsp;<span class="bold">Artilharia</span></button></a>
-                    <a href=""><button class="btn btn-success " type="button"><i class="fa fa-calendar-o"></i>&nbsp;&nbsp;<span class="bold">Gerar Carnê</span></button></a>
-                    <a href="{{ path('campeonato_convocacao', {campeonato: campeonato.id}) }}"><button class="btn btn-success " type="button"><i class="fa fa-users"></i>&nbsp;&nbsp;<span class="bold">Editar Equipes</span></button></a>
-                    <button class="btn btn-success" onclick="fichaEquipe()" type="button"><i class="fa fa-bars"></i>&nbsp;&nbsp;<span class="bold">Ficha Equipe</span></button>
-                    <a href="campeonato-finais.html"><button class="btn btn-success " type="button"><i class="fa fa-share"></i>&nbsp;&nbsp;<span class="bold">Próxima Fase</span></button></a>
+                    <a href="{{ path('campeonato_imprimir_tabela', {campeonato: campeonato.id}) }}" class="btn btn-success tooltips" title="Imprimir Tabela" target="_blank"><i class="fa fa-print"></i>Tabela</a>
+                    <a href="{{ path('campeonato_imprimir_artilharia', {campeonato: campeonato.id}) }}" title="Imprimir Artilharia" class="btn btn-success tooltips" target="_blank"><i class="fa fa-print"></i>Artilharia</a>
+                    <a href="#" class="btn btn-success"><i class="fa fa-calendar-o"></i>Gerar Carnê</a>
+                    <a href="{{ path('campeonato_convocacao', {campeonato: campeonato.id}) }}" class="btn btn-success tooltips" title="Editar Equipes"  ><i class="fa fa-users"></i>Editar Equipes</a>
+                    <button class="btn btn-success" onclick="fichaEquipe()" type="button"><i class="fa fa-bars"></i>Ficha Equipe</button>
+                    <a href="{{ path('campeonato_proxima_fase', {campeonato: campeonato.id}) }}" class="btn btn-success tooltips" title="Próxima Fase" ><i class="fa fa-share"></i>Próxima Fase</a>
                 </div>
             </div>
         </div>
-        
+
         <hr/>
 
         <div class="row">
             <div class="col-sm-12">
-                
-                <h5 class="lg-title mb10">Classificação</h5>
-
                 <!-- Nav tabs -->
-                <ul class="nav nav-tabs">
-                    {% for chave in campeonato.chaves %}
-                        <li {% if loop.index == 1 %}class="active" {% endif %}><a href="#classificacao{{ loop.index }}" data-toggle="tab"><strong>Chave {{ loop.index }}</strong></a></li>
-                    {% endfor %}
+                <ul class="nav nav-tabs nav-info">
+                    <li><a href="#chaves" data-toggle="tab"><strong>Fase de Grupos</strong></a></li>
+                    
+                    {% if campeonato.fasesOitavas.count > 0 %}
+                    <li><a href="#oitavas" data-toggle="tab"><strong>Oitavas de FInal</strong></a></li>
+                    {% endif %}
+
+                    {% if campeonato.fasesQuartas.count > 0 %}
+                    <li><a href="#quartas" data-toggle="tab"><strong>Quartas de FInal</strong></a></li>
+                    {% endif %}
+
+                    {% if campeonato.fasesSemifinal.count > 0 %}
+                    <li><a href="#semifinal" data-toggle="tab"><strong>Semifinal</strong></a></li>
+                    {% endif %}
+
+                    {% if campeonato.fasesFinal.count > 0 %}
+                    <li><a href="#final" data-toggle="tab"><strong>Final</strong></a></li>
+                    {% endif %}
+
                 </ul>
 
-                
-                <div class="tab-content mb30">
-                {% for tabelaChave in tabela %}
-                    <div class="tab-pane {% if loop.index == 1 %} active {% endif %}" id="classificacao{{ loop.index }}">
-                        {% include 'DesportoBundle::EdicaoCampeonato/detalhe/tabela.html.twig' with {'tabela': tabelaChave} %}
-                    </div><!-- tab-pane -->
-                {% endfor %}
-                
-                
+                <div class="tab-content tab-content-info  mb30">
 
-                </div><!-- tab-content -->
-                
-            </div>
-        </div> <!-- row -->
-        <hr/>
-        <div class="panel panel-default">
-            <div class="panel-body">
-            <div class="slick_demo_1">
-                {% for rodada in campeonato.rodadas %}
-                    <div>
-                        <h3>{{ rodada.numero }}º RODADA</h3><hr>
-                        <table class="table">
-                            <thead>
-                                <tr>
-                                    <th>
-                                        Data
-                                    </th>
-                                    <th>
-                                        Local
-                                    </th>
-                                    <th class="text-center">
-                                        Mandante
-                                    </th>
-                                    <th class="text-center">
-                                        Placar
-                                    </th>
-                                    <th class="text-center">
-                                        X
-                                    </th>
-                                    <th class="text-center">
-                                        Placar
-                                    <th class="text-center">
-                                        Visitante
-                                    </th>
-                                    <th></th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {% for jogo in rodada.jogos %}
-                                    <tr>
-                                        <td>
-                                            {% if jogo.data is null %}
-                                                <button class="btn btn-default btn-sm" title="Definir Data" onclick="definirData({{ jogo.id }})">Definir data</button>
-                                            {% else %}
-                                                <h5><strong>{{ jogo.data.format("d/m/Y") }} {{ jogo.horario.format("H:i") }}</strong></h5>
-                                            {% endif %}
-                                        </td>
-                                        <td>
-                                            {% if jogo.local is null %}
-                                                <button class="btn btn-default btn-sm" title="Definir Local" onclick="definirLocal({{ jogo.id }})">Definir local</button>
-                                            {% else %}
-                                                <h5><strong>{{ jogo.local }}</strong></h5>
-                                            {% endif %}
-                                        </td>
-                                        <td class="text-center"><span class="h4">{{ jogo.equipeMandante.apelido }}</span></td>
-                                        <td class="text-center"><span class="h3">{{ jogo.numeroGolsMandante }}</span></td>
-                                        <td class="text-center"><span class="h4">X</span></td>
-                                        <td class="text-center"><span class="h3">{{ jogo.numeroGolsVisitante }}</span></td>
-                                        <td class="text-center"><span class="h4">{{ jogo.equipeVisitante.apelido }}</span></td>
-                                        <td>        
-                                            <div class="btn-group">
-                                                <a title="Detalhar" class="btn btn-info btn-sm" type="button" href="{{ path('jogo_detalhar', {jogo: jogo.id})  }}">Detalhar</a> 
-                                                <button title="Súmula" class="btn btn-info btn-sm" ><i class="fa fa-print"></i></button>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                {% endfor %}
-                            </tbody>
-                        </table>
+                    <div class="tab-pane" id="chaves">
+                        <div class="row">
+                            <div class="col-sm-12">
+
+                                <h5 class="lg-title mb10">Classificação</h5>
+
+                                <!-- Nav tabs -->
+                                <ul class="nav nav-tabs nav-justified">
+                                    {% for chave in campeonato.chaves %}
+                                        <li {% if loop.index == 1 %}class="active" {% endif %}><a href="#classificacao{{ loop.index }}" data-toggle="tab"><strong>Chave {{ loop.index }}</strong></a></li>
+                                        {% endfor %}
+                                </ul>
+
+
+                                <div class="tab-content mb30">
+                                    {% for tabelaChave in tabela %}
+                                        <div class="tab-pane {% if loop.index == 1 %} active {% endif %}" id="classificacao{{ loop.index }}">
+                                            {% include 'DesportoBundle::EdicaoCampeonato/detalhe/tabela.html.twig' with {'tabela': tabelaChave} %}
+                                        </div><!-- tab-pane -->
+                                    {% endfor %}
+
+
+
+                                </div><!-- tab-content -->
+
+                            </div>
+                        </div> <!-- row -->
+                        <hr/>
+                        <div class="panel panel-default">
+                            <div class="panel-body">
+                                <div class="slick_demo_1">
+                                    {% for rodada in campeonato.rodadas %}
+                                        <div>
+                                            <h3>{{ rodada.numero }}º RODADA</h3><hr>
+                                            <table class="table">
+                                                <thead>
+                                                    <tr>
+                                                        <th>
+                                                            Data
+                                                        </th>
+                                                        <th>
+                                                            Local
+                                                        </th>
+                                                        <th class="text-center">
+                                                            Mandante
+                                                        </th>
+                                                        <th class="text-center">
+                                                            Placar
+                                                        </th>
+                                                        <th class="text-center">
+                                                            X
+                                                        </th>
+                                                        <th class="text-center">
+                                                            Placar
+                                                        <th class="text-center">
+                                                            Visitante
+                                                        </th>
+                                                        <th></th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    {% for jogo in rodada.jogos %}
+                                                        <tr>
+                                                            <td>
+                                                                {% if jogo.data is null %}
+                                                                    <button class="btn btn-default btn-sm" title="Definir Data" onclick="definirData({{ jogo.id }})">Definir data</button>
+                                                                {% else %}
+                                                                    <h5><strong>{{ jogo.data.format("d/m/Y") }} {{ jogo.horario.format("H:i") }}</strong></h5>
+                                                                {% endif %}
+                                                            </td>
+                                                            <td>
+                                                                {% if jogo.local is null %}
+                                                                    <button class="btn btn-default btn-sm" title="Definir Local" onclick="definirLocal({{ jogo.id }})">Definir local</button>
+                                                                {% else %}
+                                                                    <h5><strong>{{ jogo.local }}</strong></h5>
+                                                                {% endif %}
+                                                            </td>
+                                                            <td class="text-center"><span class="h4">{{ jogo.equipeMandante.apelido }}</span></td>
+                                                            <td class="text-center"><span class="h3">{{ jogo.numeroGolsMandante }}</span></td>
+                                                            <td class="text-center"><span class="h4">X</span></td>
+                                                            <td class="text-center"><span class="h3">{{ jogo.numeroGolsVisitante }}</span></td>
+                                                            <td class="text-center"><span class="h4">{{ jogo.equipeVisitante.apelido }}</span></td>
+                                                            <td>        
+                                                                <div class="btn-group">
+                                                                    <a title="Detalhar" class="btn btn-info btn-sm" type="button" href="{{ path('jogo_detalhar', {jogo: jogo.id})  }}">Detalhar</a> 
+                                                                    <button title="Súmula" class="btn btn-info btn-sm" ><i class="fa fa-print"></i></button>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                    {% endfor %}
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    {% endfor %}
+                                </div><!-- slick_demo_1 -->
+                            </div>
+                        </div>
+
                     </div>
-                {% endfor %}
-            </div><!-- slick_demo_1 -->
+                    {% if campeonato.fasesOitavas.count > 0 %}
+                        <div class="tab-pane" id="oitavas">
+                            {% for fase in campeonato.fasesOitavas %}
+                                {% include 'DesportoBundle::EdicaoCampeonato/detalhe/fase.html.twig' with {'fase': fase} %}
+                            {% endfor %}
+                        </div><!-- tab-pane -->
+                    {% endif %}
+                    {% if campeonato.fasesQuartas.count > 0 %}
+                        <div class="tab-pane" id="quartas">
+                            {% for fase in campeonato.fasesQuartas %}
+                                {% include 'DesportoBundle::EdicaoCampeonato/detalhe/fase.html.twig' with {'fase': fase} %}
+                            {% endfor %}
+                        </div><!-- tab-pane -->
+                    {% endif %}
+                    {% if campeonato.fasesSemifinal.count > 0 %}
+                        <div class="tab-pane" id="semifinal">
+                            {% for fase in campeonato.fasesSemifinal %}
+                                {% include 'DesportoBundle::EdicaoCampeonato/detalhe/fase.html.twig' with {'fase': fase} %}
+                            {% endfor %}
+                        </div><!-- tab-pane -->
+                    {% endif %}
+                    {% if campeonato.fasesFinal.count > 0 %}
+                        <div class="tab-pane" id="final">
+                            {% for fase in campeonato.fasesFinal %}
+                                {% include 'DesportoBundle::EdicaoCampeonato/detalhe/fase.html.twig' with {'fase': fase} %}
+                            {% endfor %}
+                        </div><!-- tab-pane -->
+                    {% endif %}
+
+                </div>
+
             </div>
         </div>
-        <hr/>
+
+        <hr/>   
         <div class="row">
             <div class="col-sm-12">
                 {% include 'DesportoBundle::EdicaoCampeonato/detalhe/artilharia.html.twig' with {'artilharia': artilharia} %}

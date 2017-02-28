@@ -125,6 +125,19 @@ class Equipe extends BaseEntity
      * @ORM\ManyToMany(targetEntity="FaseClassificatoria", mappedBy="equipes")
      **/
     private $fasesClassificatorias;
+    
+    /**
+     * @var Collection
+     * @ORM\OneToMany(targetEntity="EdicaoCampeonato", mappedBy="campeao")
+     **/
+    private $titulos;
+    
+    /**
+     * @var Collection
+     * @ORM\OneToMany(targetEntity="EdicaoCampeonato", mappedBy="viceCampeao")
+     **/
+    private $vices;
+
 
     public function __construct()
     {
@@ -134,6 +147,8 @@ class Equipe extends BaseEntity
         $this->setFasesClassificatorias(new ArrayCollection());
         $this->setEdicoesCampeonatos(new ArrayCollection());
         $this->setInscricoes(new ArrayCollection());
+        $this->setTitulos(new ArrayCollection());
+        $this->setVices(new ArrayCollection());
     }
 
     
@@ -351,6 +366,29 @@ class Equipe extends BaseEntity
             return "escudo.png";
         }
     }
+
+    public function getTitulos()
+    {
+        return $this->titulos;
+    }
+
+    public function getVices()
+    {
+        return $this->vices;
+    }
+
+    public function setTitulos(Collection $titulos)
+    {
+        $this->titulos = $titulos;
+        return $this;
+    }
+
+    public function setVices(Collection $vices)
+    {
+        $this->vices = $vices;
+        return $this;
+    }
+
 
 
 
