@@ -600,5 +600,33 @@ class EdicaoCampeonato extends BaseEntity
     }
 
 
+    public function isPontosCorridos()
+    {
+        return $this->tipo == self::PONTOS_CORRIDOS;
+    }
+    
+    public function isLiga()
+    {
+        return $this->tipo == self::CHAVE;
+    }
+    
+    public function isTorneio()
+    {
+        return $this->tipo == self::TORNEIO;
+    }
+
+    public function getTipoString()
+    {
+        if ($this->isLiga()) {
+            return "Liga";
+        }
+        if ($this->isPontosCorridos()) {
+            return "Pontos Corridos";
+        }
+        if ($this->isTorneio()) {
+            return "Torneio";
+        }
+    }
+
     
 }

@@ -63,7 +63,7 @@
                 <div class="pull-right">
                     <a href="{{ path('campeonato_imprimir_tabela', {campeonato: campeonato.id}) }}" class="btn btn-success tooltips" title="Imprimir Tabela" target="_blank"><i class="fa fa-print"></i>Tabela</a>
                     <a href="{{ path('campeonato_imprimir_artilharia', {campeonato: campeonato.id}) }}" title="Imprimir Artilharia" class="btn btn-success tooltips" target="_blank"><i class="fa fa-print"></i>Artilharia</a>
-                    <a href="#" class="btn btn-success"><i class="fa fa-calendar-o"></i>Gerar Carnê</a>
+                    <a href="{{ path('campeonato_imprimir_carne', {campeonato: campeonato.id}) }}" target="_blank" class="btn btn-success"><i class="fa fa-calendar-o"></i>Gerar Carnê</a>
                     <a href="{{ path('campeonato_convocacao', {campeonato: campeonato.id}) }}" class="btn btn-success tooltips" title="Editar Equipes"  ><i class="fa fa-users"></i>Editar Equipes</a>
                     <button class="btn btn-success" onclick="fichaEquipe()" type="button"><i class="fa fa-bars"></i>Ficha Equipe</button>
                 </div>

@@ -65,6 +65,7 @@ class EdicaoCampeonatoController extends Controller
             $dados[] = [
                 "<a href=\"".$this->generateUrl("campeonato_detalhe", array("campeonato"=>$campeonato->getId()))."\">". $campeonato->getCampeonato()->getNome()."</a>",
                 $campeonato->getEdicao(),
+                $campeonato->getTipoString(),
                 $campeonato->getModalidade() == EnumSexoType::MASCULINO ? "Masculino" : "Feminino",
             ];
         }
@@ -433,6 +434,14 @@ class EdicaoCampeonatoController extends Controller
         $retorno["artilharia"] = $this->getService()->calculaArtilharia($campeonato);
         $retorno["campeonato"] = $campeonato;
         return $this->render("DesportoBundle::EdicaoCampeonato\imprimir/artilharia.html.twig", $retorno);
+    }
+    /**
+     * @Route("/imprimir/carne/{campeonato}", name="campeonato_imprimir_carne")
+     * @param Campeonato $campeonato
+     */
+    public function imprimirCarneAction(EdicaoCampeonato $campeonato)
+    {
+        return $this->render("DesportoBundle::EdicaoCampeonato\imprimir/carne.html.twig", ['campeonato'=>$campeonato]);
     }
 
     /**

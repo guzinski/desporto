@@ -1,0 +1,56 @@
+{% for rodada in campeonato.rodadas %}
+    <div style="page-break-inside: avoid;">
+        <h3>{{ rodada.numero }}º RODADA</h3><hr>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        Data
+                    </th>
+                    <th>
+                        Local
+                    </th>
+                    <th class="text-center">
+                        Mandante
+                    </th>
+                    <th class="text-center">
+                        Placar
+                    </th>
+                    <th class="text-center">
+                        X
+                    </th>
+                    <th class="text-center">
+                        Placar
+                    <th class="text-center">
+                        Visitante
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for jogo in rodada.jogos %}
+                    <tr>
+                        <td>
+                            {% if jogo.data is null %}
+                                Não definido
+                            {% else %}
+                                <h5><strong>{{ jogo.data.format("d/m/Y") }} {{ jogo.horario.format("H:i") }}</strong></h5>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if jogo.local is null %}
+                                Não definido
+                            {% else %}
+                                <h5><strong>{{ jogo.local }}</strong></h5>
+                            {% endif %}
+                        </td>
+                        <td class="text-center"><span class="h4">{{ jogo.equipeMandante.apelido }}</span></td>
+                        <td class="text-center"><span class="h3">{{ jogo.numeroGolsMandante }}</span></td>
+                        <td class="text-center"><span class="h4">X</span></td>
+                        <td class="text-center"><span class="h3">{{ jogo.numeroGolsVisitante }}</span></td>
+                        <td class="text-center"><span class="h4">{{ jogo.equipeVisitante.apelido }}</span></td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endfor %}

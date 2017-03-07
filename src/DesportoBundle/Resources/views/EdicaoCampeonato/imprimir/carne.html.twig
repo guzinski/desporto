@@ -1,0 +1,23 @@
+{% extends "DesportoBundle::layoutPrint.html.twig" %}
+{% block title %}Desporto | Jogos {{ campeonato.campeonato.nome }} - {{ campeonato.edicao }}{% endblock %}
+{% block mainpanel %}
+    <div class="row">
+        <div class="col-sm-12">
+            <h2>{{ campeonato.campeonato.nome }} - {{ campeonato.edicao }}</h2>
+        </div>
+    </div>
+    <hr/>
+    <div class="row">
+        <div class="col-sm-12">
+            {% if campeonato.isPontosCorridos %}
+                {% include 'DesportoBundle::EdicaoCampeonato/imprimir/carnePontosCorridos.html.twig' with {'campeonato': campeonato} %}
+            {% endif %}
+            {% if campeonato.isLiga %}
+                {% include 'DesportoBundle::EdicaoCampeonato/imprimir/carneChave.html.twig' with {'campeonato': campeonato} %}
+            {% endif %}
+            {% if campeonato.isTorneio %}
+                {% include 'DesportoBundle::EdicaoCampeonato/imprimir/carneTorneio.html.twig' with {'campeonato': campeonato} %}
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}

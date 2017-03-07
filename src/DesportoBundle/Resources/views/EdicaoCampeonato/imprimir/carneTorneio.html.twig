@@ -1,0 +1,33 @@
+{% if campeonato.fasesFinal.count > 0 %}
+    <div style="page-break-inside: avoid;">
+        <h3>Final</h3><hr>
+        {% for fase in campeonato.fasesFinal %}
+            {% include 'DesportoBundle::EdicaoCampeonato/imprimir/fase.html.twig' with {'fase': fase} %}
+        {% endfor %}
+    </div>
+{% endif %}
+{% if campeonato.fasesSemifinal.count > 0 %}
+    <div style="page-break-inside: avoid;">
+        <h3>Semifinal</h3><hr>
+        {% for fase in campeonato.fasesSemifinal %}
+            {% include 'DesportoBundle::EdicaoCampeonato/imprimir/fase.html.twig' with {'fase': fase} %}
+        {% endfor %}
+    </div>
+{% endif %}
+{% if campeonato.fasesQuartas.count > 0 %}
+    <div style="page-break-inside: avoid;">
+        <h3>Quartas de Final</h3><hr>
+        {% for fase in campeonato.fasesQuartas %}
+            {% include 'DesportoBundle::EdicaoCampeonato/imprimir/fase.html.twig' with {'fase': fase} %}
+        {% endfor %}
+    </div>
+{% endif %}
+{% if campeonato.fasesOitavas.count > 0 %}
+    <div style="page-break-inside: avoid;">
+        <h3>Oitavas de Final</h3><hr>
+        {% for fase in campeonato.fasesOitavas %}
+            {% include 'DesportoBundle::EdicaoCampeonato/imprimir/fase.html.twig' with {'fase': fase} %}
+        {% endfor %}
+    </div>
+{% endif %}
+

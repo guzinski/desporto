@@ -54,7 +54,7 @@
             <div class="col-sm-12">
                 <div class="pull-right">
                     <a href="{{ path('campeonato_imprimir_artilharia', {campeonato: campeonato.id}) }}" title="Imprimir Artilharia" class="btn btn-success tooltips" target="_blank"><i class="fa fa-print"></i>Artilharia</a>
-                    <a href="#" class="btn btn-success"><i class="fa fa-calendar-o"></i>Gerar Carnê</a>
+                    <a href="{{ path('campeonato_imprimir_carne', {campeonato: campeonato.id}) }}" target="_blank" class="btn btn-success"><i class="fa fa-calendar-o"></i>Gerar Carnê</a>
                     <a href="{{ path('campeonato_convocacao', {campeonato: campeonato.id}) }}" class="btn btn-success tooltips" title="Editar Equipes"  ><i class="fa fa-users"></i>Editar Equipes</a>
                     <button class="btn btn-success" onclick="fichaEquipe()" type="button"><i class="fa fa-bars"></i>Ficha Equipe</button>
                     <a href="{{ path('campeonato_proxima_fase', {campeonato: campeonato.id}) }}" class="btn btn-success tooltips" title="Próxima Fase" ><i class="fa fa-share"></i>Próxima Fase</a>
@@ -95,6 +95,7 @@
                     {% if campeonato.fasesOitavas.count > 0 %}
                     <div class="tab-pane" id="oitavas">
                         {% for fase in campeonato.fasesOitavas %}
+                            <h5 class="lg-title mb10">Oitavas de Final</h5>
                             {% include 'DesportoBundle::EdicaoCampeonato/detalhe/fase.html.twig' with {'fase': fase} %}
                         {% endfor %}
                     </div><!-- tab-pane -->
@@ -102,6 +103,7 @@
                     {% if campeonato.fasesQuartas.count > 0 %}
                     <div class="tab-pane" id="quartas">
                         {% for fase in campeonato.fasesQuartas %}
+                            <h5 class="lg-title mb10">Quartas de Final</h5>
                             {% include 'DesportoBundle::EdicaoCampeonato/detalhe/fase.html.twig' with {'fase': fase} %}
                         {% endfor %}
                     </div><!-- tab-pane -->
@@ -109,6 +111,7 @@
                     {% if campeonato.fasesSemifinal.count > 0 %}
                     <div class="tab-pane" id="semifinal">
                         {% for fase in campeonato.fasesSemifinal %}
+                            <h5 class="lg-title mb10">Semifinal</h5>
                             {% include 'DesportoBundle::EdicaoCampeonato/detalhe/fase.html.twig' with {'fase': fase} %}
                         {% endfor %}
                     </div><!-- tab-pane -->
@@ -116,6 +119,7 @@
                     {% if campeonato.fasesFinal.count > 0 %}
                     <div class="tab-pane" id="final">
                         {% for fase in campeonato.fasesFinal %}
+                            <h5 class="lg-title mb10">Final</h5>
                             {% include 'DesportoBundle::EdicaoCampeonato/detalhe/fase.html.twig' with {'fase': fase} %}
                         {% endfor %}
                     </div><!-- tab-pane -->
