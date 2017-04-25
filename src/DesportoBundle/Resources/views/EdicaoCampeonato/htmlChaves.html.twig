@@ -1,5 +1,6 @@
+<div class="row">
 {% for i in 0..numChaves %}
-<div class="col-lg-6 col-sm-12">
+<div class="{% if numChaves > 0 %}col-lg-6{% endif %} col-sm-12">
     <div class="panel panel-default">
         <div class="panel-heading">
             <h4 class="panel-title">Chave {{ loop.index }}</h4>
@@ -19,12 +20,10 @@
     </div>
 </div>
     
-    {% if loop.index divisible by(2) %}
+    {% if loop.index is divisible by(2) %}
     </div>
     <div class="row">
     {% endif %}
     
-
-    
-    
 {% endfor %}
+</div>
