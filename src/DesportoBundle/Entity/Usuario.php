@@ -157,7 +157,7 @@ class Usuario extends BaseEntity implements UserInterface
 
     /**
      * 
-     * @return string
+     * @return array
      */
     public function getRoles()
     {
